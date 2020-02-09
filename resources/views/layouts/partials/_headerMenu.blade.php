@@ -2,7 +2,7 @@
     <li><a class="{{\Illuminate\Support\Facades\Request::is('/*') ? 'active' : ''}}" href="{{route('beranda')}}">
             Beranda</a></li>
     <li class="menu-item-has-children mega-menu">
-        <a class="{{\Illuminate\Support\Facades\Request::is('proyek*') ? 'active' : ''}}" href="#">Proyek <i
+        <a class="{{\Illuminate\Support\Facades\Request::is('proyek*') ? 'active' : ''}}" href="#">Tugas/Proyek <i
                 class="fa fa-angle-down"></i></a>
         <ul class="mega-menu-full mega-menu-full-width">
             <div class="row">
@@ -155,10 +155,10 @@
             </div>
         </ul>
     </li>
-    <li><a id="search-toggle" class="nav_slide_button" href="#"><span></span></a></li>
+    <li><a href="#" class="padding-left10" data-toggle="modal" data-target="#login">Masuk</a></li>
     <li>
         <div class="get-btn">
-            <a href="#" class="padding-left10" data-toggle="modal" data-target="#login">Masuk</a>
+            <a href="#" class="padding-left10" data-toggle="modal" data-target="#register">Gabung</a>
         </div>
     </li>
 </ul>

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 
     <title>@yield('title')</title>
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('favicon.ico')}}"/>
@@ -12,12 +12,11 @@
 
     <!-- Bootstrap-3.3.7 fremwork css -->
     <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}"/>
-    <link rel="stylesheet" href="{{asset('admins/modules/bootstrap/css/glyphicons.css')}}"/>
+    <link rel="stylesheet" href="{{asset('css/glyphicons.css')}}"/>
     <!-- Core Style css -->
     <link rel="stylesheet" href="{{asset('css/colorbox.css')}}"/>
     <!-- Slider carousel css  -->
-    <link rel="stylesheet" href="{{asset('vendor/owlcarousel/dist/assets/owl.carousel.min.css')}}">
-    <link rel="stylesheet" href="{{asset('vendor/owlcarousel/dist/assets/owl.theme.default.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/owl.carousel.css')}}">
     <!-- Slider revolution css  -->
     <link rel="stylesheet" href="{{asset('vendor/rs-plugin/css/settings.css')}}"/>
     <link rel="stylesheet" href="{{asset('css/rev-settings.css')}}"/>
@@ -44,11 +43,6 @@
             color: #122752;
         }
 
-        .form-control:focus, .select2-search--dropdown .select2-search__field:focus {
-            border-color: #122752 !important;
-            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(18, 39, 82, 0.6) !important;
-        }
-
         .has-feedback .form-control-feedback {
             position: absolute;
             display: block;
@@ -56,65 +50,6 @@
             height: 34px;
             line-height: 34px;
             text-align: center;
-        }
-
-        [type="radio"]:checked,
-        [type="radio"]:not(:checked) {
-            position: absolute;
-            left: -9999px;
-        }
-
-        [type="radio"]:checked + label,
-        [type="radio"]:not(:checked) + label {
-            position: relative;
-            padding-left: 28px;
-            cursor: pointer;
-            line-height: 20px;
-            display: inline-block;
-            color: #666;
-        }
-
-        [type="radio"]:checked + label:before,
-        [type="radio"]:not(:checked) + label:before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 20px;
-            height: 20px;
-            border: 1px solid #777;
-            border-radius: 100%;
-            background: transparent;
-        }
-
-        [type="radio"]:checked + label:before {
-            border: 1px solid #122752;
-        }
-
-        [type="radio"]:checked + label:after,
-        [type="radio"]:not(:checked) + label:after {
-            content: '';
-            width: 12px;
-            height: 12px;
-            background: #122752;
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            border-radius: 100%;
-            -webkit-transition: all 0.2s ease;
-            transition: all 0.2s ease;
-        }
-
-        [type="radio"]:not(:checked) + label:after {
-            opacity: 0;
-            -webkit-transform: scale(0);
-            transform: scale(0);
-        }
-
-        [type="radio"]:checked + label:after {
-            opacity: 1;
-            -webkit-transform: scale(1);
-            transform: scale(1);
         }
 
         .btn-primary {
@@ -168,34 +103,85 @@
         .swal-button--confirm:active, .swal-button--edit:active {
             background-color: #122752;
         }
+
+        .load {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+        }
+
+        .load hr {
+            border: 0;
+            margin: 0;
+            width: 40%;
+            height: 40%;
+            position: absolute;
+            border-radius: 50%;
+            animation: spin 4s ease infinite;
+        }
+
+        .load :first-child {
+            background: #3776ff;
+            animation-delay: -3s;
+        }
+
+        .load :nth-child(2) {
+            background: #2251b6;
+            animation-delay: -2s;
+        }
+
+        .load :nth-child(3) {
+            background: #1a3784;
+            animation-delay: -1s;
+        }
+
+        .load :last-child {
+            background: #122752;
+        }
+
+        @keyframes spin {
+            0%,
+            100% {
+                transform: translate(0);
+            }
+            25% {
+                transform: translate(160%);
+            }
+            50% {
+                transform: translate(160%, 160%);
+            }
+            75% {
+                transform: translate(0, 160%);
+            }
+        }
     </style>
     @stack('styles')
 </head>
 <body class="use-nicescroll">
-<!-- page loader start -->
 <div class="images-preloader">
-    <div class="preloader"></div>
+    <div class="load">
+        <hr>
+        <hr>
+        <hr>
+        <hr>
+    </div>
 </div>
 
 <div class="wrapper">
     <div class="main-content scroll-none home-page">
         <header class="site-header header-education dropdown-green">
-            <div class="top-search">
-                <div class="container">
-                    <div class="row">
-                        <input type="text" class="" name="q" placeholder="Cari&hellip;" autofocus="autofocus">
-                    </div>
-                    <a href="#" id="search-delete"><i class="fa fa-times"></i></a>
-                </div>
-            </div>
-
             <div class="sub-bar">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6 col-sm-6">
                             <div class="contacts">
-                                <p><a href="tel:+6281252658218"><i class="fa fa-phone"></i><b>Phone:</b> +62 812-5265-8218</a></p>
-                                <p><a href="mailto:{{env('MAIL_USERNAME')}}"><i class="fa fa-envelope"></i><b>Email:</b> {{env('MAIL_USERNAME')}}</a></p>
+                                <p><a href="tel:+6281252658218"><i class="fa fa-phone"></i><b>Telepon:</b> +62
+                                        812-5265-8218</a></p>
+                                <p><a href="mailto:{{env('MAIL_USERNAME')}}"><i
+                                            class="fa fa-envelope"></i><b>Email:</b> {{env('MAIL_USERNAME')}}</a></p>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6">
@@ -218,7 +204,7 @@
                 <div class="container">
                     <div class="logo">
                         <a href="{{route('beranda')}}">
-                            <img src="{{asset('images/education-logo.png')}}" alt="Logo">
+                            <img width="200" src="{{asset('images/logo/logotype.png')}}" alt="Logo">
                         </a>
                     </div>
                     <button class="btn-toggle"><i class="fa fa-bars"></i></button>
@@ -238,15 +224,15 @@
                 <div class="row">
                     <div class="col-md-4 col-sm-6">
                         <div class="footer-widget widget">
-                            <h4>Tinggalkan Kami Pesan</h4>
+                            <h4>Tinggalkan Pesan</h4>
                             <form method="post" class="footer-form" action="{{route('kirim.kontak')}}">
-                                {{csrf_field()}}
+                                @csrf
                                 <input id="name" name="name" type="text" placeholder="Nama lengkap"
                                        value="{{Auth::check() ? Auth::user()->name : ''}}" required>
                                 <input id="email" name="email" type="email" placeholder="Alamat email"
                                        value="{{Auth::check() ? Auth::user()->email : ''}}" required>
                                 <input id="subject" name="subject" type="text" placeholder="Subyek" required>
-                                <textarea id="comment" name="message" placeholder="Tulis pesan Anda disini&hellip;"
+                                <textarea id="message" name="message" placeholder="Tulis pesan Anda disini&hellip;"
                                           required></textarea>
                                 <button type="submit" class="btn btn-construct">Kirim</button>
                             </form>
@@ -254,32 +240,19 @@
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <div class="footer-widget widget">
-                            <h4>Useful Links</h4>
+                            <h4>Tautan Lain</h4>
                             <ul class="contact">
-                                <li>
-                                    <a href=""><i class="fa fa-caret-right"></i> Home Page</a>
-                                </li>
-                                <li>
-                                    <a href=""><i class="fa fa-caret-right"></i> About Us</a>
-                                </li>
-                                <li>
-                                    <a href=""><i class="fa fa-caret-right"></i> Our Mission</a>
-                                </li>
-                                <li>
-                                    <a href=""><i class="fa fa-caret-right"></i> FAQ's</a>
-                                </li>
-                                <li>
-                                    <a href=""><i class="fa fa-caret-right"></i> Blog</a>
-                                </li>
-                                <li>
-                                    <a href=""><i class="fa fa-caret-right"></i> Contact Us</a>
-                                </li>
+                                <li><a href="#"><i class="fa fa-caret-right"></i> Tentang BAGASKU</a></li>
+                                <li><a href="#"><i class="fa fa-caret-right"></i> Cara Kerja</a></li>
+                                <li><a href="#"><i class="fa fa-caret-right"></i> Ketentuan Layanan</a></li>
+                                <li><a href="#"><i class="fa fa-caret-right"></i> Kebijakan Privasi</a></li>
+                                <li><a href="{{route('kontak')}}"><i class="fa fa-caret-right"></i> Kontak</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <div class="footer-widget widget">
-                            <h4>Keep in Touch</h4>
+                            <h4>Tetap Terhubung</h4>
                             <ul class="contact">
                                 <li>
                                     <i class="fa fa-map-marked-alt" style="color: #fff"></i>
@@ -289,7 +262,8 @@
                                     <a href="tel:+6281252658218"><i class="fa fa-phone"></i> +62 812-5265-8218</a>
                                 </li>
                                 <li>
-                                    <a href="mailto:{{env('MAIL_USERNAME')}}"><i class="fa fa-envelope"></i> {{env('MAIL_USERNAME')}}</a>
+                                    <a href="mailto:{{env('MAIL_USERNAME')}}"><i
+                                            class="fa fa-envelope"></i> {{env('MAIL_USERNAME')}}</a>
                                 </li>
                             </ul>
                             <div class="social-media">
@@ -332,7 +306,7 @@
 <!-- Core Style -->
 <script type="text/javascript" src="{{asset('js/jquery.colorbox.js')}}"></script>
 <!-- Carousel Slider  -->
-<script src="{{asset('vendor/owlcarousel/dist/owl.carousel.min.js')}}"></script>
+<script src="{{asset('js/owl.carousel.min.js')}}"></script>
 <!-- Jquery Waypoints -->
 <script type="text/javascript" src="{{asset('js/waypoints.min.js')}}"></script>
 <!-- Jquery Counter -->
@@ -460,7 +434,7 @@
         var options = {
             whatsapp: "+628118981975",
             email: "{{env('MAIL_USERNAME')}}",
-            call_to_action: "Message us",
+            call_to_action: "Hubungi Kami",
             button_color: "#122752",
             position: "left",
             order: "email,whatsapp",
@@ -477,19 +451,11 @@
         x.parentNode.insertBefore(s, x);
     };
 
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-
     $(document).on('mouseover', '.use-nicescroll', function () {
         $(this).getNiceScroll().resize();
     });
 </script>
+@include('layouts.partials._alert')
+@include('layouts.partials._confirm')
 </body>
 </html>
