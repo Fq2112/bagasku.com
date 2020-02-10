@@ -117,22 +117,24 @@
     <!-- form pencarian -->
     <div class="course-search">
         <div class="search-center">
-            <form id="form-pencarian" class="search-category" action="#">
+            <form id="form-pencarian" class="search-category" action="{{route('beranda')}}">
                 <div class="input-group">
-                    <input type="hidden" name="filter">
-                    <input id="keyword" type="text" class="form-control-2 padd-size size-2" name="q"
-                           placeholder="Cari&hellip;" autocomplete="off" required>
                     <div class="input-group-btn search-panel">
-                        <button type="button" class="btn-course dropdown-toggle" data-toggle="dropdown">
-                            <span id="txt_filter">FILTER</span> <span class="caret"></span>
-                        </button>
+                        <button type="button" class="btn-course border-radius-2 dropdown-toggle"
+                                data-toggle="dropdown" style="border-radius: 20px 0 0 20px; margin-right: -2px">
+                            <span id="txt_filter">FILTER</span> <span class="caret"></span></button>
                         <ul id="filter-pencarian" class="dropdown-Menu" role="menu">
-                            <li><a href="#">TUGAS/PROYEK</a></li>
-                            <li><a href="#">LAYANAN</a></li>
-                            <li><a href="#">PRODUK</a></li>
+                            <li data-filter="proyek"><a href="#">TUGAS/PROYEK</a></li>
+                            <li data-filter="layanan"><a href="#">LAYANAN</a></li>
+                            <li data-filter="produk"><a href="#">PRODUK</a></li>
                         </ul>
                     </div>
+                    <input id="keyword" type="text" class="form-control-2 padd-size size-2" name="q"
+                           placeholder="Cari&hellip;" autocomplete="off" required style="border-radius: 0">
+                    <input type="hidden" name="filter">
                     <span class="input-group-btn">
+                        <button class="btn-course" type="reset" id="btn_reset" style="display: none">
+                            <i class="fa fa-times"></i></button>
                         <button class="btn-course border-radius-2" type="submit">
                             <i class="fa fa-search"></i></button>
                     </span>
@@ -186,9 +188,10 @@
                 <li><a href="#" class="current" data-filter=".proyek" title="">TUGAS/PROYEK</a></li>
                 <li><a href="#" data-filter=".layanan" title="">LAYANAN</a></li>
                 <li><a href="#" data-filter=".produk" title="">PRODUK</a></li>
+                <li><a href="#" data-filter=".pekerja" title="">PEKERJA TERBAIK</a></li>
             </ul>
 
-            <div id="daftar-terbaru" class="all-projects projects-4" style="margin: 0 auto">
+            <div id="daftar-terbaru" class="all-projects projects-4">
                 <div class="item proyek">
                     <div class="our-courses">
                         <div class="img-wrapper">
@@ -460,69 +463,6 @@
         </div>
     </section>
 
-    <!-- pekerja terbaik -->
-    <section id="our-team" class="our-team border-2 color-1 color-2">
-        <h2>Pekerja <strong class="strong-green">Terbaik</strong></h2>
-        <div class="container">
-            <div class="col-md-3 our-team-item">
-                <img src="http://localhost:8000/images/team/man-1.png" alt="">
-                <div class="our-content">
-                    <h3>Nama Pekerja</h3>
-                    <h5>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                    </h5>
-                    <h6>Poin / Total proyek</h6>
-                </div>
-            </div>
-            <div class="col-md-3 our-team-item">
-                <img src="http://localhost:8000/images/team/man-2.png" alt="">
-                <div class="our-content">
-                    <h3>Nama Pekerja</h3>
-                    <h5>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-half-alt"></i>
-                    </h5>
-                    <h6>Poin / Total proyek</h6>
-                </div>
-            </div>
-            <div class="col-md-3 our-team-item">
-                <img src="http://localhost:8000/images/team/man-3.png" alt="">
-                <div class="our-content">
-                    <h3>rick Nama Pekerja</h3>
-                    <h5>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="far fa-star"></i>
-                    </h5>
-                    <h6>Poin / Total proyek</h6>
-                </div>
-            </div>
-            <div class="col-md-3 our-team-item">
-                <img src="http://localhost:8000/images/team/man-4.png" alt="">
-                <div class="our-content">
-                    <h3>Nama Pekerja</h3>
-                    <h5>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-half-alt"></i>
-                        <i class="far fa-star"></i>
-                    </h5>
-                    <h6>Poin / Total proyek</h6>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- daftar testimoni -->
     <section class="clients-testimonials padding">
         <div class="container bot-40">
@@ -724,9 +664,39 @@
             });
         });
 
-        $(window).load(function() {
-            var $container = $('#daftar-terbaru');
-            $container.isotope({
+        $("#filter-pencarian > li").on("click", function () {
+            $("#btn_reset").show();
+            $("#txt_filter").text($(this).text());
+            $("#form-pencarian input[name='filter']").val($(this).data('filter'));
+            $("#keyword").attr('placeholder', 'Cari ' + $(this).text().toLowerCase() + '...');
+        });
+
+        $("#keyword").on("keyup", function () {
+            $("#btn_reset").show();
+        });
+
+        $("#btn_reset").on("click", function () {
+            $(this).hide();
+            $("#txt_filter").text('FILTER');
+            $("#form-pencarian input[name='filter']").removeAttr('value');
+            $("#keyword").attr('placeholder', 'Cari...');
+        });
+
+        $("#form-pencarian").on('submit', function (e) {
+            e.preventDefault();
+            var filter = $("#form-pencarian input[name='filter']").val();
+
+            if (!filter) {
+                swal('PERHATIAN!', 'Silahkan pilih filter pencarian terlebih dahulu, terimakasih.', 'warning');
+            } else {
+                $(this)[0].submit();
+            }
+        });
+
+        $(window).load(function () {
+            var $daftar_terbaru = $("#daftar-terbaru");
+
+            $daftar_terbaru.isotope({
                 itemSelector: '.item',
                 filter: '.proyek',
                 masonry: {
@@ -743,31 +713,12 @@
                 $(this).parents().find('.current').removeClass('current');
                 $(this).addClass('current');
 
-                $container.isotope({
+                $daftar_terbaru.isotope({
                     filter: $(this).attr('data-filter'),
                 });
 
                 return false;
             });
-        });
-
-        $("#filter-pencarian > li").on("click", function () {
-            var filter = $(this).text();
-
-            $("#txt_filter").text(filter);
-            $("#form-pencarian input[name='filter']").val(filter.toLowerCase());
-            $("#keyword").attr('placeholder', 'Cari ' + filter.toLowerCase() + '...');
-        });
-
-        $("#form-pencarian").on('submit', function (e) {
-            e.preventDefault();
-            var filter = $("#form-pencarian input[name='filter']").val();
-
-            if (!filter) {
-                swal('PERHATIAN!', 'Silahkan pilih filter pencarian terlebih dahulu, terimakasih.', 'warning');
-            } else {
-                $(this)[0].submit();
-            }
         });
     </script>
 @endpush
