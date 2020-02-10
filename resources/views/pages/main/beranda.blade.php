@@ -12,6 +12,10 @@
             clear: both;
         }
 
+        .projects-4 .item {
+            margin-bottom: 20px;
+        }
+
         .rating {
             border: none;
             float: left;
@@ -297,6 +301,181 @@
                         </div>
                     </div>
                 </div>
+                <div class="item proyek">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/1.jpg')}}" alt="avatar">
+                                <span>Nama Klien</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Proyek</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-day"></i> Deadline</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-paper-plane"></i> Total bid</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item proyek">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/2.jpg')}}" alt="avatar">
+                                <span>Nama Klien</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-alt"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Proyek</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-day"></i> Deadline</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-paper-plane"></i> Total bid</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item proyek">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/3.jpg')}}" alt="avatar">
+                                <span>Nama Klien</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Proyek</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-day"></i> Deadline</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-paper-plane"></i> Total bid</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item proyek">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/1.jpg')}}" alt="avatar">
+                                <span>Nama Klien</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Proyek</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-day"></i> Deadline</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-paper-plane"></i> Total bid</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item proyek">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/2.jpg')}}" alt="avatar">
+                                <span>Nama Klien</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-alt"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Proyek</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-day"></i> Deadline</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-paper-plane"></i> Total bid</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="item layanan">
                     <div class="our-courses">
@@ -394,6 +573,134 @@
                         </div>
                     </div>
                 </div>
+                <div class="item layanan">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/5.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-alt"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Layanan</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-week"></i> Lama pengerjaan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item layanan">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/6.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Layanan</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-week"></i> Lama pengerjaan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item layanan">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Layanan</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-week"></i> Lama pengerjaan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item layanan">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/5.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-alt"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Layanan</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-week"></i> Lama pengerjaan</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="item produk">
                     <div class="our-courses">
@@ -455,6 +762,259 @@
                         <div class="date-info">
                             <div class="pull-left">
                                 <p><i class="fa fa-eye"></i> Pratinjau</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item produk">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/kontak.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Produk</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-eye"></i> Pratinjau</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item produk">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/kontak.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Produk</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-eye"></i> Pratinjau</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item produk">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/kontak.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Produk</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-eye"></i> Pratinjau</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item produk">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/kontak.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Produk</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-eye"></i> Pratinjau</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item pekerja">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/1.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <p>Deskripsi singkat / Quote</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-business-time"></i> Total Proyek</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-trophy"></i> Total Poin</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item pekerja">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/2.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <p>Deskripsi singkat / Quote</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-business-time"></i> Total Proyek</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-trophy"></i> Total Poin</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item pekerja">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/3.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <p>Deskripsi singkat / Quote</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-business-time"></i> Total Proyek</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-trophy"></i> Total Poin</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item pekerja">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <p>Deskripsi singkat / Quote</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-business-time"></i> Total Proyek</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-trophy"></i> Total Poin</p>
                             </div>
                         </div>
                     </div>
@@ -701,7 +1261,7 @@
                 filter: '.proyek',
                 masonry: {
                     columnWidth: 337,
-                    isFitWidth: true
+                    isFitWidth: true,
                 }
             });
 
