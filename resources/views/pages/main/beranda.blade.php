@@ -178,12 +178,12 @@
         </div>
     </section>
 
-    <!-- daftar terbaru bagasku -->
+    <!-- update terbaru bagasku -->
     <section class="text-center our-works2 border-2 light padd-40">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="title text-center">Daftar <strong class="strong-green">Terbaru</strong></h2>
+                    <h2 class="title text-center">Update <strong class="strong-green">Terbaru</strong></h2>
                 </div>
             </div>
         </div>
@@ -1280,5 +1280,9 @@
                 return false;
             });
         });
+
+        @if(session('testimoni'))
+        swal('Sukses!', '{{ session('testimoni') }}', 'success');
+        @endif
     </script>
 @endpush

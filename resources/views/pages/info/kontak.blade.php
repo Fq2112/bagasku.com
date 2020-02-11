@@ -3,7 +3,7 @@
 @push('styles')
     <style>
         .breadcrumbs {
-            background-image: url({{asset('images/slider/contact.jpg')}});
+            background-image: url({{asset('images/slider/kontak.jpg')}});
         }
 
         .gm-style-iw {
@@ -80,13 +80,13 @@
     <div class="breadcrumbs">
         <div class="breadcrumbs-overlay"></div>
         <div class="page-title">
-            <h2>Contact Us</h2>
-            <p>Feel free to get in touch with us!</p>
+            <h2>Kontak</h2>
+            <p>Jangan ragu untuk menghubungi kami!</p>
         </div>
         <ul class="crumb">
-            <li><a href="{{route('home')}}"><i class="fa fa-home"></i></a></li>
-            <li><a href="{{route('home')}}"><i class="fa fa-angle-double-right"></i> Home</a></li>
-            <li><a href="#" onclick="goToAnchor()"><i class="fa fa-angle-double-right"></i> Contact</a></li>
+            <li><a href="{{route('beranda')}}"><i class="fa fa-home"></i></a></li>
+            <li><a href="{{route('beranda')}}"><i class="fa fa-angle-double-right"></i> Beranda</a></li>
+            <li><a href="#" onclick="goToAnchor()"><i class="fa fa-angle-double-right"></i> Kontak</a></li>
         </ul>
     </div>
 
@@ -96,15 +96,15 @@
                 <div data-aos="fade-down" id="map" style="width: 100%;height: 600px"></div>
             </div>
             <div data-aos="fade-down" class="col-lg-6" style="padding: 3em 5em 0px 3em;">
-                <form action="{{route('contact.submit')}}" method="post">
+                <form action="{{route('kirim.kontak')}}" method="post">
                     @csrf
                     <div class="row form-group">
                         <div class="col-md-12">
-                            <label class="form-control-label" for="name">Full Name <span
+                            <label class="form-control-label" for="name">Nama Lengkap <span
                                     class="required">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-id-card"></i></span>
-                                <input id="name" type="text" class="form-control" name="name" placeholder="Full name"
+                                <input id="name" type="text" class="form-control" name="name" placeholder="Nama lengkap"
                                        required>
                             </div>
                         </div>
@@ -115,29 +115,29 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                                 <input id="email" type="email" class="form-control" name="email"
-                                       placeholder="Email" required>
+                                       placeholder="Alamat email" required>
                             </div>
                         </div>
                     </div>
                     <div class="row form-group">
                         <div class="col-md-12">
-                            <label class="form-control-label" for="subject">Subject <span
+                            <label class="form-control-label" for="subject">Subyek <span
                                     class="required">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
                                 <input id="subject" type="text" class="form-control" name="subject"
-                                       placeholder="Subject" minlength="3" required>
+                                       placeholder="Subyek" minlength="3" required>
                             </div>
                         </div>
                     </div>
                     <div class="row form-group">
                         <div class="col-md-12">
-                            <label class="form-control-label" for="message">Message <span
+                            <label class="form-control-label" for="message">Pesan <span
                                     class="required">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-text-height"></i></span>
                                 <textarea id="message" class="form-control" name="message"
-                                          placeholder="Write something here&hellip;" rows="5"
+                                          placeholder="Tulis pesan Anda disini&hellip;" rows="5"
                                           style="resize: vertical" required></textarea>
                             </div>
                         </div>
@@ -145,7 +145,7 @@
                     <div class="row form-group">
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-dark-red btn-block"
-                                    style="padding-top: 8px;padding-bottom: 8px"><b>SUBMIT</b></button>
+                                    style="padding-top: 8px;padding-bottom: 8px"><b>KIRIM</b></button>
                         </div>
                     </div>
                 </form>
@@ -160,7 +160,7 @@
         var google;
 
         function init() {
-            var myLatlng = new google.maps.LatLng(-0.9494033, 100.3524068);
+            var myLatlng = new google.maps.LatLng(-7.5560706, 112.4726686);
 
             var mapOptions = {
                 zoom: 15,
@@ -173,13 +173,13 @@
 
             var contentString =
                 '<div id="iw-container">' +
-                '<div class="iw-title">PT. PRIMA JASA TIRTA LIMA</div>' +
+                '<div class="iw-title">BAGASKU (Bantu Tugasku)</div>' +
                 '<div class="iw-content">' +
                 '<img class="img-fluid" src="{{asset('images/logo/icon.png')}}">' +
-                '<div class="iw-subTitle">Contacts</div>' +
-                '<p>Jl. Angkasa Puri No. 5 Dadok Tanggul Hitam, Koto Tengah, Padang, Sumatera Barat, Indonesia — 25176.<br>' +
-                '<br>Phone: <a href="tel:+62751462942">(0751) 462942</a>' +
-                '<br>E-mail: <a href="mailto:{{env('MAIL_USERNAME')}}">{{env('MAIL_USERNAME')}}</a>' +
+                '<div class="iw-subTitle">Kontak</div>' +
+                '<p>Pohkecik, Dlanggu, Mojokerto, Jawa Timur — 61371.<br>' +
+                '<br>Telepon: <a href="tel:+6281252658218">+62 812-5265-8218</a>' +
+                '<br>Email: <a href="mailto:{{env('MAIL_USERNAME')}}">{{env('MAIL_USERNAME')}}</a>' +
                 '</p></div><div class="iw-bottom-gradient"></div></div>';
 
             var infowindow = new google.maps.InfoWindow({

@@ -7,6 +7,26 @@ Route::group(['prefix' => '/'], function () {
         'as' => 'beranda'
     ]);
 
+    Route::get('tentang', [
+        'uses' => 'MainController@tentang',
+        'as' => 'tentang'
+    ]);
+
+    Route::get('cara-kerja', [
+        'uses' => 'MainController@caraKerja',
+        'as' => 'cara-kerja'
+    ]);
+
+    Route::get('ketentuan-layanan', [
+        'uses' => 'MainController@ketentuanLayanan',
+        'as' => 'ketentuan-layanan'
+    ]);
+
+    Route::get('kebijakan-privasi', [
+        'uses' => 'MainController@kebijakanPrivasi',
+        'as' => 'kebijakan-privasi'
+    ]);
+
     Route::group(['prefix' => 'testimoni', 'middleware' => 'auth'], function () {
 
         Route::post('kirim', [

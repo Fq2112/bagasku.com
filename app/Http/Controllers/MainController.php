@@ -28,6 +28,28 @@ class MainController extends Controller
         return view('pages.main.beranda', compact('cek'));
     }
 
+    public function tentang()
+    {
+        $cek = null;
+
+        return view('pages.info.tentang', compact('cek'));
+    }
+
+    public function caraKerja()
+    {
+        return view('pages.info.cara-kerja');
+    }
+
+    public function ketentuanLayanan()
+    {
+        return view('pages.info.ketentuan-layanan');
+    }
+
+    public function kebijakanPrivasi()
+    {
+        return view('pages.info.kebijakan-privasi');
+    }
+
     public function kirimTestimoni(Request $request)
     {
         if ($request->check_form == 'create') {
@@ -37,7 +59,7 @@ class MainController extends Controller
                 'comment' => $request->comment,
             ]);
 
-            return back()->with('update', 'Terima kasih ' . Auth::user()->name . ' atas ulasannya! ' .
+            return back()->with('testimoni', 'Terima kasih ' . Auth::user()->name . ' atas ulasannya! ' .
                 'Dengan begitu kami dapat berpotensi menjadi agensi yang lebih baik lagi.');
 
         } else {
@@ -46,7 +68,7 @@ class MainController extends Controller
                 'comment' => $request->comment,
             ]);
 
-            return back()->with('success', 'Ulasan Anda berhasil diperbarui!');
+            return back()->with('testimoni', 'Ulasan Anda berhasil diperbarui!');
         }
     }
 
@@ -54,12 +76,12 @@ class MainController extends Controller
     {
         Testimoni::destroy(decrypt($id));
 
-        return back()->with('success', 'Ulasan Anda berhasil dihapus!');
+        return back()->with('testimoni', 'Ulasan Anda berhasil dihapus!');
     }
 
     public function kontak()
     {
-        return view('pages.main.kontak');
+        return view('pages.info.kontak');
     }
 
     public function kirimKontak(Request $request)
@@ -82,6 +104,6 @@ class MainController extends Controller
             $message->subject($data['subject']);
         });
 
-        return back()->with('success', 'Terima kasih telah meninggalkan kami pesan! Karena setiap komentar atau kritik yang Anda berikan, akan membuat kami menjadi perusahaan yang lebih baik.');
+        return back()->with('kontak', 'Terima kasih telah meninggalkan kami pesan! Karena setiap komentar atau kritik yang Anda berikan, akan membuat kami menjadi perusahaan yang lebih baik.');
     }
 }

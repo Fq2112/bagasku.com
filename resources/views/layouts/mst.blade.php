@@ -242,10 +242,14 @@
                         <div class="footer-widget widget">
                             <h4>Tautan Lain</h4>
                             <ul class="contact">
-                                <li><a href="#"><i class="fa fa-caret-right"></i> Tentang BAGASKU</a></li>
-                                <li><a href="#"><i class="fa fa-caret-right"></i> Cara Kerja</a></li>
-                                <li><a href="#"><i class="fa fa-caret-right"></i> Ketentuan Layanan</a></li>
-                                <li><a href="#"><i class="fa fa-caret-right"></i> Kebijakan Privasi</a></li>
+                                <li><a href="{{route('tentang')}}"><i class="fa fa-caret-right"></i> Tentang BAGASKU</a>
+                                </li>
+                                <li><a href="{{route('cara-kerja')}}"><i class="fa fa-caret-right"></i> Cara Kerja</a>
+                                </li>
+                                <li><a href="{{route('ketentuan-layanan')}}"><i class="fa fa-caret-right"></i> Ketentuan
+                                        Layanan</a></li>
+                                <li><a href="{{route('kebijakan-privasi')}}"><i class="fa fa-caret-right"></i> Kebijakan
+                                        Privasi</a></li>
                                 <li><a href="{{route('kontak')}}"><i class="fa fa-caret-right"></i> Kontak</a></li>
                             </ul>
                         </div>
@@ -256,7 +260,7 @@
                             <ul class="contact">
                                 <li>
                                     <i class="fa fa-map-marked-alt" style="color: #fff"></i>
-                                    Mojokerto, Jawa Timur, Indonesia
+                                    Pohkecik, Dlanggu, Mojokerto, Jawa Timur — 61371
                                 </li>
                                 <li>
                                     <a href="tel:+6281252658218"><i class="fa fa-phone"></i> +62 812-5265-8218</a>
