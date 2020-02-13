@@ -155,10 +155,53 @@
             </div>
         </ul>
     </li>
-    <li><a href="#" class="padding-left10" data-toggle="modal" data-target="#login">Masuk</a></li>
-    <li>
-        <div class="get-btn">
-            <a href="#" class="padding-left10" data-toggle="modal" data-target="#register">Gabung</a>
-        </div>
-    </li>
+
+    @if(Auth::check() || Auth::guard('admin')->check())
+        <li class="menu-item-has-children avatar">
+            <a href="javascript:void(0)">
+                @if(Auth::check())
+                    <img class="img-thumbnail show_ava" src="{{Auth::user()->ava != "" ?
+                    asset('storage/users/ava/'.Auth::user()->ava) : asset('images/avatar.png')}}">
+                    {{Auth::user()->name}}
+                @elseif(Auth::guard('admin')->check())
+                    <img class="img-thumbnail show_ava" src="{{Auth::guard('admin')->user()->ava != "" ?
+                    asset('storage/admins/ava/'.Auth::guard('admin')->user()->ava) : asset('images/avatar.png')}}">
+                    {{Auth::guard('admin')->user()->name}}
+                @endif
+                    <i class="fa fa-angle-down"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-arrow">
+                @auth('admin')
+                    @if(Auth::guard('admin')->user()->isRoot() || Auth::guard('admin')->user()->isAdmin())
+                        <li><a href="{{route('home-admin')}}"><i class="fa fa-tachometer-alt mr-2"></i>
+                                Dashboard</a></li>
+                    @else
+                        <li><a href="{{route('show.schedules')}}"><i class="fa fa-calendar-day mr-2"></i>
+                                Schedules</a></li>
+                    @endif
+                @else
+                    <li><a href="{{route('client.dashboard')}}"><i class="fa fa-tachometer-alt mr-2"></i>
+                            Dashboard</a></li>
+                @endauth
+                <li><a href="{{Auth::guard('admin')->check() ? route('admin.edit.profile') :
+                        route('client.edit.profile')}}"><i class="fa fa-user-edit mr-2"></i>Edit Profile</a></li>
+                <li><a href="{{Auth::guard('admin')->check() ? route('admin.settings') :
+                        route('client.settings')}}"><i class="fa fa-cogs mr-2"></i>Account Settings</a></li>
+                <li class="dropdown-divider"></li>
+                <li>
+                    <a class="btn_signOut"><i class="fa fa-sign-out-alt mr-2"></i>Keluar</a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </li>
+            </ul>
+        </li>
+    @else
+        <li><a href="javascript:void(0)" data-toggle="modal" onclick="openLoginModal();">Masuk</a></li>
+        <li>
+            <div class="get-btn">
+                <a href="javascript:void(0)" data-toggle="modal" onclick="openRegisterModal();">Gabung</a>
+            </div>
+        </li>
+    @endif
 </ul>
