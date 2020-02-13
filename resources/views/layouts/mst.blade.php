@@ -160,7 +160,7 @@
     </style>
     @stack('styles')
 </head>
-<body class="use-nicescroll">
+<body class="use-nicescroll" data-spy="scroll" data-target="#toc">
 <div class="images-preloader">
     <div class="load">
         <hr>
@@ -224,7 +224,7 @@
                 <div class="row">
                     <div class="col-md-4 col-sm-6">
                         <div class="footer-widget widget">
-                            <h4>Tinggalkan Pesan</h4>
+                            <h4 data-toc-skip>Tinggalkan Pesan</h4>
                             <form method="post" class="footer-form" action="{{route('kirim.kontak')}}">
                                 @csrf
                                 <input id="name" name="name" type="text" placeholder="Nama lengkap"
@@ -240,7 +240,7 @@
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <div class="footer-widget widget">
-                            <h4>Tautan Lain</h4>
+                            <h4 data-toc-skip>Tautan Lain</h4>
                             <ul class="contact">
                                 <li><a href="{{route('tentang')}}"><i class="fa fa-caret-right"></i> Tentang BAGASKU</a>
                                 </li>
@@ -256,7 +256,7 @@
                     </div>
                     <div class="col-md-4 col-sm-6">
                         <div class="footer-widget widget">
-                            <h4>Tetap Terhubung</h4>
+                            <h4 data-toc-skip>Tetap Terhubung</h4>
                             <ul class="contact">
                                 <li>
                                     <i class="fa fa-map-marked-alt" style="color: #fff"></i>

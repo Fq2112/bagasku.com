@@ -104,7 +104,7 @@
                                     class="required">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-id-card"></i></span>
-                                <input id="name" type="text" class="form-control" name="name" placeholder="Nama lengkap"
+                                <input id="kon_name" type="text" class="form-control" name="name" placeholder="Nama lengkap"
                                        required>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                             <label class="form-control-label" for="email">Email <span class="required">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                <input id="email" type="email" class="form-control" name="email"
+                                <input id="kon_email" type="email" class="form-control" name="email"
                                        placeholder="Alamat email" required>
                             </div>
                         </div>
@@ -125,7 +125,7 @@
                                     class="required">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
-                                <input id="subject" type="text" class="form-control" name="subject"
+                                <input id="kon_subject" type="text" class="form-control" name="subject"
                                        placeholder="Subyek" minlength="3" required>
                             </div>
                         </div>
@@ -136,7 +136,7 @@
                                     class="required">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-text-height"></i></span>
-                                <textarea id="message" class="form-control" name="message"
+                                <textarea id="kon_message" class="form-control" name="message"
                                           placeholder="Tulis pesan Anda disini&hellip;" rows="5"
                                           style="resize: vertical" required></textarea>
                             </div>
