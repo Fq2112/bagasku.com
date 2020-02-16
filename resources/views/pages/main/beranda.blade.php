@@ -1,17 +1,74 @@
 @extends('layouts.mst')
 @section('title', 'Beranda | '.env('APP_TITLE'))
+@push('styles')
+    <style>
+        .projects-4 {
+            margin: 0 auto;
+        }
+
+        .projects-4:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        .projects-4 .item {
+            margin-bottom: 20px;
+        }
+
+        .rating {
+            border: none;
+            float: left;
+        }
+
+        .rating > input {
+            display: none;
+        }
+
+        .rating > label:before {
+            margin: 0 5px 0 5px;
+            font-size: 1.25em;
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            display: inline-block;
+            content: "\f005";
+        }
+
+        .rating > .half:before {
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            content: "\f089";
+            position: absolute;
+        }
+
+        .rating > label {
+            color: #ddd;
+            float: right;
+        }
+
+        .rating > input:checked ~ label,
+        .rating:not(:checked) > label:hover,
+        .rating:not(:checked) > label:hover ~ label {
+            color: #2251b6;
+        }
+
+        .rating > input:checked + label:hover,
+        .rating > input:checked ~ label:hover,
+        .rating > label:hover ~ input:checked ~ label,
+        .rating > input:checked ~ label:hover ~ label {
+            color: #3776ff;
+        }
+    </style>
+@endpush
 @section('content')
+    <!-- slider -->
     <section class="home-slider">
         <div id="slider">
-            <!-- revolution slider begin -->
             <div class="fullwidthbanner-container">
                 <div id="revolution-slider">
-
                     <ul>
                         <li class="slider-bg2" data-transition="fade" data-slotamount="7" data-masterspeed="500">
-                            <!--  BACKGROUND IMAGE -->
-                            <img src="images/slider/education-bg.jpg" alt="">
-
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="">
                             <div class="tp-caption sfr stt custom-size-6 white tp-resizeme zindex"
                                  data-x="center"
                                  data-hoffset="-15"
@@ -19,9 +76,8 @@
                                  data-speed="300"
                                  data-start="1000"
                                  data-easing="easeInOut">
-                                Find Courses Online
+                                TEMUKAN PEKERJA TERBAIK
                             </div>
-
                             <div class="tp-caption sfr stb text-center custom-size-8 white tp-resizeme zindex"
                                  data-x="center"
                                  data-hoffset="-15"
@@ -29,16 +85,13 @@
                                  data-speed="300"
                                  data-start="1800"
                                  data-easing="easeInOut">
-                                <p>With over 10 years of experience helping businesses to find<br>
-                                    comprehensive solutions.</p>
+                                <p>Dapatkan layanan/produk terbaik untuk memenuhi kebutuhan tugas/proyek Anda<br>
+                                    yang disediakan oleh <b>Pekerja</b> {{env('APP_NAME')}}.</p>
                             </div>
-
                         </li>
 
                         <li class="slider-bg2" data-transition="fade" data-slotamount="7" data-masterspeed="500">
-                            <!--  BACKGROUND IMAGE -->
-                            <img src="images/slider/education-bg-2.jpg" alt="">
-
+                            <img src="{{asset('images/slider/beranda-proyek.jpg')}}" alt="">
                             <div class="tp-caption sfr stt custom-size-6 white tp-resizeme zindex"
                                  data-x="center"
                                  data-hoffset="-15"
@@ -46,9 +99,8 @@
                                  data-speed="300"
                                  data-start="1000"
                                  data-easing="easeInOut">
-                                Find Courses Online
+                                TEMUKAN PROYEK TERBARU
                             </div>
-
                             <div class="tp-caption sfr stb text-center custom-size-8 white tp-resizeme zindex"
                                  data-x="center"
                                  data-hoffset="-15"
@@ -56,549 +108,965 @@
                                  data-speed="300"
                                  data-start="1800"
                                  data-easing="easeInOut">
-                                <p>With over 10 years of experience helping businesses to find<br>
-                                    comprehensive solutions.</p>
+                                <p>Dapatkan proyek terbaru dari berbagai kategori pekerjaan<br>
+                                    yang dibagikan oleh <b>Klien</b> {{env('APP_NAME')}}.</p>
                             </div>
-
                         </li>
-
                     </ul>
                 </div>
             </div>
-            <!-- revolution slider close -->
         </div>
     </section>
 
-    <!-- Start: Course search -->
+    <!-- form pencarian -->
     <div class="course-search">
         <div class="search-center">
-            <div class="search-category">
+            <form id="form-pencarian" class="search-category" action="{{route('beranda')}}">
                 <div class="input-group">
-                    <input type="hidden" name="search_param" value="all" id="search_param">
-                    <input type="text" class="form-control-2 padd-size size-2" name="x" placeholder="Keyword search">
                     <div class="input-group-btn search-panel">
-                        <button type="button" class="btn-course dropdown-toggle left-space" data-toggle="dropdown">
-                            <span id="search_concept">Category Course</span> <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-Menu" role="menu">
-                            <li><a href="#">Accessories</a></li>
-                            <li><a href="#">Android</a></li>
-                            <li><a href="#">Bags</a></li>
-                            <li><a href="#">Basketball</a></li>
+                        <button type="button" class="btn-course border-radius-2 dropdown-toggle"
+                                data-toggle="dropdown" style="border-radius: 20px 0 0 20px; margin-right: -2px">
+                            <span id="txt_filter">FILTER</span> <span class="caret"></span></button>
+                        <ul id="filter-pencarian" class="dropdown-Menu" role="menu">
+                            <li data-filter="proyek"><a href="#">TUGAS/PROYEK</a></li>
+                            <li data-filter="layanan"><a href="#">LAYANAN</a></li>
+                            <li data-filter="produk"><a href="#">PRODUK</a></li>
                         </ul>
                     </div>
-                    <div class="input-group-btn search-panel">
-                        <button type="button" class="btn-course dropdown-toggle" data-toggle="dropdown">
-                            <span id="search_concept">Your Region</span> <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-Menu" role="menu">
-                            <li><a href="#">Accessories</a></li>
-                            <li><a href="#">Android</a></li>
-                            <li><a href="#">Bags</a></li>
-                            <li><a href="#">Basketball</a></li>
-                        </ul>
-                    </div>
+                    <input id="keyword" type="text" class="form-control-2 padd-size size-2" name="q"
+                           placeholder="Cari&hellip;" autocomplete="off" required style="border-radius: 0">
+                    <input type="hidden" name="filter">
                     <span class="input-group-btn">
-                                <button class="btn-course border-radius-2" type="button">Search</button>
-                            </span>
+                        <button class="btn-course" type="reset" id="btn_reset" style="display: none">
+                            <i class="fa fa-times"></i></button>
+                        <button class="btn-course border-radius-2" type="submit">
+                            <i class="fa fa-search"></i></button>
+                    </span>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 
-    <!-- features-5 -->
+    <!-- fitur -->
     <section class="section-course">
         <div class="container">
             <div class="boxes-center">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="box-content">
-                            <h2><i class="fa fa-book"></i> Best Course Online</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor aliqua.</p>
+                            <h2><i class="fa fa-hand-holding-usd"></i> Tahu Harga Di Muka</h2>
+                            <p align="justify">Temukan layanan apapun dan ketahui persis apa/berapa yang akan Anda
+                                bayar. Tidak ada tarif per jam, hanya ada harga tetap.</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="box-content">
-                            <h2><i class="fa fa-graduation-cap"></i> Best Industry Leader</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor aliqua.</p>
+                            <h2><i class="fa fa-shield-alt"></i> Jaminan Pembayaran</h2>
+                            <p align="justify">Pembayaran Anda hanya akan diteruskan ke Pekerja setelah Anda senang dan
+                                menyetujui hasil pekerjaan yang Anda dapat.</p>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="box-content">
-                            <h2><i class="fa fa-youtube-play"></i> Best Book LiBrary</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor aliqua.</p>
+                            <h2><i class="fa fa-headset"></i> Bantuan 24/7</h2>
+                            <p align="justify">{{env('APP_NAME')}} hadir untuk membantu Anda kapan dan dimana saja,
+                                mulai dari menjawab pertanyaan hingga menyelesaikan masalah.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- Progress area -->
-    <section class="padd-40">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="apps-video">
-                        <img src="images/slider/slider-bg3.jpg" alt="">
-                        <div class="apps-videolink color-1">
-                            <a class="wmBox" href="#" data-popup="videos/deskwork.mp4">
-                                <i class="fa fa-play-circle-o"></i>
-                            </a>
-                            <h2>Watch Video</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="education-txt-info">
-                        <h2>Make Your Dream Education Site with Our LearnPro Template</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore atque officiis maxime
-                            suscipit expedita obcaecati nulla in ducimus iure quos quam recusandae dolor quas et
-                            perspiciatis voluptatum accusantium delectus nisi reprehenderit,</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Labore atque officiis maxime
-                            suscipit expedita obcaecati nulla in ducimus iure quos quam recusandae dolor quas et
-                            perspiciatis voluptatum accusantium delectus nisi reprehenderit,</p>
-                        <div class="signature">
-                            <img src="images/signature.png" alt="">
-                        </div>
-                        <a href="#" class="btn education-btn-2">Purchase Now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Our amazing works -->
+
+    <!-- update terbaru bagasku -->
     <section class="text-center our-works2 border-2 light padd-40">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="title text-center">Our Courses</h2>
+                    <h2 class="title text-center">Update <strong class="strong-green">Terbaru</strong></h2>
                 </div>
             </div>
         </div>
         <div class="our-projects color-2">
-
-            <ul id="filter" class="filter-projects none-style">
-                <li><a href="#" class="current" data-filter="*" title="">All Courses</a></li>
-                <li><a href="#" data-filter=".science" title="">Science</a></li>
-                <li><a href="#" data-filter=".photograph" title="">Photograph</a></li>
-                <li><a href="#" data-filter=".graphics" title="">Graphics Design</a></li>
-                <li><a href="#" data-filter=".business" title="">Business</a></li>
-                <li><a href="#" data-filter=".lawyer" title="">Lawyer</a></li>
+            <ul id="filter-daftar" class="filter-projects none-style">
+                <li><a href="#" class="current" data-filter=".proyek" title="">TUGAS/PROYEK</a></li>
+                <li><a href="#" data-filter=".layanan" title="">LAYANAN</a></li>
+                <li><a href="#" data-filter=".produk" title="">PRODUK</a></li>
+                <li><a href="#" data-filter=".pekerja" title="">PEKERJA TERBAIK</a></li>
             </ul>
 
-            <div id="gallery" class="all-projects projects-4">
+            <div id="daftar-terbaru" class="all-projects projects-4">
+                <div class="item proyek">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/1.jpg')}}" alt="avatar">
+                                <span>Nama Klien</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Proyek</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-day"></i> Deadline</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-paper-plane"></i> Total bid</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item proyek">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/2.jpg')}}" alt="avatar">
+                                <span>Nama Klien</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-alt"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Proyek</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-day"></i> Deadline</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-paper-plane"></i> Total bid</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item proyek">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/3.jpg')}}" alt="avatar">
+                                <span>Nama Klien</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Proyek</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-day"></i> Deadline</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-paper-plane"></i> Total bid</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item proyek">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/1.jpg')}}" alt="avatar">
+                                <span>Nama Klien</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Proyek</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-day"></i> Deadline</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-paper-plane"></i> Total bid</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item proyek">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/2.jpg')}}" alt="avatar">
+                                <span>Nama Klien</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-alt"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Proyek</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-day"></i> Deadline</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-paper-plane"></i> Total bid</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item proyek">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/3.jpg')}}" alt="avatar">
+                                <span>Nama Klien</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Proyek</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-day"></i> Deadline</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-paper-plane"></i> Total bid</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item proyek">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/1.jpg')}}" alt="avatar">
+                                <span>Nama Klien</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Proyek</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-day"></i> Deadline</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-paper-plane"></i> Total bid</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item proyek">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/2.jpg')}}" alt="avatar">
+                                <span>Nama Klien</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-alt"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Proyek</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-calendar-day"></i> Deadline</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-paper-plane"></i> Total bid</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="item science">
+                <div class="item layanan">
                     <div class="our-courses">
                         <div class="img-wrapper">
-                            <img src="images/blog/education/1.jpg">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
                         </div>
                         <div class="course-info">
                             <div class="pull-left course-img">
-                                <img src="images/faces/thumbs50x50/1.jpg">
-                                <span>Mr.John Doe</span>
-                                <p>Masters</p>
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
                             </div>
                             <div class="pull-right price">
-                                <p>$150</p>
+                                <p>Rp0,00</p>
                             </div>
                         </div>
                         <div class="text-center middle-info">
-                            <h3><a href="#">Financial Accounting</a></h3>
-                            <p>Duis aute irure dolor in cillum dolore eu fugiat nulla pariatur. </p>
+                            <h3><a href="#">Judul Layanan</a></h3>
+                            <p>Deskripsi singkat...</p>
                         </div>
                         <div class="date-info">
                             <div class="pull-left">
-                                <p><i class="fa fa-calendar"></i> 01 Oct, 2017</p>
-                            </div>
-                            <div class="pull-right">
-                                <p><i class="fa fa-graduation-cap"></i> 07/14 Student</p>
+                                <p><i class="fa fa-calendar-week"></i> Lama pengerjaan</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="item photograph">
+                <div class="item layanan">
                     <div class="our-courses">
                         <div class="img-wrapper">
-                            <img src="images/blog/education/2.jpg">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
                         </div>
                         <div class="course-info">
                             <div class="pull-left course-img">
-                                <img src="images/faces/thumbs50x50/2.jpg">
-                                <span>Mr.Joe Doe</span>
-                                <p>Masters</p>
+                                <img src="{{asset('images/faces/thumbs50x50/5.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-alt"></i>
+                                </p>
                             </div>
                             <div class="pull-right price">
-                                <p>$350</p>
+                                <p>Rp0,00</p>
                             </div>
                         </div>
                         <div class="text-center middle-info">
-                            <h3><a href="#">Graphic Designer</a></h3>
-                            <p>Duis aute irure dolor in cillum dolore eu fugiat nulla pariatur. </p>
+                            <h3><a href="#">Judul Layanan</a></h3>
+                            <p>Deskripsi singkat...</p>
                         </div>
                         <div class="date-info">
                             <div class="pull-left">
-                                <p><i class="fa fa-calendar"></i> 20 Sep, 2017</p>
-                            </div>
-                            <div class="pull-right">
-                                <p><i class="fa fa-graduation-cap"></i> 17/30 Student</p>
+                                <p><i class="fa fa-calendar-week"></i> Lama pengerjaan</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="item graphics">
+                <div class="item layanan">
                     <div class="our-courses">
                         <div class="img-wrapper">
-                            <img src="images/blog/education/3.jpg">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
                         </div>
                         <div class="course-info">
                             <div class="pull-left course-img">
-                                <img src="images/faces/thumbs50x50/3.jpg">
-                                <span>Mr.Jason john</span>
-                                <p>Masters</p>
+                                <img src="{{asset('images/faces/thumbs50x50/6.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </p>
                             </div>
                             <div class="pull-right price">
-                                <p>$250</p>
+                                <p>Rp0,00</p>
                             </div>
                         </div>
                         <div class="text-center middle-info">
-                            <h3><a href="#">Design and Technology</a></h3>
-                            <p>Duis aute irure dolor in cillum dolore eu fugiat nulla pariatur. </p>
+                            <h3><a href="#">Judul Layanan</a></h3>
+                            <p>Deskripsi singkat...</p>
                         </div>
                         <div class="date-info">
                             <div class="pull-left">
-                                <p><i class="fa fa-calendar"></i> 12 Aug, 2017</p>
-                            </div>
-                            <div class="pull-right">
-                                <p><i class="fa fa-graduation-cap"></i> 18/21 Student</p>
+                                <p><i class="fa fa-calendar-week"></i> Lama pengerjaan</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="item business">
+                <div class="item layanan">
                     <div class="our-courses">
                         <div class="img-wrapper">
-                            <img src="images/blog/education/4.jpg">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
                         </div>
                         <div class="course-info">
                             <div class="pull-left course-img">
-                                <img src="images/faces/thumbs50x50/4.jpg">
-                                <span>Ms.Sarah Jonatan</span>
-                                <p>Masters</p>
+                                <img src="{{asset('images/faces/thumbs50x50/5.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-alt"></i>
+                                </p>
                             </div>
                             <div class="pull-right price">
-                                <p>$500</p>
+                                <p>Rp0,00</p>
                             </div>
                         </div>
                         <div class="text-center middle-info">
-                            <h3><a href="#">Business Teacher</a></h3>
-                            <p>Duis aute irure dolor in cillum dolore eu fugiat nulla pariatur. </p>
+                            <h3><a href="#">Judul Layanan</a></h3>
+                            <p>Deskripsi singkat...</p>
                         </div>
                         <div class="date-info">
                             <div class="pull-left">
-                                <p><i class="fa fa-calendar"></i> 14 Dec, 2017</p>
-                            </div>
-                            <div class="pull-right">
-                                <p><i class="fa fa-graduation-cap"></i> 25/30 Student</p>
+                                <p><i class="fa fa-calendar-week"></i> Lama pengerjaan</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="item lawyer">
+                <div class="item layanan">
                     <div class="our-courses">
                         <div class="img-wrapper">
-                            <img src="images/blog/education/5.jpg">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
                         </div>
                         <div class="course-info">
                             <div class="pull-left course-img">
-                                <img src="images/faces/thumbs50x50/5.jpg">
-                                <span>Mr.Tom Redder</span>
-                                <p>Masters</p>
+                                <img src="{{asset('images/faces/thumbs50x50/6.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </p>
                             </div>
                             <div class="pull-right price">
-                                <p>$180</p>
+                                <p>Rp0,00</p>
                             </div>
                         </div>
                         <div class="text-center middle-info">
-                            <h3><a href="#">Lawyer Administration</a></h3>
-                            <p>Duis aute irure dolor in cillum dolore eu fugiat nulla pariatur. </p>
+                            <h3><a href="#">Judul Layanan</a></h3>
+                            <p>Deskripsi singkat...</p>
                         </div>
                         <div class="date-info">
                             <div class="pull-left">
-                                <p><i class="fa fa-calendar"></i> 10 Nov, 2017</p>
-                            </div>
-                            <div class="pull-right">
-                                <p><i class="fa fa-graduation-cap"></i> 08/10 Student</p>
+                                <p><i class="fa fa-calendar-week"></i> Lama pengerjaan</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="item business">
+                <div class="item layanan">
                     <div class="our-courses">
                         <div class="img-wrapper">
-                            <img src="images/blog/education/6.jpg">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
                         </div>
                         <div class="course-info">
                             <div class="pull-left course-img">
-                                <img src="images/faces/thumbs50x50/6.jpg">
-                                <span>Mr.John Wick</span>
-                                <p>Masters</p>
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
                             </div>
                             <div class="pull-right price">
-                                <p>$330</p>
+                                <p>Rp0,00</p>
                             </div>
                         </div>
                         <div class="text-center middle-info">
-                            <h3><a href="#">Business Administration</a></h3>
-                            <p>Duis aute irure dolor in cillum dolore eu fugiat nulla pariatur. </p>
+                            <h3><a href="#">Judul Layanan</a></h3>
+                            <p>Deskripsi singkat...</p>
                         </div>
                         <div class="date-info">
                             <div class="pull-left">
-                                <p><i class="fa fa-calendar"></i> 30 Jul, 2017</p>
-                            </div>
-                            <div class="pull-right">
-                                <p><i class="fa fa-graduation-cap"></i> 11/21 Student</p>
+                                <p><i class="fa fa-calendar-week"></i> Lama pengerjaan</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="item photograph">
+                <div class="item layanan">
                     <div class="our-courses">
                         <div class="img-wrapper">
-                            <img src="images/blog/education/7.jpg">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
                         </div>
                         <div class="course-info">
                             <div class="pull-left course-img">
-                                <img src="images/faces/thumbs50x50/1.jpg">
-                                <span>Mr.Ka James</span>
-                                <p>Masters</p>
+                                <img src="{{asset('images/faces/thumbs50x50/5.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-alt"></i>
+                                </p>
                             </div>
                             <div class="pull-right price">
-                                <p>$480</p>
+                                <p>Rp0,00</p>
                             </div>
                         </div>
                         <div class="text-center middle-info">
-                            <h3><a href="#">Photo Designer</a></h3>
-                            <p>Duis aute irure dolor in cillum dolore eu fugiat nulla pariatur. </p>
+                            <h3><a href="#">Judul Layanan</a></h3>
+                            <p>Deskripsi singkat...</p>
                         </div>
                         <div class="date-info">
                             <div class="pull-left">
-                                <p><i class="fa fa-calendar"></i> 08 Jun, 2017</p>
-                            </div>
-                            <div class="pull-right">
-                                <p><i class="fa fa-graduation-cap"></i> 11/14 Student</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item science">
-                    <div class="our-courses">
-                        <div class="img-wrapper">
-                            <img src="images/blog/education/8.jpg">
-                        </div>
-                        <div class="course-info">
-                            <div class="pull-left course-img">
-                                <img src="images/faces/thumbs50x50/2.jpg">
-                                <span>Mr.Doe Ivanna</span>
-                                <p>Masters</p>
-                            </div>
-                            <div class="pull-right price">
-                                <p>$750</p>
-                            </div>
-                        </div>
-                        <div class="text-center middle-info">
-                            <h3><a href="#">Chemical Engineering</a></h3>
-                            <p>Duis aute irure dolor in cillum dolore eu fugiat nulla pariatur. </p>
-                        </div>
-                        <div class="date-info">
-                            <div class="pull-left">
-                                <p><i class="fa fa-calendar"></i> 30 Jan, 2017</p>
-                            </div>
-                            <div class="pull-right">
-                                <p><i class="fa fa-graduation-cap"></i> 11/21 Student</p>
+                                <p><i class="fa fa-calendar-week"></i> Lama pengerjaan</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <div class="item produk">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/kontak.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Produk</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-eye"></i> Pratinjau</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item produk">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/kontak.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Produk</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-eye"></i> Pratinjau</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item produk">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/kontak.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Produk</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-eye"></i> Pratinjau</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item produk">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/kontak.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Produk</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-eye"></i> Pratinjau</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item produk">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/kontak.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Produk</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-eye"></i> Pratinjau</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item produk">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/kontak.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                            <div class="pull-right price">
+                                <p>Rp0,00</p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <h3><a href="#">Judul Produk</a></h3>
+                            <p>Deskripsi singkat...</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-eye"></i> Pratinjau</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item pekerja">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/1.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <p>Deskripsi singkat / Quote</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-business-time"></i> Total Proyek</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-trophy"></i> Total Poin</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item pekerja">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/2.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <p>Deskripsi singkat / Quote</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-business-time"></i> Total Proyek</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-trophy"></i> Total Poin</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item pekerja">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/3.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <p>Deskripsi singkat / Quote</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-business-time"></i> Total Proyek</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-trophy"></i> Total Poin</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item pekerja">
+                    <div class="our-courses">
+                        <div class="img-wrapper">
+                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                        </div>
+                        <div class="course-info">
+                            <div class="pull-left course-img">
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}" alt="avatar">
+                                <span>Nama Pekerja</span>
+                                <p>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="text-center middle-info">
+                            <p>Deskripsi singkat / Quote</p>
+                        </div>
+                        <div class="date-info">
+                            <div class="pull-left">
+                                <p><i class="fa fa-business-time"></i> Total Proyek</p>
+                            </div>
+                            <div class="pull-right">
+                                <p><i class="fa fa-trophy"></i> Total Poin</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Education why choose us -->
-    <section class="education-choose">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-5">
-                    <img src="images/blog/education/student-1.png" alt="">
-                </div>
-                <div class="col-md-7">
-                    <div class="why-choose">
-                        <div class="choose-info">
-                            <h3>Why <strong class="strong-green">Choose</strong> Us?</h3>
-                            <div class="col-md-6">
-                                <div class="box-media">
-                                    <div class="icon-img">
-                                        <i class="fa fa-list-alt"></i>
-                                    </div>
-                                    <div class="txt-body">
-                                        <h2>Popular Courses</h2>
-                                        <p>Lorem ipsum dolor sit ametcon sectet uradipis icing elitCum sectet uradipis
-                                            icing consec tetur</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="box-media">
-                                    <div class="icon-img">
-                                        <i class="fa fa-book"></i>
-                                    </div>
-                                    <div class="txt-body">
-                                        <h2>Modern Book Library</h2>
-                                        <p>Lorem ipsum dolor sit ametcon sectet uradipis icing elitCum consec uradipis
-                                            icing consec tetur</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="box-media">
-                                    <div class="icon-img">
-                                        <i class="fa fa-diamond"></i>
-                                    </div>
-                                    <div class="txt-body">
-                                        <h2>Qualified Teachers</h2>
-                                        <p>Lorem ipsum dolor sit ametcon sectet uradipis icing elitCum consecn uradipis
-                                            icing consec tetur</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="box-media">
-                                    <div class="icon-img">
-                                        <i class="fa fa-bell"></i>
-                                    </div>
-                                    <div class="txt-body">
-                                        <h2>Update Notification</h2>
-                                        <p>Lorem ipsum dolor sit ametcon sectet uradipis icing elitCum consec uradipis
-                                            icing consec tetur</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="box-media">
-                                    <div class="icon-img">
-                                        <i class="fa fa-microphone"></i>
-                                    </div>
-                                    <div class="txt-body">
-                                        <h2>Entertainment Facilities</h2>
-                                        <p>Lorem ipsum dolor sit ametcon sectet uradipis icing elitCum consec uradipis
-                                            icing consec tetur</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="box-media">
-                                    <div class="icon-img">
-                                        <i class="fa fa-globe"></i>
-                                    </div>
-                                    <div class="txt-body">
-                                        <h2>24/7 Online Support</h2>
-                                        <p>Lorem ipsum dolor sit ametcon sectet uradipis icing elitCum consec uradipis
-                                            icing consec tetur</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Start: Wrapper video -->
-    <section class="wrapper-education-video">
-        <div class="container">
-            <div class="row">
-                <div class="video-info">
-                    <h2>Let's Have a <strong>Campus</strong> Tour</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        dolore magna aliqua.</p>
-                    <a href="#" class="wmBox" href="#" data-popup="videos/deskwork.mp4"><i class="fa fa-play"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Our Team -->
-    <section id="our-team" class="our-team border-2 color-1 color-2">
-        <h2>Qualified <strong class="strong-green">Teachers</strong></h2>
-        <div class="container">
-            <div class="col-md-3 our-team-item">
-                <img src="images/team/man-1.png" alt="">
-                <div class="our-content">
-                    <h3>john doe</h3>
-                    <h5>CEO</h5>
-                </div>
-            </div>
-            <div class="col-md-3 our-team-item">
-                <img src="images/team/man-2.png" alt="">
-                <div class="our-content">
-                    <h3>jessica doe</h3>
-                    <h5>Marketing</h5>
-                </div>
-            </div>
-            <div class="col-md-3 our-team-item">
-                <img src="images/team/man-3.png" alt="">
-                <div class="our-content">
-                    <h3>rick edvard doe</h3>
-                    <h5>Developer</h5>
-                </div>
-            </div>
-            <div class="col-md-3 our-team-item">
-                <img src="images/team/man-4.png" alt="">
-                <div class="our-content">
-                    <h3>nilseon doe</h3>
-                    <h5>Design</h5>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- /Our Team -->
-
+    <!-- daftar testimoni -->
     <section class="clients-testimonials padding">
         <div class="container bot-40">
-            <h2 class="text-heading border-3 text-center">What <strong class="strong-green">people</strong> say</h2>
-            <h3 class="text-heading">Student and parents opinion</h3>
+            <h2 class="text-heading border-3 text-center">Testimoni <strong class="strong-green">Pengguna</strong></h2>
+            <h3 class="text-heading">Berikut adalah ulasan dari pengguna {{env('APP_NAME')}}</h3>
         </div>
         <div class="container">
-            <div id="testimonials" class="testi-slider testi-dark">
+            <div id="testimoni" class="testi-slider testi-dark">
                 <div class="education-testimonials">
                     <div class="col-md-6 item">
                         <div class="education-content">
                             <div class="img-info">
-                                <img src="images/faces/500/1.jpg">
+                                <img src="{{asset('images/faces/thumbs50x50/1.jpg')}}">
                             </div>
                             <div class="txt-info">
-                                <p>Denim you probably haven't heard of. Lorem ipsum dolor met consectetur, consectetur
-                                    adipisicing elit, of them jean shorts sed magna aliqua. Lorem ipsum dolor met.</p>
-                                <h3>Catherine Grace</h3>
-                                <span>CEO apple</span>
+                                <h5>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </h5>
+                                <p>Komentar...</p>
+                                <h3>Nama Pengguna</h3>
+                                <span><i class="fa fa-calendar-alt"></i> Terakhir diperbarui</span>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 item">
                         <div class="education-content">
                             <div class="img-info">
-                                <img src="images/faces/500/2.jpg">
+                                <img src="{{asset('images/faces/thumbs50x50/2.jpg')}}">
                             </div>
                             <div class="txt-info">
-                                <p>Denim you probably haven't heard of. Lorem ipsum dolor met consectetur, consectetur
-                                    adipisicing elit, of them jean shorts sed magna aliqua. Lorem ipsum dolor met.</p>
-                                <h3>Catherine Grace</h3>
-                                <span>CEO apple</span>
+                                <h5>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-alt"></i>
+                                </h5>
+                                <p>Komentar...</p>
+                                <h3>Nama Pengguna</h3>
+                                <span><i class="fa fa-calendar-alt"></i> Terakhir diperbarui</span>
                             </div>
                         </div>
                     </div>
@@ -607,26 +1075,38 @@
                     <div class="col-md-6 item">
                         <div class="education-content">
                             <div class="img-info">
-                                <img src="images/faces/500/3.jpg">
+                                <img src="{{asset('images/faces/thumbs50x50/3.jpg')}}">
                             </div>
                             <div class="txt-info">
-                                <p>Denim you probably haven't heard of. Lorem ipsum dolor met consectetur, consectetur
-                                    adipisicing elit, of them jean shorts sed magna aliqua. Lorem ipsum dolor met.</p>
-                                <h3>Catherine Grace</h3>
-                                <span>CEO apple</span>
+                                <h5>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </h5>
+                                <p>Komentar...</p>
+                                <h3>Nama Pengguna</h3>
+                                <span><i class="fa fa-calendar-alt"></i> Terakhir diperbarui</span>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 item">
                         <div class="education-content">
                             <div class="img-info">
-                                <img src="images/faces/500/4.jpg">
+                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}">
                             </div>
                             <div class="txt-info">
-                                <p>Denim you probably haven't heard of. Lorem ipsum dolor met consectetur, consectetur
-                                    adipisicing elit, of them jean shorts sed magna aliqua. Lorem ipsum dolor met.</p>
-                                <h3>Catherine Grace</h3>
-                                <span>CEO apple</span>
+                                <h5>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </h5>
+                                <p>Komentar...</p>
+                                <h3>Nama Pengguna</h3>
+                                <span><i class="fa fa-calendar-alt"></i> Terakhir diperbarui</span>
                             </div>
                         </div>
                     </div>
@@ -635,89 +1115,7 @@
         </div>
     </section>
 
-
-    <!-- Blog -->
-    <section class="block-section-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2 class="text-heading border-3 text-center">Latest <strong class="strong-green">News</strong></h2>
-                    <p class="text-heading text-center bot-40">Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                        sed diam nonummy nibh euismod tincidunt consectetuer adipiscing elit, sed diam nonummy nibh
-                        euismod tincidunt.</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="blog education-blog">
-                        <div class="image">
-                            <img class="img-responsive" src="images/blog/education/5.jpg" alt="">
-                        </div>
-                        <div class="blog-content">
-                            <div class="post-meta">
-                                <span><i class="fa fa-user"></i> John Doe</span>
-                                <span><i class="fa fa-calendar-o"></i> 28 November 2017</span>
-                            </div>
-                            <div class="post-text">
-                                <h2><a href="">We Help Your Time Work For Your Company</a></h2>
-                                <p>Curabitur libero. Donec facilisis velit eu est. Phasellus cons quat. Aenean vitae
-                                    quam</p>
-                            </div>
-                            <div class="text-left">
-                                <a href="" class="btn education-btn">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="blog education-blog">
-                        <div class="image">
-                            <img class="img-responsive" src="images/blog/education/6.jpg" alt="">
-                        </div>
-                        <div class="blog-content">
-                            <div class="post-meta">
-                                <span><i class="fa fa-user"></i> John Doe</span>
-                                <span><i class="fa fa-calendar-o"></i> 28 November 2017</span>
-                            </div>
-                            <div class="post-text">
-                                <h2><a href="">We Help Your Time Work For Your Company</a></h2>
-                                <p>Curabitur libero. Donec facilisis velit eu est. Phasellus cons quat. Aenean vitae
-                                    quam</p>
-                            </div>
-                            <div class="text-left">
-                                <a href="" class="btn education-btn">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="blog education-blog">
-                        <div class="image">
-                            <img class="img-responsive" src="images/blog/education/7.jpg" alt="">
-                        </div>
-                        <div class="blog-content">
-                            <div class="post-meta">
-                                <span><i class="fa fa-user"></i> John Doe</span>
-                                <span><i class="fa fa-calendar-o"></i> 28 November 2017</span>
-                            </div>
-                            <div class="post-text">
-                                <h2><a href="">We Help Your Time Work For Your Company</a></h2>
-                                <p>Curabitur libero. Donec facilisis velit eu est. Phasellus cons quat. Aenean vitae
-                                    quam</p>
-                            </div>
-                            <div class="text-left">
-                                <a href="" class="btn education-btn">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- End Blog -->
-    <!-- sub scribe start -->
+    <!-- form testimoni -->
     <section class="subscribe bg-green">
         <div class="container">
             <div class="row">
@@ -726,22 +1124,80 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="title-form">
-                                    <h3 class="white">SUBSCRIBE TO NEWSLETTERS</h3>
-                                    <p>And stay informed about our news and events</p>
+                                    <h3 class="white">{{$cek != null ? 'SUNTING/HAPUS ULASAN' : 'ULAS '.env('APP_NAME')}}</h3>
+                                    @if($cek != null)
+                                        <a href="{{route('hapus.testimoni',['id' => encrypt($cek->id)])}}"
+                                           class="btn btn-grey delete-data">HAPUS</a>
+                                    @else
+                                        <p style="line-height: unset;">Beri kami ulasan dengan membagikan pengalaman
+                                            Anda tentang layanan kami!</p>
+                                    @endif
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <div class="newsletter">
-                                    <form action="#" class=" comment-form">
-                                        <div class="input-form">
-                                            <input type="text" class="form-control" id="name2"
-                                                   placeholder="Your name...">
+                                    <form action="{{route('kirim.testimoni')}}" class="comment-form" method="post">
+                                        @csrf
+                                        <input type="hidden" name="check_form"
+                                               value="{{$cek != null ? $cek->id : 'create'}}">
+                                        <div class="input-form" style="width: 70%">
+                                            <textarea name="comment" id="comment" class="form-control"
+                                                      style="resize: vertical; height: 75px; color: #fff"
+                                                      placeholder="Bagikan pengalaman Anda tentang layanan kami disini&hellip;"
+                                                      required>{{$cek != null ? $cek->comment : ''}}</textarea>
                                         </div>
-                                        <div class="input-form">
-                                            <input type="email" class="form-control" id="email2"
-                                                   placeholder="Your email...">
-                                        </div>
-                                        <input type="submit" class="btn education-btn-2 color-1" value="Subscribe">
+                                        <fieldset id="rating" class="rating" aria-required="true">
+                                            <label class="full" for="star5" data-toggle="tooltip"
+                                                   title="Terbaik"></label>
+                                            <input type="radio" id="star5" name="rating" value="5" required {{$cek != null
+                                            && $cek->rate == '5' ? 'checked' : ''}}>
+
+                                            <label class="half" for="star4half" data-toggle="tooltip"
+                                                   title="Keren"></label>
+                                            <input type="radio" id="star4half" name="rating" value="4.5" {{$cek != null
+                                            && $cek->rate == '4.5' ? 'checked' : ''}}>
+
+                                            <label class="full" for="star4" data-toggle="tooltip"
+                                                   title="Cukup baik"></label>
+                                            <input type="radio" id="star4" name="rating" value="4" {{$cek != null
+                                            && $cek->rate == '4' ? 'checked' : ''}}>
+
+                                            <label class="half" for="star3half" data-toggle="tooltip"
+                                                   title="Baik"></label>
+                                            <input type="radio" id="star3half" name="rating" value="3.5" {{$cek != null
+                                            && $cek->rate == '3.5' ? 'checked' : ''}}>
+
+                                            <label class="full" for="star3" data-toggle="tooltip"
+                                                   title="Standar"></label>
+                                            <input type="radio" id="star3" name="rating" value="3" {{$cek != null
+                                            && $cek->rate == '3' ? 'checked' : ''}}>
+
+                                            <label class="half" for="star2half" data-toggle="tooltip"
+                                                   title="Cukup buruk"></label>
+                                            <input type="radio" id="star2half" name="rating" value="2.5" {{$cek != null
+                                            && $cek->rate == '2.5' ? 'checked' : ''}}>
+
+                                            <label class="full" for="star2" data-toggle="tooltip" title="Buruk"></label>
+                                            <input type="radio" id="star2" name="rating" value="2" {{$cek != null
+                                            && $cek->rate == '2' ? 'checked' : ''}}>
+
+                                            <label class="half" for="star1half" data-toggle="tooltip"
+                                                   title="Sangat buruk"></label>
+                                            <input type="radio" id="star1half" name="rating" value="1.5" {{$cek != null
+                                            && $cek->rate == '1.5' ? 'checked' : ''}}>
+
+                                            <label class="full" for="star1" data-toggle="tooltip"
+                                                   title="Menyedihkan"></label>
+                                            <input type="radio" id="star1" name="rating" value="1" {{$cek != null
+                                            && $cek->rate == '1' ? 'checked' : ''}}>
+
+                                            <label class="half" for="starhalf" data-toggle="tooltip"
+                                                   title="Sangat menyedihkan"></label>
+                                            <input type="radio" id="starhalf" name="rating" value="0.5" {{$cek != null
+                                            && $cek->rate == '0.5' ? 'checked' : ''}}>
+                                        </fieldset>
+                                        <input type="submit" class="btn education-btn-2 color-1" value="{{$cek != null
+                                        ? 'SIMPAN' : 'KIRIM'}}">
                                     </form>
                                 </div>
                             </div>
@@ -751,5 +1207,82 @@
             </div>
         </div>
     </section>
-    <!-- sub scribe end -->
 @endsection
+@push('scripts')
+    <script>
+        $(function () {
+            $("#testimoni").owlCarousel({
+                navigation: false,
+                slideSpeed: 600,
+                autoPlay: 6000,
+                singleItem: true,
+                pagination: true,
+                navigationText: [
+                    "<i class='fa fa-caret-left'></i>",
+                    "<i class='fa fa-caret-right'></i>"
+                ],
+            });
+        });
+
+        $("#filter-pencarian > li").on("click", function () {
+            $("#btn_reset").show();
+            $("#txt_filter").text($(this).text());
+            $("#form-pencarian input[name='filter']").val($(this).data('filter'));
+            $("#keyword").attr('placeholder', 'Cari ' + $(this).text().toLowerCase() + '...');
+        });
+
+        $("#keyword").on("keyup", function () {
+            $("#btn_reset").show();
+        });
+
+        $("#btn_reset").on("click", function () {
+            $(this).hide();
+            $("#txt_filter").text('FILTER');
+            $("#form-pencarian input[name='filter']").removeAttr('value');
+            $("#keyword").attr('placeholder', 'Cari...');
+        });
+
+        $("#form-pencarian").on('submit', function (e) {
+            e.preventDefault();
+            var filter = $("#form-pencarian input[name='filter']").val();
+
+            if (!filter) {
+                swal('PERHATIAN!', 'Silahkan pilih filter pencarian terlebih dahulu, terimakasih.', 'warning');
+            } else {
+                $(this)[0].submit();
+            }
+        });
+
+        $(window).load(function () {
+            var $daftar_terbaru = $("#daftar-terbaru");
+
+            $daftar_terbaru.isotope({
+                itemSelector: '.item',
+                filter: '.proyek',
+                masonry: {
+                    columnWidth: 337,
+                    isFitWidth: true,
+                }
+            });
+
+            $('#filter-daftar a').on('click', function () {
+                if ($(this).hasClass('current')) {
+                    return false;
+                }
+
+                $(this).parents().find('.current').removeClass('current');
+                $(this).addClass('current');
+
+                $daftar_terbaru.isotope({
+                    filter: $(this).attr('data-filter'),
+                });
+
+                return false;
+            });
+        });
+
+        @if(session('testimoni'))
+        swal('Sukses!', '{{ session('testimoni') }}', 'success');
+        @endif
+    </script>
+@endpush
