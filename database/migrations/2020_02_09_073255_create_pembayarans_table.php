@@ -13,7 +13,7 @@ class CreatePembayaransTable extends Migration
      */
     public function up()
     {
-        Schema::create('pembayarans', function (Blueprint $table) {
+        Schema::create('pembayaran', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('pengerjaan_id');
             $table->foreign('pengerjaan_id')->references('id')->on('pengerjaan');

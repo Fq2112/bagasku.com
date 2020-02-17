@@ -15,8 +15,8 @@ class CreateKotaTable extends Migration
     {
         Schema::create('kota', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('provisi_id');
-            $table->foreign('provisi_id')->references('id')->on('provinsi')
+            $table->unsignedBigInteger('provinsi_id');
+            $table->foreign('provinsi_id')->references('id')->on('provinsi')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->string('nama');
             $table->timestamps();

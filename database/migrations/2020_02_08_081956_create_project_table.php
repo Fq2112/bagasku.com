@@ -17,6 +17,8 @@ class CreateProjectTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('subkategori_id');
+            $table->foreign('subkategori_id')->references('id')->on('subkategori');
             $table->string('judul');
             $table->text('deskripsi');
             $table->string('lampiran')->nullable();
