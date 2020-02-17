@@ -10,6 +10,7 @@ use App\Model\ReviewWorker;
 use App\Model\Tawaran;
 use App\Model\Testimoni;
 use App\Model\Undangan;
+use App\Support\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -44,6 +45,34 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Check whether this user is seeker or not
+     * @return bool
+     */
+    public function isOther()
+    {
+        return ($this->role == Role::OTHER);
+    }
+
+    /**
+     * Check whether this user is admin or not
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return ($this->role == Role::ADMIN);
+    }
+
+    /**
+     * Check whether this user is root or not
+     * @return bool
+     */
+    public function isRoot()
+    {
+        return ($this->role == Role::ROOT);
+    }
+
 
     public function get_bio()
     {
