@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Model\Product;
 use App\Model\Project;
+use App\Model\ReviewWorker;
 use App\Model\Services;
 use App\Model\Testimoni;
+use App\Support\Role;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -17,6 +20,8 @@ class MainController extends Controller
         $proyek = Project::orderByDesc('id')->take(8)->get();
         $layanan = Services::orderByDesc('id')->take(8)->get();
         $produk = Product::orderByDesc('id')->take(8)->get();
+        /*$pekerja = ReviewWorker::groupBy('user_id')->selectRaw('sum(bintang) as sum, user_id')->pluck('sum', 'user_id');
+        dd($pekerja);*/
 
         $testimoni = Testimoni::where('bintang', '>', 3)->orderByDesc('id')->take(12)->get();
         if (Auth::check()) {

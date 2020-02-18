@@ -22733,7 +22733,7 @@ h2.font-nothing-you-could-do {
 
 .our-courses .course-info .price {
     padding: 0;
-    margin: 0;
+    margin: 0 0 0 20px;
     line-height: 40px;
 }
 
@@ -22806,6 +22806,11 @@ h2.font-nothing-you-could-do {
 }
 
 .our-courses:hover .date-info p {
+    color: #fff;
+}
+
+.our-courses:hover .date-info p a {
+    text-decoration: none;
     color: #fff;
 }
 
