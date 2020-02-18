@@ -91,12 +91,12 @@ class User extends Authenticatable
 
     public function get_ulasan()
     {
-        return $this->hasOne(Review::class, 'user_id');
+        return $this->hasMany(Review::class, 'user_id');
     }
 
     public function get_ulasan_pekerja()
     {
-        return $this->hasOne(ReviewWorker::class, 'user_id');
+        return $this->hasMany(ReviewWorker::class, 'user_id');
     }
 
     public function get_testimoni()
@@ -113,4 +113,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Undangan::class, 'user_id');
     }
+
+
 }
