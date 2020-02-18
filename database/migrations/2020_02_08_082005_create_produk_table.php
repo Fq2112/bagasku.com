@@ -20,8 +20,9 @@ class CreateProdukTable extends Migration
             $table->unsignedBigInteger('subkategori_id');
             $table->foreign('subkategori_id')->references('id')->on('subkategori');
             $table->string('judul');
-            $table->text('detail');
-            $table->text('foto_display');
+            $table->text('deskripsi');
+            $table->text('thumbnail')->nullable();
+            $table->text('tautan')->nullable();
             $table->text('bukti_foto')->nullable();
             $table->string('harga');
             $table->timestamps();
