@@ -16,7 +16,9 @@ class DatabaseSeeder extends Seeder
              SubKategoriTableSeeder::class,
              PovinsiTableSeeder::class,
              KotaTableSeeder::class,
-             UserTableSeeder::class
+             UserTableSeeder::class,
+             ProductTableSeeder::class,
+             ServiceTableSeeder::class
          ]);
     }
 }

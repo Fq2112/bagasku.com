@@ -21,6 +21,7 @@ class CreateProjectTable extends Migration
             $table->foreign('subkategori_id')->references('id')->on('subkategori');
             $table->string('judul');
             $table->text('deskripsi');
+            $table->string('thumbnail')->nullable();
             $table->string('lampiran')->nullable();
             $table->string('waktu_pengerjaan');
             $table->string('harga');

@@ -20,6 +20,7 @@ class CreateUlasanPekerjaTable extends Migration
             $table->unsignedBigInteger('proyek_id');
             $table->foreign('proyek_id')->references('id')->on('project');
             $table->text('deskripsi');
+            $table->double('bintang');
             $table->timestamps();
         });
     }
