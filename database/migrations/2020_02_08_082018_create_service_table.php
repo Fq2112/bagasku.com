@@ -20,7 +20,7 @@ class CreateServiceTable extends Migration
             $table->unsignedBigInteger('subkategori_id');
             $table->foreign('subkategori_id')->references('id')->on('subkategori');
             $table->string('judul');
-            $table->text('detail');
+            $table->text('deskripsi');
             $table->string('thumbnail')->nullable();
             $table->integer('hari_pengerjaan');
             $table->string('harga');

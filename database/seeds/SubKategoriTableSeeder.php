@@ -54,10 +54,10 @@ class SubKategoriTableSeeder extends Seeder
         ];
 
         $sub[] = [
-          'Penerjemah Bahasa Inggris ke Bahasa Indonesia (Atau sebaliknya)',
-          'Penerjemah Bahasa Mandarin ke Bahasa Indonesia (Atau sebaliknya)',
-          'Penerjemah Bahasa Korea ke Bahasa Indonesia (Atau sebaliknya)',
-          'Penerjemah Bahasa Jepang ke Bahasa Indonesia (Atau sebaliknya)',
+            'Bahasa Inggris ke Bahasa Indonesia',
+            'Bahasa Mandarin ke Bahasa Indonesia',
+            'Bahasa Korea ke Bahasa Indonesia',
+            'Bahasa Jepang ke Bahasa Indonesia',
         ];
 
         $sub[] =[

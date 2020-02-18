@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Product;
+use App\Model\Project;
+use App\Model\Services;
+use App\Model\Testimoni;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -10,22 +14,18 @@ class MainController extends Controller
 {
     public function index()
     {
-        /*$collection = collect([1, 2, 3, 4, 5, 6, 7]);
-        $chunks = $collection->chunk(2);
-        $chunks->toArray();
-        dd($chunks);
+        $proyek = Project::orderByDesc('id')->take(8)->get();
+        $layanan = Services::orderByDesc('id')->take(8)->get();
+        $produk = Product::orderByDesc('id')->take(8)->get();
 
-        $testimoni = Testimoni::orderByDesc('id')->get();
-
-        if(Auth::check()) {
+        $testimoni = Testimoni::where('bintang', '>', 3)->orderByDesc('id')->take(12)->get();
+        if (Auth::check()) {
             $cek = Testimoni::where('user_id', Auth::id())->first();
         } else {
             $cek = null;
-        }*/
+        }
 
-        $cek = null;
-
-        return view('pages.main.beranda', compact('cek'));
+        return view('pages.main.beranda', compact('proyek', 'layanan', 'produk', 'testimoni', 'cek'));
     }
 
     public function tentang()

@@ -18,6 +18,7 @@ class CreateBioTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('foto')->nullable();
+            $table->string('latar_belakang')->nullable();
             $table->date('tgl_lahir')->nullable();
             $table->string('jenis_kelamin')->nullable();
             $table->string('alamat')->nullable();
