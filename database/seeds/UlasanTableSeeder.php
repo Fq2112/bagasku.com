@@ -18,7 +18,7 @@ class UlasanTableSeeder extends Seeder
             $user = User::whereNotIn('id', [$item->id])->get()->pluck('id');
             Review::create([
                 'user_id' => rand($user->min(), $user->max()),
-                'proyek_id' => rand(\App\Model\Project::min('id'), \App\Model\Project::min('id')),
+                'proyek_id' => rand(\App\Model\Project::min('id'), \App\Model\Project::max('id')),
                 'deskripsi' => $faker->paragraph,
                 'bintang' => rand(1, 10)
             ]);
