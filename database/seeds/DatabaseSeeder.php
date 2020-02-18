@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
              KotaTableSeeder::class,
              UserTableSeeder::class,
              ProductTableSeeder::class,
-             ServiceTableSeeder::class
+             ServiceTableSeeder::class,
+             UlasanPekerjaTableSeeder::class,
+             UlasanTableSeeder::class
          ]);
     }
 }
