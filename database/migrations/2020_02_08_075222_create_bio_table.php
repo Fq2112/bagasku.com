@@ -33,6 +33,8 @@ class CreateBioTable extends Migration
             $table->string('website')->nullable();
             $table->string('bahasa')->nullable();
             $table->string('skill')->nullable();
+            $table->string('total_bintang_pekerja')->nullable()->default('0');
+            $table->string('total_bintang_klien')->nullable()->default('0');
             $table->timestamps();
         });
     }
