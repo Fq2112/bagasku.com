@@ -1,7 +1,33 @@
 @extends('layouts.mst')
 @section('title', 'Beranda | '.env('APP_TITLE'))
 @push('styles')
+    <link rel="stylesheet" href="{{asset('vendor/jquery-ui/jquery-ui.min.css')}}">
     <style>
+        .form-control-2[disabled] {
+            cursor: not-allowed;
+            background-color: #eee;
+            opacity: 1
+        }
+
+        ul.ui-autocomplete {
+            color: #122752;
+            border-radius: 0 0 1rem 1rem;
+        }
+
+        ul.ui-autocomplete .ui-menu-item .ui-state-active,
+        ul.ui-autocomplete .ui-menu-item .ui-state-active:hover,
+        ul.ui-autocomplete .ui-menu-item .ui-state-active:focus {
+            background: #122752;
+            color: #fff;
+            border: 1px solid #122752;
+        }
+
+        ul.ui-autocomplete .ui-menu-item:last-child .ui-state-active,
+        ul.ui-autocomplete .ui-menu-item:last-child .ui-state-active:hover,
+        ul.ui-autocomplete .ui-menu-item:last-child .ui-state-active:focus {
+            border-radius: 0 0 1rem 1rem;
+        }
+
         .projects-4 {
             margin: 0 auto;
         }
@@ -134,7 +160,7 @@
                         </ul>
                     </div>
                     <input id="keyword" type="text" class="form-control-2 padd-size size-2" name="q"
-                           placeholder="Cari&hellip;" autocomplete="off" required style="border-radius: 0">
+                           placeholder="Cari&hellip;" autocomplete="off" disabled style="border-radius: 0">
                     <input type="hidden" name="filter">
                     <span class="input-group-btn">
                         <button class="btn-course" type="reset" id="btn_reset" style="display: none">
@@ -178,7 +204,7 @@
         </div>
     </section>
 
-    <!-- update terbaru bagasku -->
+    <!-- update terbaru -->
     <section class="text-center our-works2 border-2 light padd-40">
         <div class="container">
             <div class="row">
@@ -195,8 +221,9 @@
                 <li><a href="#" data-filter=".pekerja" title="">PEKERJA TERBAIK</a></li>
             </ul>
 
-            <div id="daftar-terbaru" class="all-projects projects-4">
+            <div id="update-terbaru" class="all-projects projects-4">
                 @foreach($proyek as $row)
+                    @php $rate = $row->get_user->get_ulasan->avg('bintang'); @endphp
                     <div class="item proyek">
                         <div class="our-courses">
                             <div class="img-wrapper">
@@ -210,11 +237,73 @@
                                     asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
                                     <span>{{$row->get_user->name}}</span>
                                     <p>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
+                                        @if(round($rate * 2) / 2 == 1)
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 2)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 3)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 4)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 0.5)
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 1.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 2.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 3.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 4.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                        @else
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @endif
                                     </p>
                                 </div>
                                 <div class="pull-right price">
@@ -240,6 +329,7 @@
                 @endforeach
 
                 @foreach($layanan as $row)
+                    @php $rate = $row->get_user->get_ulasan_pekerja->avg('bintang'); @endphp
                     <div class="item layanan">
                         <div class="our-courses">
                             <div class="img-wrapper">
@@ -253,11 +343,73 @@
                                     asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
                                     <span>{{$row->get_user->name}}</span>
                                     <p>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="far fa-star"></i>
+                                        @if(round($rate * 2) / 2 == 1)
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 2)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 3)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 4)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 0.5)
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 1.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 2.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 3.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 4.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                        @else
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @endif
                                     </p>
                                 </div>
                                 <div class="pull-right price">
@@ -279,6 +431,7 @@
                 @endforeach
 
                 @foreach($produk as $row)
+                    @php $rate = $row->get_user->get_ulasan_pekerja->avg('bintang'); @endphp
                     <div class="item produk">
                         <div class="our-courses">
                             <div class="img-wrapper">
@@ -292,11 +445,73 @@
                                     asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
                                     <span>{{$row->get_user->name}}</span>
                                     <p>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="far fa-star"></i>
+                                        @if(round($rate * 2) / 2 == 1)
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 2)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 3)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 4)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 0.5)
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 1.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 2.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 3.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 4.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                        @else
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @endif
                                     </p>
                                 </div>
                                 <div class="pull-right price">
@@ -309,7 +524,8 @@
                             </div>
                             <div class="date-info">
                                 <div class="pull-left">
-                                    <p><a href="{{$row->tautan}}"><i class="fa fa-eye"></i> Pratinjau</a></p>
+                                    <p><a href="{{$row->tautan}}" target="_blank"><i class="fa fa-eye"></i>
+                                            Pratinjau</a></p>
                                 </div>
                             </div>
                         </div>
@@ -540,7 +756,10 @@
     </section>
 @endsection
 @push('scripts')
+    <script src="{{asset('vendor/jquery-ui/jquery-ui.min.js')}}"></script>
     <script>
+        var keyword = $("#keyword");
+
         $(function () {
             $("#testimoni").owlCarousel({
                 navigation: false,
@@ -559,18 +778,36 @@
             $("#btn_reset").show();
             $("#txt_filter").text($(this).text());
             $("#form-pencarian input[name='filter']").val($(this).data('filter'));
-            $("#keyword").attr('placeholder', 'Cari ' + $(this).text().toLowerCase() + '...');
+            keyword.removeAttr('disabled').attr('required', 'required')
+                .attr('placeholder', 'Cari ' + $(this).text().toLowerCase() + '...').focus();
         });
 
-        $("#keyword").on("keyup", function () {
+        keyword.on("keyup", function () {
             $("#btn_reset").show();
+        });
+
+        keyword.autocomplete({
+            source: function (request, response) {
+                $.getJSON('/cari/data/' + $("#form-pencarian input[name='filter']").val() + '/' + keyword.val(), {
+                    name: request.term,
+                }, function (data) {
+                    response(data);
+                });
+            },
+            focus: function (event, ui) {
+                event.preventDefault();
+            },
+            select: function (event, ui) {
+                event.preventDefault();
+                keyword.val(ui.item.keyword);
+            }
         });
 
         $("#btn_reset").on("click", function () {
             $(this).hide();
             $("#txt_filter").text('FILTER');
             $("#form-pencarian input[name='filter']").removeAttr('value');
-            $("#keyword").attr('placeholder', 'Cari...');
+            keyword.removeAttr('required').attr('disabled', 'disabled').attr('placeholder', 'Cari...');
         });
 
         $("#form-pencarian").on('submit', function (e) {
@@ -585,7 +822,7 @@
         });
 
         $(window).load(function () {
-            var $daftar_terbaru = $("#daftar-terbaru");
+            var $daftar_terbaru = $("#update-terbaru");
 
             $daftar_terbaru.isotope({
                 itemSelector: '.item',

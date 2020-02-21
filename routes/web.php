@@ -7,6 +7,15 @@ Route::group(['prefix' => '/'], function () {
         'as' => 'beranda'
     ]);
 
+    Route::group(['prefix' => 'cari'], function () {
+
+        Route::get('data/{filter}/{keyword}', [
+            'uses' => 'CariController@getCariData',
+            'as' => 'get.cari.data'
+        ]);
+
+    });
+
     Route::get('tentang', [
         'uses' => 'MainController@tentang',
         'as' => 'tentang'
@@ -62,7 +71,7 @@ Route::post('password/reset', 'Auth\ResetPasswordController@postReset')->name('p
 
 Auth::routes();
 
-Route::group(['namespace' => 'Auth', 'prefix' => 'account'], function () {
+Route::group(['namespace' => 'Auth', 'prefix' => 'akun'], function () {
 
     Route::post('login', [
         'uses' => 'LoginController@login',
