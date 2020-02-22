@@ -1,6 +1,4 @@
-@php
-    $kategori = \App\Model\Kategori::orderBy('nama')->get();
-@endphp
+@php $kategori = \App\Model\Kategori::orderBy('nama')->get(); @endphp
 <ul class="main-menu">
     <li><a class="{{\Illuminate\Support\Facades\Request::is('/*') ? 'active' : ''}}" href="{{route('beranda')}}">
             Beranda</a></li>

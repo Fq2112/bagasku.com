@@ -635,7 +635,7 @@
                                 </div>
                             </div>
                             <div class="text-center middle-info">
-                                {!! \Illuminate\Support\Str::words($row->perkenalan,10,'...') !!}
+                                <blockquote class="quotes"><em>{{$row->quote}}</em></blockquote>
                             </div>
                             <div class="date-info">
                                 <div class="pull-left">

@@ -12007,7 +12007,7 @@ blockquote {
     border-color: #122752;
     font-family: "Raleway", Arial, sans-serif;
     font-size: 14px;
-    color: #eee;
+    color: #fff;
 }
 
 .footer {
@@ -12034,7 +12034,7 @@ blockquote.quotes {
 
 blockquote.quotes:before {
     content: "\f10d";
-    color: #122752;
+    color: rgba(18, 39, 82, .2);
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     font-size: 16px;
@@ -12044,11 +12044,11 @@ blockquote.quotes:before {
 }
 
 blockquote.quotes:after {
-    content: "\f10d";
+    content: "\f10e";
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     font-size: 16px;
-    color: #122752;
+    color: rgba(18, 39, 82, .2);
     bottom: 10px;
     right: 10px;
     position: absolute;
@@ -22770,6 +22770,12 @@ h2.font-nothing-you-could-do {
 .our-courses .middle-info p {
     padding: 0;
     margin: 0;
+}
+
+.our-courses .middle-info blockquote.quotes {
+    padding: 0;
+    margin: 0;
+    color: #444;
 }
 
 .our-courses .date-info {

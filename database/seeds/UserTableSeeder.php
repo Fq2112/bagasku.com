@@ -42,6 +42,7 @@ class UserTableSeeder extends Seeder
 
                     \App\Model\Bio::create([
                         'user_id' => $user->id,
+                        'quote' => $faker->sentence
                     ]);
 
                     $arr = array("3.5", "4", "4.5", "5");

@@ -29,6 +29,7 @@ class CreateBioTable extends Migration
             $table->foreign('kota_id')->references('id')->on('kota');
             $table->string('kode_pos')->nullable();
             $table->string('hp')->nullable();
+            $table->text('quote')->nullable();
             $table->text('perkenalan')->nullable();
             $table->string('website')->nullable();
             $table->string('bahasa')->nullable();
