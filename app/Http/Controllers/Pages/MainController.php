@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pages;
 
 use App\Model\Bio;
 use App\Model\Product;
@@ -11,6 +11,7 @@ use App\Support\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\Controller;
 
 class MainController extends Controller
 {

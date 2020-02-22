@@ -16,9 +16,11 @@ class CreatePengerjaanTable extends Migration
         Schema::create('pengerjaan', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->unsignedBigInteger('proyek_id');
-            $table->foreign('proyek_id')->references('id')->on('project');
+            $table->foreign('proyek_id')->references('id')->on('project')
+                ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->boolean('selesai')->default(false);
             $table->boolean('ulasan_pekerja')->default(false);
             $table->boolean('ulasan_klien')->default(false);

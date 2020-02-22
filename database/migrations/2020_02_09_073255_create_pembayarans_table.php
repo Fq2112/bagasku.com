@@ -16,7 +16,8 @@ class CreatePembayaransTable extends Migration
         Schema::create('pembayaran', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('pengerjaan_id');
-            $table->foreign('pengerjaan_id')->references('id')->on('pengerjaan');
+            $table->foreign('pengerjaan_id')->references('id')->on('pengerjaan')
+                ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->boolean('isDP')->default(false);
             $table->string('jumlahDP')->nullable();
             $table->timestamps();

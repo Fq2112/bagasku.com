@@ -89,8 +89,8 @@
 <div class="title-typewriter">
     <h1 class="line-1 anim-typewriter">405 ERROR &ndash; METHOD NOT ALLOWED</h1>
 </div>
-<p>The requested URL was not found on this server.</p>
-<a href="{{route('home')}}">Redirect me to the Home Page!</a>
+<p>URL yang diminta tidak ditemukan di server ini.</p>
+<a href="{{route('beranda')}}">Alihkan saya ke halaman Beranda!</a>
 <!-- jquery -->
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('vendor/checkMobileDevice.js')}}"></script>

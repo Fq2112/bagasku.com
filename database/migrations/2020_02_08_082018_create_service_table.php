@@ -16,9 +16,11 @@ class CreateServiceTable extends Migration
         Schema::create('service', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->unsignedBigInteger('subkategori_id');
-            $table->foreign('subkategori_id')->references('id')->on('subkategori');
+            $table->foreign('subkategori_id')->references('id')->on('subkategori')
+                ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->string('judul');
             $table->text('deskripsi');
             $table->string('thumbnail')->nullable();

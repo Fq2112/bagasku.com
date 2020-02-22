@@ -51,6 +51,22 @@
             color: #fff;
         }
 
+        .avatar img {
+            width: 40px;
+            margin-right: .5em;
+            border-radius: 100%;
+            -webkit-transition: all .3s ease-in-out;
+            -moz-transition: all .3s ease-in-out;
+            transition: all .3s ease-in-out;
+        }
+
+        .avatar:hover img {
+            border: 1px solid #122752;
+            -webkit-transition: all .3s ease-in-out;
+            -moz-transition: all .3s ease-in-out;
+            transition: all .3s ease-in-out;
+        }
+
         .required {
             color: #122752;
         }

@@ -1,5 +1,19 @@
 <script>
-    @if(session('signed'))
+    @if(session('biodata'))
+    swal({
+        title: "PERHATIAN!",
+        text: "{{session('biodata')}}",
+        icon: 'warning',
+        closeOnEsc: false,
+        closeOnClickOutside: false,
+    }).then((confirm) => {
+        if (confirm) {
+            swal({icon: "success", text: 'Anda akan dialihkan ke halaman Biodata.', buttons: false});
+            window.location.href = '{{route('user.biodata')}}';
+        }
+    });
+
+    @elseif(session('signed'))
     swal('Telah Masuk!', 'Halo {{Auth::user()->name}}! Anda telah masuk.', 'success');
 
     @elseif(session('expire'))

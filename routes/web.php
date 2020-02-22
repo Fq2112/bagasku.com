@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['prefix' => '/'], function () {
+Route::group(['prefix' => '/', 'namespace' => 'Pages'], function () {
 
     Route::get('/', [
         'uses' => 'MainController@index',
@@ -71,21 +71,56 @@ Route::post('password/reset', 'Auth\ResetPasswordController@postReset')->name('p
 
 Auth::routes();
 
-Route::group(['namespace' => 'Auth', 'prefix' => 'akun'], function () {
+Route::group(['prefix' => 'akun'], function () {
 
-    Route::post('login', [
-        'uses' => 'LoginController@login',
+    Route::post('masuk', [
+        'uses' => 'Auth\LoginController@login',
         'as' => 'login'
     ]);
 
-    Route::post('logout', [
-        'uses' => 'LoginController@logout',
+    Route::post('keluar', [
+        'uses' => 'Auth\LoginController@logout',
         'as' => 'logout'
     ]);
 
-    Route::get('activate', [
-        'uses' => 'ActivationController@activate',
-        'as' => 'activate'
+    Route::group(['namespace' => 'Pages\Users', 'middleware' => 'user'], function () {
+
+        Route::get('dashboard', [
+            'middleware' => 'user.bio',
+            'uses' => 'UserController@dashboard',
+            'as' => 'user.dashboard'
+        ]);
+
+        Route::get('biodata', [
+            'uses' => 'UserController@biodata',
+            'as' => 'user.biodata'
+        ]);
+
+        Route::put('profil/update', [
+            'uses' => 'UserController@updateBiodata',
+            'as' => 'user.update.biodata'
+        ]);
+
+        Route::get('pengaturan', [
+            'middleware' => 'user.bio',
+            'uses' => 'UserController@pengaturan',
+            'as' => 'user.pengaturan'
+        ]);
+
+        Route::put('pengaturan/update', [
+            'uses' => 'UserController@updatePengaturan',
+            'as' => 'user.update.pengaturan'
+        ]);
+
+    });
+
+});
+
+Route::group(['namespace' => 'Pages\Admins', 'prefix' => 'admin', 'middleware' => 'admin'], function () {
+
+    Route::get('/', [
+        'uses' => 'AdminController@index',
+        'as' => 'admin.dashboard'
     ]);
 
 });

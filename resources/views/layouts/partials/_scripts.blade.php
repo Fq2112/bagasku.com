@@ -15,8 +15,7 @@
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
 
-        @if(session('success') || session('error') || session('logout') || session('expire') || session('inactive') ||
-            session('unknown') || session('recovered'))
+        @if(session('success') || session('error') || session('logout') || session('expire') || session('unknown') || session('recovered'))
         openLoginModal();
         @elseif($errors->has('email') || $errors->has('password') || $errors->has('name'))
         openRegisterModal();

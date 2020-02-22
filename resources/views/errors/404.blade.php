@@ -89,8 +89,8 @@
 <div class="title-typewriter">
     <h1 class="line-1 anim-typewriter">404 ERROR &ndash; PAGE NOT FOUND</h1>
 </div>
-<p>The page you are looking for might have been removed, had its name changed or is temporarily unavailable.</p>
-<a href="{{route('home')}}">Redirect me to the Home Page!</a>
+<p>Halaman yang Anda cari mungkin telah dihapus, namanya diubah atau untuk sementara tidak tersedia.</p>
+<a href="{{route('beranda')}}">Alihkan saya ke halaman Beranda!</a>
 <!-- jquery -->
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('vendor/checkMobileDevice.js')}}"></script>

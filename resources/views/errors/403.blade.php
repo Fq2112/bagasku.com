@@ -89,8 +89,8 @@
 <div class="title-typewriter">
     <h1 class="line-1 anim-typewriter">403 ERROR &ndash; FORBIDDEN ACCESS</h1>
 </div>
-<p>Your client does not have permission to get URL /adsense from this server.</p>
-<a href="{{route('home')}}">Redirect me to the Home Page!</a>
+<p>Klien Anda tidak memiliki izin untuk mendapatkan URL / adsense dari server ini.</p>
+<a href="{{route('beranda')}}">Alihkan saya ke halaman Beranda!</a>
 <!-- jquery -->
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('vendor/checkMobileDevice.js')}}"></script>

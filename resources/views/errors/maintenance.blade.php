@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Maintenance Page | {{env('APP_TITLE')}}</title>
+    <title>Maintenance | {{env('APP_TITLE')}}</title>
     <link rel="icon" href="{{asset('favicon.ico')}}">
     <link rel="stylesheet" href="{{asset('css/animate.css')}}">
     <link rel="stylesheet" href="{{asset('css/error.css')}}">
@@ -87,9 +87,9 @@
 <div class="background-gocel"></div>
 <div class="background-ground"></div>
 <div class="title-typewriter">
-    <h1 class="line-1 anim-typewriter">CURRENTLY UNDER CONSTRUCTION</h1>
+    <h1 class="line-1 anim-typewriter">SAAT INI SEDANG DIPERBAIKI</h1>
 </div>
-<a href="{{route('home')}}">Redirect me to the Home Page!</a>
+<a href="{{route('beranda')}}">Alihkan saya ke halaman Beranda!</a>
 <!-- jquery -->
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('vendor/checkMobileDevice.js')}}"></script>

@@ -16,9 +16,11 @@ class CreateUlasanKlienTable extends Migration
         Schema::create('ulasan_klien', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id'); //id pekerja
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->unsignedBigInteger('proyek_id');
-            $table->foreign('proyek_id')->references('id')->on('project');
+            $table->foreign('proyek_id')->references('id')->on('project')
+                ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->text('deskripsi');
             $table->double('bintang');
             $table->timestamps();

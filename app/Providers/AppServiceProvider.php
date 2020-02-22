@@ -27,5 +27,7 @@ class AppServiceProvider extends ServiceProvider
     {
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
+
+        $this->app->bind('GlobalAuth', 'App\Support\GlobalAuth');
     }
 }

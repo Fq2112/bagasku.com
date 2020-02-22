@@ -18,7 +18,7 @@
         return false;
     });
 
-    $(".btn_signOut").click(function () {
+    $(".btn_signOut").on('click', function () {
         swal({
             title: 'Keluar',
             text: "Apakah Anda yakin untuk mengakhiri sesi Anda?",

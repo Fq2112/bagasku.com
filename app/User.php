@@ -12,12 +12,16 @@ use App\Model\Tawaran;
 use App\Model\Testimoni;
 use App\Model\Undangan;
 use App\Support\Role;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    use SoftDeletes;
     use Notifiable;
 
     /**
@@ -25,9 +29,8 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'email', 'password',
-    ];
+    protected $guarded = ['id'];
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -119,5 +122,28 @@ class User extends Authenticatable
         return $this->hasMany(Undangan::class, 'user_id');
     }
 
+    /**
+     * Sends the password reset notification.
+     *
+     * @param string $token
+     *
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomPassword($token));
+    }
+}
 
+class CustomPassword extends ResetPassword
+{
+    public function toMail($notifiable)
+    {
+        $data = $this->token;
+        $email = $notifiable->getEmailForPasswordReset();
+        return (new MailMessage)
+            ->from(env('MAIL_USERNAME'), env('APP_TITLE'))
+            ->subject('Akun ' . env('APP_NAME') . ': Reset Kata Sandi')
+            ->view('emails.auth.reset', compact('data', 'email'));
+    }
 }
