@@ -32,7 +32,7 @@ class UserTableSeeder extends Seeder
                 ]);
 
             } elseif ($role == \App\Support\Role::OTHER) {
-                for ($c = 0; $c < (($role == \App\Support\Role::OTHER) ? 10 : 2); $c++) {
+                for ($c = 0; $c < (($role == \App\Support\Role::OTHER) ? 20 : 2); $c++) {
                     $user = User::create([
                         'name' => $faker->name,
                         'email' => $faker->safeEmail,
@@ -49,16 +49,6 @@ class UserTableSeeder extends Seeder
                         'user_id' => $user->id,
                         'deskripsi' => $faker->sentence,
                         'bintang' => $arr[array_rand($arr)]
-                    ]);
-
-                    \App\Model\Project::create([
-                        'user_id' => $user->id,
-                        'judul' => Factory::create()->jobTitle,
-                        'deskripsi' => '<p>' . $faker->paragraph . '</p>',
-                        'waktu_pengerjaan' => rand(1, 10),
-                        'harga' => $faker->numerify('########'),
-                        'pribadi' => false,
-                        'subkategori_id' => rand(\App\Model\SubKategori::min('id'), \App\Model\SubKategori::max('id'))
                     ]);
                 }
             }

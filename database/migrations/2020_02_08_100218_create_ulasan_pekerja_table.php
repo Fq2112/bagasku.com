@@ -15,7 +15,7 @@ class CreateUlasanPekerjaTable extends Migration
     {
         Schema::create('ulasan_pekerja', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id'); //id klien
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('proyek_id');
             $table->foreign('proyek_id')->references('id')->on('project');

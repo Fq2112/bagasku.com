@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUlasanPemilikTable extends Migration
+class CreateUlasanKlienTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,7 @@ class CreateUlasanPemilikTable extends Migration
     {
         Schema::create('ulasan_klien', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id'); //id pekerja
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('proyek_id');
             $table->foreign('proyek_id')->references('id')->on('project');
@@ -32,6 +32,6 @@ class CreateUlasanPemilikTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ulasan_pemilik');
+        Schema::dropIfExists('ulasan_klien');
     }
 }

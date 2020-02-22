@@ -5,6 +5,7 @@ namespace App;
 use App\Model\Bio;
 use App\Model\Pengerjaan;
 use App\Model\Portofolio;
+use App\Model\Project;
 use App\Model\Review;
 use App\Model\ReviewWorker;
 use App\Model\Tawaran;
@@ -73,7 +74,6 @@ class User extends Authenticatable
         return ($this->role == Role::ROOT);
     }
 
-
     public function get_bio()
     {
         return $this->hasOne(Bio::class, 'user_id');
@@ -82,6 +82,11 @@ class User extends Authenticatable
     public function get_portofolio()
     {
         return $this->hasOne(Portofolio::class, 'user_id');
+    }
+
+    public function get_project()
+    {
+        return $this->hasMany(Project::class, 'user_id');
     }
 
     public function get_pengerjaan()

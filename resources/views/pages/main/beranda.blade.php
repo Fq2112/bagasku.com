@@ -223,7 +223,10 @@
 
             <div id="update-terbaru" class="all-projects projects-4">
                 @foreach($proyek as $row)
-                    @php $rate = $row->get_user->get_ulasan->avg('bintang'); @endphp
+                    @php
+                        $total_ulasan_klien = \App\Model\Project::where('user_id', $row->user_id)->whereHas('get_ulasan')->count();
+                        $rate = $total_ulasan_klien > 0 ? $row->get_user->get_bio->total_bintang_klien / $total_ulasan_klien : 0;
+                    @endphp
                     <div class="item proyek">
                         <div class="our-courses">
                             <div class="img-wrapper">
@@ -329,7 +332,12 @@
                 @endforeach
 
                 @foreach($layanan as $row)
-                    @php $rate = $row->get_user->get_ulasan_pekerja->avg('bintang'); @endphp
+                    @php
+                        $total_ulasan_pekerja = \App\Model\Project::whereHas('get_pengerjaan', function($q) use ($row) {
+                            $q->where('user_id', $row->user_id);
+                        })->whereHas('get_ulasan_pekerja')->count();
+                        $rate = $total_ulasan_pekerja > 0 ? $row->get_user->get_bio->total_bintang_pekerja / $total_ulasan_pekerja : 0;
+                    @endphp
                     <div class="item layanan">
                         <div class="our-courses">
                             <div class="img-wrapper">
@@ -431,7 +439,12 @@
                 @endforeach
 
                 @foreach($produk as $row)
-                    @php $rate = $row->get_user->get_ulasan_pekerja->avg('bintang'); @endphp
+                    @php
+                        $total_ulasan_pekerja = \App\Model\Project::whereHas('get_pengerjaan', function($q) use ($row) {
+                            $q->where('user_id', $row->user_id);
+                        })->whereHas('get_ulasan_pekerja')->count();
+                        $rate = $total_ulasan_pekerja > 0 ? $row->get_user->get_bio->total_bintang_pekerja / $total_ulasan_pekerja : 0;
+                    @endphp
                     <div class="item produk">
                         <div class="our-courses">
                             <div class="img-wrapper">
@@ -532,37 +545,112 @@
                     </div>
                 @endforeach
 
-                <div class="item pekerja">
-                    <div class="our-courses">
-                        <div class="img-wrapper">
-                            <img src="{{asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
-                        </div>
-                        <div class="course-info">
-                            <div class="pull-left course-img">
-                                <img src="{{asset('images/faces/thumbs50x50/1.jpg')}}" alt="avatar">
-                                <span>Nama Pekerja</span>
-                                <p>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                </p>
+                @foreach($pekerja as $row)
+                    @php
+                        $total_ulasan_pekerja = \App\Model\Project::whereHas('get_pengerjaan', function($q) use ($row) {
+                            $q->where('user_id', $row->user_id);
+                        })->whereHas('get_ulasan_pekerja')->count();
+                        $rate = $total_ulasan_pekerja > 0 ? $row->total_bintang_pekerja / $total_ulasan_pekerja : 0;
+                    @endphp
+                    <div class="item pekerja">
+                        <div class="our-courses">
+                            <div class="img-wrapper">
+                                <img src="{{$row->latar_belakang != "" ? asset('storage/users/background/'.$row->latar_belakang)
+                                : asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
                             </div>
-                        </div>
-                        <div class="text-center middle-info">
-                            <p>Deskripsi singkat / Quote</p>
-                        </div>
-                        <div class="date-info">
-                            <div class="pull-left">
-                                <p><i class="fa fa-business-time"></i> Total Proyek</p>
+                            <div class="course-info">
+                                <div class="pull-left course-img">
+                                    <img src="{{$row->foto != "" ? asset('storage/users/ava/'.$row->foto) :
+                                    asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
+                                    <span>{{$row->get_user->name}}</span>
+                                    <p>
+                                        @if(round($rate * 2) / 2 == 1)
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 2)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 3)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 4)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 0.5)
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 1.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 2.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 3.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                        @elseif(round($rate * 2) / 2 == 4.5)
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-alt"></i>
+                                        @else
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        @endif
+                                    </p>
+                                </div>
                             </div>
-                            <div class="pull-right">
-                                <p><i class="fa fa-trophy"></i> Total Poin</p>
+                            <div class="text-center middle-info">
+                                {!! \Illuminate\Support\Str::words($row->perkenalan,10,'...') !!}
+                            </div>
+                            <div class="date-info">
+                                <div class="pull-left">
+                                    <p data-toggle="tooltip" title="Total Proyek"><i
+                                            class="fa fa-business-time"></i> {{$row->get_user->get_project->count()}}
+                                    </p>
+                                </div>
+                                <div class="pull-right">
+                                    <p data-toggle="tooltip" title="Total Poin"><i
+                                            class="fa fa-trophy"></i> {{$row->total_bintang_pekerja}}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>

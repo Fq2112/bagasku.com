@@ -17,10 +17,7 @@ class DatabaseSeeder extends Seeder
              PovinsiTableSeeder::class,
              KotaTableSeeder::class,
              UserTableSeeder::class,
-             ProductTableSeeder::class,
-             ServiceTableSeeder::class,
-             UlasanPekerjaTableSeeder::class,
-             UlasanTableSeeder::class
+             ProyekLayananProdukSeeder::class,
          ]);
     }
 }
