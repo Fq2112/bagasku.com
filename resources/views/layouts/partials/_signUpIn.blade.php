@@ -237,7 +237,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <input class="btn btn-default btn-login btn-password" type="submit"
+                                        <input class="btn btn-dark-red btn-login btn-password" type="submit"
                                                value="reset kata sandi">
                                     </div>
                                 </div>
