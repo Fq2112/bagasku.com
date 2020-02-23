@@ -83,26 +83,14 @@ Route::group(['prefix' => 'akun'], function () {
         'as' => 'logout'
     ]);
 
-    Route::group(['namespace' => 'Pages\Users', 'middleware' => 'user'], function () {
+    Route::group(['namespace' => 'Pages\Users', 'middleware' => ['auth','user']], function () {
 
         Route::get('dashboard', [
-            'middleware' => 'user.bio',
             'uses' => 'UserController@dashboard',
             'as' => 'user.dashboard'
         ]);
 
-        Route::get('biodata', [
-            'uses' => 'UserController@biodata',
-            'as' => 'user.biodata'
-        ]);
-
-        Route::put('profil/update', [
-            'uses' => 'UserController@updateBiodata',
-            'as' => 'user.update.biodata'
-        ]);
-
         Route::get('pengaturan', [
-            'middleware' => 'user.bio',
             'uses' => 'UserController@pengaturan',
             'as' => 'user.pengaturan'
         ]);
@@ -111,6 +99,58 @@ Route::group(['prefix' => 'akun'], function () {
             'uses' => 'UserController@updatePengaturan',
             'as' => 'user.update.pengaturan'
         ]);
+
+        Route::group(['prefix' => 'profil'], function () {
+
+            Route::get('/', [
+                'uses' => 'UserController@profil',
+                'as' => 'user.profil'
+            ]);
+
+            Route::put('update', [
+                'uses' => 'UserController@updateProfil',
+                'as' => 'user.update.profil'
+            ]);
+
+            Route::group(['prefix' => 'bahasa'], function () {
+
+                Route::post('tambah', [
+                    'uses' => 'UserController@tambahBahasa',
+                    'as' => 'tambah.bahasa'
+                ]);
+
+                Route::put('update/{id}', [
+                    'uses' => 'UserController@updateBahasa',
+                    'as' => 'update.bahasa'
+                ]);
+
+                Route::get('hapus/{id}', [
+                    'uses' => 'UserController@hapusBahasa',
+                    'as' => 'hapus.bahasa'
+                ]);
+
+            });
+
+            Route::group(['prefix' => 'skill'], function () {
+
+                Route::post('tambah', [
+                    'uses' => 'UserController@tambahSkill',
+                    'as' => 'tambah.skill'
+                ]);
+
+                Route::put('update/{id}', [
+                    'uses' => 'UserController@updateSkill',
+                    'as' => 'update.skill'
+                ]);
+
+                Route::get('hapus/{id}', [
+                    'uses' => 'UserController@hapusSkill',
+                    'as' => 'hapus.skill'
+                ]);
+
+            });
+
+        });
 
     });
 

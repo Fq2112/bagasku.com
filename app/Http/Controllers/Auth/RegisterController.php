@@ -34,9 +34,9 @@ class RegisterController extends Controller
      */
     public function redirectTo()
     {
-        return back()->with('biodata', 'Akun ' . env('APP_NAME') .
+        return back()->with('profil', 'Akun ' . env('APP_NAME') .
             ' berhasil dibuat! Untuk dapat menggunakan fitur ' . env('APP_NAME') .
-            ' sepenuhnya, silahkan lengkapi biodata Anda terlebih dahulu.');
+            ' sepenuhnya, silahkan lengkapi profil Anda terlebih dahulu.');
     }
 
     /**

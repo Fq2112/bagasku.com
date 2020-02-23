@@ -145,7 +145,7 @@
     </section>
 
     <!-- form pencarian -->
-    <div class="course-search">
+    <div data-aos="fade-down" class="course-search">
         <div class="search-center">
             <form id="form-pencarian" class="search-category" action="{{route('beranda')}}">
                 <div class="input-group">
@@ -178,21 +178,21 @@
         <div class="container">
             <div class="boxes-center">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div data-aos="fade-down" class="col-md-4">
                         <div class="box-content">
                             <h2><i class="fa fa-hand-holding-usd"></i> Tahu Harga Di Muka</h2>
                             <p align="justify">Temukan layanan apapun dan ketahui persis apa/berapa yang akan Anda
                                 bayar. Tidak ada tarif per jam, hanya ada harga tetap.</p>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div data-aos="fade-down" class="col-md-4">
                         <div class="box-content">
                             <h2><i class="fa fa-shield-alt"></i> Jaminan Pembayaran</h2>
                             <p align="justify">Pembayaran Anda hanya akan diteruskan ke Pekerja setelah Anda senang dan
                                 menyetujui hasil pekerjaan yang Anda dapat.</p>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div data-aos="fade-down" class="col-md-4">
                         <div class="box-content">
                             <h2><i class="fa fa-headset"></i> Bantuan 24/7</h2>
                             <p align="justify">{{env('APP_NAME')}} hadir untuk membantu Anda kapan dan dimana saja,
@@ -209,12 +209,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="title text-center">Update <strong class="strong-green">Terbaru</strong></h2>
+                    <h2 data-aos="fade-down" class="title text-center">Update <strong class="strong-green">Terbaru</strong></h2>
                 </div>
             </div>
         </div>
         <div class="our-projects color-2">
-            <ul id="filter-daftar" class="filter-projects none-style">
+            <ul data-aos="fade-down" id="filter-daftar" class="filter-projects none-style">
                 <li><a href="#" class="current" data-filter=".proyek" title="">TUGAS/PROYEK</a></li>
                 <li><a href="#" data-filter=".layanan" title="">LAYANAN</a></li>
                 <li><a href="#" data-filter=".produk" title="">PRODUK</a></li>
@@ -227,7 +227,7 @@
                         $total_ulasan_klien = \App\Model\Project::where('user_id', $row->user_id)->whereHas('get_ulasan')->count();
                         $rate = $total_ulasan_klien > 0 ? $row->get_user->get_bio->total_bintang_klien / $total_ulasan_klien : 0;
                     @endphp
-                    <div class="item proyek">
+                    <div data-aos="fade-down" class="item proyek">
                         <div class="our-courses">
                             <div class="img-wrapper">
                                 <img src="{{$row->thumbnail != "" ? asset('storage/proyek/thumbnail/'.$row->thumbnail)
@@ -236,7 +236,7 @@
                             <div class="course-info">
                                 <div class="pull-left course-img">
                                     <img src="{{$row->get_user->get_bio->foto != "" ?
-                                    asset('storage/users/ava/'.$row->get_user->get_bio->foto) :
+                                    asset('storage/users/foto/'.$row->get_user->get_bio->foto) :
                                     asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
                                     <span>{{$row->get_user->name}}</span>
                                     <p>
@@ -338,7 +338,7 @@
                         })->whereHas('get_ulasan_pekerja')->count();
                         $rate = $total_ulasan_pekerja > 0 ? $row->get_user->get_bio->total_bintang_pekerja / $total_ulasan_pekerja : 0;
                     @endphp
-                    <div class="item layanan">
+                    <div data-aos="fade-down" class="item layanan">
                         <div class="our-courses">
                             <div class="img-wrapper">
                                 <img src="{{$row->thumbnail != "" ? asset('storage/layanan/thumbnail/'.$row->thumbnail)
@@ -347,7 +347,7 @@
                             <div class="course-info">
                                 <div class="pull-left course-img">
                                     <img src="{{$row->get_user->get_bio->foto != "" ?
-                                    asset('storage/users/ava/'.$row->get_user->get_bio->foto) :
+                                    asset('storage/users/foto/'.$row->get_user->get_bio->foto) :
                                     asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
                                     <span>{{$row->get_user->name}}</span>
                                     <p>
@@ -445,7 +445,7 @@
                         })->whereHas('get_ulasan_pekerja')->count();
                         $rate = $total_ulasan_pekerja > 0 ? $row->get_user->get_bio->total_bintang_pekerja / $total_ulasan_pekerja : 0;
                     @endphp
-                    <div class="item produk">
+                    <div data-aos="fade-down" class="item produk">
                         <div class="our-courses">
                             <div class="img-wrapper">
                                 <img src="{{$row->thumbnail != "" ? asset('storage/produk/thumbnail/'.$row->thumbnail)
@@ -454,7 +454,7 @@
                             <div class="course-info">
                                 <div class="pull-left course-img">
                                     <img src="{{$row->get_user->get_bio->foto != "" ?
-                                    asset('storage/users/ava/'.$row->get_user->get_bio->foto) :
+                                    asset('storage/users/foto/'.$row->get_user->get_bio->foto) :
                                     asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
                                     <span>{{$row->get_user->name}}</span>
                                     <p>
@@ -552,15 +552,15 @@
                         })->whereHas('get_ulasan_pekerja')->count();
                         $rate = $total_ulasan_pekerja > 0 ? $row->total_bintang_pekerja / $total_ulasan_pekerja : 0;
                     @endphp
-                    <div class="item pekerja">
+                    <div data-aos="fade-down" class="item pekerja">
                         <div class="our-courses">
                             <div class="img-wrapper">
-                                <img src="{{$row->latar_belakang != "" ? asset('storage/users/background/'.$row->latar_belakang)
+                                <img src="{{$row->latar_belakang != "" ? asset('storage/users/latar_belakang/'.$row->latar_belakang)
                                 : asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
                             </div>
                             <div class="course-info">
                                 <div class="pull-left course-img">
-                                    <img src="{{$row->foto != "" ? asset('storage/users/ava/'.$row->foto) :
+                                    <img src="{{$row->foto != "" ? asset('storage/users/foto/'.$row->foto) :
                                     asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
                                     <span>{{$row->get_user->name}}</span>
                                     <p>
@@ -635,7 +635,7 @@
                                 </div>
                             </div>
                             <div class="text-center middle-info">
-                                <blockquote class="quotes"><em>{{$row->quote}}</em></blockquote>
+                                <blockquote class="quotes"><em>{{$row->status != "" ? $row->status : 'Status (-)'}}</em></blockquote>
                             </div>
                             <div class="date-info">
                                 <div class="pull-left">
@@ -658,19 +658,19 @@
     <!-- daftar testimoni -->
     <section class="clients-testimonials padding">
         <div class="container bot-40">
-            <h2 class="text-heading border-3 text-center">Testimoni <strong class="strong-green">Pengguna</strong></h2>
-            <h3 class="text-heading">Berikut adalah ulasan dari pengguna {{env('APP_NAME')}}</h3>
+            <h2 data-aos="fade-down" class="text-heading border-3 text-center">Testimoni <strong class="strong-green">Pengguna</strong></h2>
+            <h3 data-aos="fade-down" class="text-heading">Berikut adalah ulasan dari pengguna {{env('APP_NAME')}}</h3>
         </div>
         <div class="container">
             <div id="testimoni" class="testi-slider testi-dark">
                 @foreach($testimoni->chunk(2) as $two)
-                    <div class="education-testimonials">
+                    <div data-aos="fade-down" class="education-testimonials">
                         @foreach($two as $row)
                             <div class="col-md-6 item">
                                 <div class="education-content">
                                     <div class="img-info">
                                         <img src="{{$row->get_user->get_bio->foto != "" ?
-                                        asset('storage/users/ava/'.$row->get_user->get_bio->foto) :
+                                        asset('storage/users/foto/'.$row->get_user->get_bio->foto) :
                                         asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
                                     </div>
                                     <div class="txt-info">
@@ -757,7 +757,7 @@
                 <div class="col-md-12">
                     <div class="subscribe-form">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div data-aos="fade-down" class="col-md-4">
                                 <div class="title-form">
                                     <h3 class="white">{{$cek != null ? 'SUNTING/HAPUS ULASAN' : 'ULAS '.env('APP_NAME')}}</h3>
                                     @if($cek != null)
@@ -769,7 +769,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="col-md-8">
+                            <div data-aos="fade-down" class="col-md-8">
                                 <div class="newsletter">
                                     <form action="{{route('kirim.testimoni')}}" class="comment-form" method="post">
                                         @csrf

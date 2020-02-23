@@ -22,21 +22,16 @@ class CreateBioTable extends Migration
             $table->string('latar_belakang')->nullable();
             $table->date('tgl_lahir')->nullable();
             $table->string('jenis_kelamin')->nullable();
-            $table->string('alamat')->nullable();
-            $table->string('negara')->nullable();
-            $table->unsignedBigInteger('provinsi_id')->nullable();
-            $table->foreign('provinsi_id')->references('id')->on('provinsi')
-                ->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->string('kewarganegaraan')->nullable();
             $table->unsignedBigInteger('kota_id')->nullable();
             $table->foreign('kota_id')->references('id')->on('kota')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->string('alamat')->nullable();
             $table->string('kode_pos')->nullable();
             $table->string('hp')->nullable();
-            $table->text('quote')->nullable();
-            $table->text('perkenalan')->nullable();
+            $table->string('status')->nullable();
+            $table->text('summary')->nullable();
             $table->string('website')->nullable();
-            $table->string('bahasa')->nullable();
-            $table->string('skill')->nullable();
             $table->string('total_bintang_pekerja')->nullable()->default('0');
             $table->string('total_bintang_klien')->nullable()->default('0');
             $table->timestamps();

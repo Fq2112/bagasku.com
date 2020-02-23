@@ -67,6 +67,18 @@
             transition: all .3s ease-in-out;
         }
 
+        .mt-0, .my-0 {
+            margin-top: 0 !important
+        }
+
+        .mr-2, .mx-2 {
+            margin-right: 0.5rem !important
+        }
+
+        .p-0 {
+            padding: 0 !important
+        }
+
         .required {
             color: #122752;
         }
@@ -257,12 +269,14 @@
                             <h4 data-toc-skip>Tinggalkan Pesan</h4>
                             <form method="post" class="footer-form" action="{{route('kirim.kontak')}}">
                                 @csrf
-                                <input id="name" name="name" type="text" placeholder="Nama lengkap"
+                                <input id="footer_name" name="name" type="text" placeholder="Nama lengkap"
                                        value="{{Auth::check() ? Auth::user()->name : ''}}" required>
-                                <input id="email" name="email" type="email" placeholder="Alamat email"
+                                <input id="footer_email" name="email" type="email" placeholder="Alamat email"
                                        value="{{Auth::check() ? Auth::user()->email : ''}}" required>
-                                <input id="subject" name="subject" type="text" placeholder="Subyek" required>
-                                <textarea id="message" name="message" placeholder="Tulis pesan Anda disini&hellip;"
+                                <input id="footer_subject" name="subject" type="text" placeholder="Subyek"
+                                       required>
+                                <textarea id="footer_message" name="message"
+                                          placeholder="Tulis pesan Anda disini&hellip;"
                                           required></textarea>
                                 <button type="submit" class="btn btn-construct">Kirim</button>
                             </form>

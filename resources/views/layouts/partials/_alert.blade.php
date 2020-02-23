@@ -1,15 +1,15 @@
 <script>
-    @if(session('biodata'))
+    @if(session('profil'))
     swal({
         title: "PERHATIAN!",
-        text: "{{session('biodata')}}",
+        text: "{{session('profil')}}",
         icon: 'warning',
         closeOnEsc: false,
         closeOnClickOutside: false,
     }).then((confirm) => {
         if (confirm) {
-            swal({icon: "success", text: 'Anda akan dialihkan ke halaman Biodata.', buttons: false});
-            window.location.href = '{{route('user.biodata')}}';
+            swal({icon: "success", text: 'Anda akan dialihkan ke halaman Sunting Profil.', buttons: false});
+            window.location.href = '{{route('user.profil')}}';
         }
     });
 

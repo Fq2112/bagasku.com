@@ -2,12 +2,14 @@
 
 namespace App;
 
+use App\Model\Bahasa;
 use App\Model\Bio;
 use App\Model\Pengerjaan;
 use App\Model\Portofolio;
 use App\Model\Project;
 use App\Model\Review;
 use App\Model\ReviewWorker;
+use App\Model\Skill;
 use App\Model\Tawaran;
 use App\Model\Testimoni;
 use App\Model\Undangan;
@@ -80,6 +82,16 @@ class User extends Authenticatable
     public function get_bio()
     {
         return $this->hasOne(Bio::class, 'user_id');
+    }
+
+    public function get_bahasa()
+    {
+        return $this->hasMany(Bahasa::class, 'user_id');
+    }
+
+    public function get_skill()
+    {
+        return $this->hasMany(Skill::class, 'user_id');
     }
 
     public function get_portofolio()

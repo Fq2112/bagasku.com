@@ -55,19 +55,19 @@
         <li class="menu-item-has-children avatar">
             <a href="javascript:void(0)">
                 <img class="img-thumbnail show_ava" src="{{Auth::user()->get_bio->foto != "" ?
-                asset('storage/users/ava/'.Auth::user()->get_bio->foto) :
+                asset('storage/users/foto/'.Auth::user()->get_bio->foto) :
                 asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}">
                 {{Auth::user()->name}} <i class="fa fa-angle-down"></i></a>
             <ul class="dropdown-menu dropdown-arrow">
                 <li><a href="{{Auth::user()->isRoot() || Auth::user()->isAdmin() ? route('admin.dashboard') :
-                route('user.dashboard')}}"><i class="fa fa-tachometer-alt"></i>&ensp;Dashboard</a></li>
+                route('user.dashboard')}}"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a></li>
                 <li><a href="{{Auth::user()->isRoot() || Auth::user()->isAdmin() ? route('admin.edit.profile') :
-                route('user.biodata')}}"><i class="fa fa-user-edit"></i>&ensp;Sunting Biodata</a></li>
+                route('user.profil')}}"><i class="fa fa-user-edit mr-2"></i>Sunting Profil</a></li>
                 <li><a href="{{Auth::user()->isRoot() || Auth::user()->isAdmin() ? route('admin.settings') :
-                route('user.pengaturan')}}"><i class="fa fa-cogs"></i>&ensp;Pengaturan Akun</a></li>
+                route('user.pengaturan')}}"><i class="fa fa-cogs mr-2"></i>Pengaturan Akun</a></li>
                 <li class="dropdown-divider"></li>
                 <li>
-                    <a class="btn_signOut"><i class="fa fa-sign-out-alt"></i>&ensp;Keluar</a>
+                    <a href="#" class="btn_signOut"><i class="fa fa-sign-out-alt"></i>&ensp;Keluar</a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>

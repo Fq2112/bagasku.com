@@ -40,8 +40,8 @@ class LoginController extends Controller
                 return back()->with('signed', 'Anda telah masuk.');
 
             } else {
-                return back()->with('biodata', 'Anda telah masuk! Untuk dapat menggunakan fitur ' .
-                    env('APP_NAME') . ' sepenuhnya, silahkan lengkapi biodata Anda terlebih dahulu.');
+                return back()->with('profil', 'Anda telah masuk! Untuk dapat menggunakan fitur ' .
+                    env('APP_NAME') . ' sepenuhnya, silahkan lengkapi profil Anda terlebih dahulu.');
             }
         }
     }

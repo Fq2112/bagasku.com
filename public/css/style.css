@@ -1282,7 +1282,7 @@ h2.text-heading.coffee-color:after {
     opacity: 0.9;
 }
 
-.btn.btn-dark-red[disabled] {
+.btn.btn-dark-red[disabled], .btn.btn-link[disabled] {
     cursor: not-allowed;
     filter: alpha(opacity=65);
     -webkit-box-shadow: none;

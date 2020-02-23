@@ -224,7 +224,7 @@
         var $bgColor = progress > 99 ? '#122752' : '#122141';
         var $textColor = progress > 99 ? '#fff' : '#333';
 
-        $('.progress .bar').width(progress + '%').css({backgroundColor: $bgColor});
+        $('.myProgress .bar').width(progress + '%').css({backgroundColor: $bgColor});
         // $('h1').text(Math.round(progress) + '%').css({color: $textColor});
         $('.fill').height(progress + '%').css({backgroundColor: $bgColor});
     }
