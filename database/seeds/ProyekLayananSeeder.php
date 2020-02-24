@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ProyekLayananProdukSeeder extends Seeder
+class ProyekLayananSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -88,15 +88,6 @@ class ProyekLayananProdukSeeder extends Seeder
                 'deskripsi' => '<p>' . $faker->paragraph . '</p>',
                 'hari_pengerjaan' => rand(1, 30),
                 'judul' => \Faker\Factory::create()->jobTitle,
-            ]);
-
-            \App\Model\Product::create([
-                'user_id' => $row->id,
-                'subkategori_id' => rand(\App\Model\SubKategori::min('id'), \App\Model\SubKategori::max('id')),
-                'judul' => \Faker\Factory::create()->jobTitle,
-                'deskripsi' => '<p>' . $faker->paragraph . '</p>',
-                'harga' => $faker->numerify('########'),
-                'tautan' => $faker->imageUrl(),
             ]);
         }
     }

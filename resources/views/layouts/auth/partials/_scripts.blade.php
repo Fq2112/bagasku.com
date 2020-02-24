@@ -10,9 +10,7 @@
             width: '100%',
         });
 
-        $("#summary").summernote({
-            airMode: true
-        });
+        $("#summary").summernote();
     });
 
     $("#show_status_settings").on('click',function () {

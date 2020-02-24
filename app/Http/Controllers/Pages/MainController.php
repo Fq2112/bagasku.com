@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Pages;
 
 use App\Model\Bio;
-use App\Model\Product;
 use App\Model\Project;
 use App\Model\Services;
 use App\Model\Testimoni;
@@ -19,7 +18,6 @@ class MainController extends Controller
     {
         $proyek = Project::orderByDesc('id')->take(8)->get();
         $layanan = Services::orderByDesc('id')->take(8)->get();
-        $produk = Product::orderByDesc('id')->take(8)->get();
         $pekerja = Bio::whereHas('get_user', function ($q) {
             $q->where('role', Role::OTHER);
         })->orderByDesc('total_bintang_pekerja')->take(8)->get();
@@ -31,7 +29,7 @@ class MainController extends Controller
             $cek = null;
         }
 
-        return view('pages.main.beranda', compact('proyek', 'layanan', 'produk', 'pekerja', 'testimoni', 'cek'));
+        return view('pages.main.beranda', compact('proyek', 'layanan', 'pekerja', 'testimoni', 'cek'));
     }
 
     public function tentang()

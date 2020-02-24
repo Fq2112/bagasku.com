@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
              PovinsiTableSeeder::class,
              KotaTableSeeder::class,
              UserTableSeeder::class,
-             ProyekLayananProdukSeeder::class,
+             ProyekLayananSeeder::class,
          ]);
     }
 }

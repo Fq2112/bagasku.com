@@ -34,22 +34,6 @@
             @endforeach
         </ul>
     </li>
-    <li class="menu-item-has-children">
-        <a class="{{\Illuminate\Support\Facades\Request::is('produk*') ? 'active' : ''}}" href="#">Produk <i
-                class="fa fa-angle-down"></i></a>
-        <ul class="dropdown-menu dropdown-arrow">
-            @foreach($kategori as $kat)
-                <li class="menu-item-has-children">
-                    <a href="#">{{$kat->nama}} <i class="fa fa-angle-down"></i></a>
-                    <ul class="dropdown-menu dropdown-arrow">
-                        @foreach($kat->get_sub as $row)
-                            <li><a href="#">{{$row->nama}}</a></li>
-                        @endforeach
-                    </ul>
-                </li>
-            @endforeach
-        </ul>
-    </li>
 
     @auth
         <li class="menu-item-has-children avatar">

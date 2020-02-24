@@ -1,6 +1,5 @@
 @section('title', 'Sunting Profil: '.$user->name.' | '.env('APP_TITLE'))
 @push('styles')
-    <link rel="stylesheet" href="{{asset('vendor/summernote/summernote-bs4.css')}}">
     <style>
         [data-scrollbar] {
             max-height: 350px;
@@ -277,7 +276,7 @@
                                          title="Klik disini untuk mengubah gambar latar belakang Anda!">
                                 </label>
                                 <input id="input-background" name="latar_belakang" type="file" accept="image/*">
-                                <div id="progress-upload">
+                                <div id="progress-upload2">
                                     <div class="progress-bar progress-bar-info progress-bar-striped active"
                                          role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
                                          style="background-color: #122752;z-index: 20">
@@ -607,7 +606,6 @@
 @endsection
 @push("scripts")
     @include('layouts.auth.partials._scripts')
-    <script src="{{asset('vendor/summernote/summernote-bs4.min.js')}}"></script>
     <script>
         var kota = [
                 @foreach($provinsi as $prov)
@@ -657,7 +655,7 @@
             var files_size = this.files[0].size,
                 max_file_size = 2000000, allowed_file_types = ['image/png', 'image/gif', 'image/jpeg', 'image/pjpeg'],
                 file_name = $(this).val().replace(/C:\\fakepath\\/i, ''),
-                progress_bar_id = $("#progress-upload .progress-bar");
+                progress_bar_id = $("#progress-upload2 .progress-bar");
 
             if (!window.File && window.FileReader && window.FileList && window.Blob) {
                 swal('PERHATIAN!', "Browser yang Anda gunakan tidak support! Silahkan perbarui atau gunakan browser yang lainnya.", 'warning');
@@ -693,7 +691,7 @@
                                                     percent = Math.ceil(position / total * 100);
                                                 }
                                                 //update progressbar
-                                                $("#progress-upload").css("display", "block");
+                                                $("#progress-upload2").css("display", "block");
                                                 progress_bar_id.css("width", +percent + "%");
                                                 progress_bar_id.text(percent + "%");
                                                 if (percent == 100) {
@@ -713,7 +711,7 @@
                                         $("#show_background_name").html("&nbsp;" + data);
 
                                         swal('SUKSES!', 'Latar belakang profil Anda berhasil diperbarui!', 'success');
-                                        $("#progress-upload").css("display", "none");
+                                        $("#progress-upload2").css("display", "none");
                                     },
                                     error: function () {
                                         swal('Oops...', 'Terjadi suatu kesalahan!  Silahkan segarkan browser Anda.', 'error');
