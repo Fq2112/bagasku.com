@@ -15,7 +15,8 @@ class ProyekLayananSeeder extends Seeder
 
         $i = 0;
         $klien_ids = [];
-        foreach (\App\User::where('role', \App\Support\Role::OTHER)->take(10)->get() as $klien) {
+        $client = \App\User::where('role', \App\Support\Role::OTHER)->take(10)->get();
+        foreach ($client as $klien) {
             \App\Model\Project::create([
                 'user_id' => $klien->id,
                 'judul' => \Faker\Factory::create()->jobTitle,
@@ -50,8 +51,6 @@ class ProyekLayananSeeder extends Seeder
                 'user_id' => $arr_pekerja[array_rand($arr_pekerja)],
                 'proyek_id' => $proyek->id,
                 'selesai' => true,
-                'ulasan_pekerja' => true,
-                'ulasan_klien' => true,
                 'tautan' => $faker->imageUrl(),
             ]);
 
@@ -81,13 +80,32 @@ class ProyekLayananSeeder extends Seeder
         }
 
         foreach ($pekerja as $row) {
-            \App\Model\Services::create([
+            $service = \App\Model\Services::create([
                 'user_id' => $row->id,
                 'subkategori_id' => rand(\App\Model\SubKategori::min('id'), \App\Model\SubKategori::max('id')),
                 'harga' => $faker->numerify('########'),
                 'deskripsi' => '<p>' . $faker->paragraph . '</p>',
                 'hari_pengerjaan' => rand(1, 30),
                 'judul' => \Faker\Factory::create()->jobTitle,
+            ]);
+
+            $pengeraanLayanan = \App\Model\PengerjaanLayanan::create([
+                'service_id' => $service->id,
+                'user_id' => rand(1, 10),
+                'selesai' => true,
+                'tautan' => $faker->imageUrl()
+            ]);
+
+            \App\Model\PembayaranLayanan::create([
+                'service_id' => $service->id,
+                'jumlah_pembayaran' => $service->harga
+            ]);
+
+            \App\Model\UlasanService::create([
+                'user_id' => $pengeraanLayanan->user_id,
+                'pengerjaan_layanan_id' => $pengeraanLayanan->id,
+                'deskripsi' => '<p>' . $faker->paragraph . '</p>',
+                'bintang' => $arr_rate[array_rand($arr_rate)]
             ]);
         }
     }
