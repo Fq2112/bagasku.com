@@ -9,8 +9,6 @@
             allowClear: true,
             width: '100%',
         });
-
-        $("#summary").summernote();
     });
 
     $("#show_status_settings").on('click',function () {

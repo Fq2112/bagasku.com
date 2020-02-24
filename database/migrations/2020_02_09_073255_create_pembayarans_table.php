@@ -19,7 +19,7 @@ class CreatePembayaransTable extends Migration
             $table->foreign('proyek_id')->references('id')->on('project')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->boolean('dp')->default(false);
-            $table->string('jumlah_pemmbayaran')->nullable();
+            $table->string('jumlah_pembayaran')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreatePembayaransTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pembayarans');
+        Schema::dropIfExists('pembayaran');
     }
 }

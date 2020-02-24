@@ -18,8 +18,8 @@ class CreateUlasanServiceTable extends Migration
             $table->unsignedBigInteger('user_id'); //id klien
             $table->foreign('user_id')->references('id')->on('users')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->unsignedBigInteger('pengerjaann_layanan_id');
-            $table->foreign('pengerjaann_layanan_id')->references('id')->on('pengerjaann_layanan')
+            $table->unsignedBigInteger('pengerjaan_layanan_id');
+            $table->foreign('pengerjaan_layanan_id')->references('id')->on('pengerjaan_layanan')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->text('deskripsi');
             $table->double('bintang');

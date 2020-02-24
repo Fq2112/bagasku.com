@@ -13,7 +13,7 @@ class CreatePengerjaannLayanansTable extends Migration
      */
     public function up()
     {
-        Schema::create('pengerjaann_layanan', function (Blueprint $table) {
+        Schema::create('pengerjaan_layanan', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')
@@ -37,6 +37,6 @@ class CreatePengerjaannLayanansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pengerjaann_layanans');
+        Schema::dropIfExists('pengerjaan_layanan');
     }
 }

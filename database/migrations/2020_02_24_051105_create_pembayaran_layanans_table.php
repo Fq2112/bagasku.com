@@ -19,7 +19,7 @@ class CreatePembayaranLayanansTable extends Migration
             $table->foreign('service_id')->references('id')->on('service')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->boolean('dp')->default(false);
-            $table->string('jumlah_pemmbayaran')->nullable();
+            $table->string('jumlah_pembayaran')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreatePembayaranLayanansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pembayaran_layanans');
+        Schema::dropIfExists('pembayaran_layanan');
     }
 }

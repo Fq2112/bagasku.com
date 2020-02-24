@@ -584,8 +584,8 @@
                                     <div id="summary_settings" style="display: none">
                                         <div class="row form-group">
                                             <div class="col-md-12">
-                                                <textarea id="summary" name="summary" class="form-control"
-                                                          placeholder="Tulis summary Anda disini&hellip;">{{$user->get_bio->summary}}</textarea>
+                                                <textarea id="summary" name="summary"
+                                                          class="form-control">{{$user->get_bio->summary}}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -612,26 +612,25 @@
             {
                 id: '{{$prov->id}}',
                 text: '{{$prov->nama}}',
-                children: [
-                    @foreach($prov->get_kota as $kota)
-                    {
-                        id: '{{$kota->id}}',
-                        text: '{{$kota->nama}}'
-                    },
-                    @endforeach
-                ]
-            },
+                    children: [
+                            @foreach($prov->get_kota as $kota)
+                        {
+                            id: '{{$kota->id}}',
+                            text: '{{$kota->nama}}'
+                        },
+                        @endforeach
+                    ]
+                },
                 @endforeach
-        ];
-
-        var negara = [
-                @foreach($negara as $row)
-            {
-                id: '{{$row->id}}',
-                text: '{{$row->nama}}'
-            },
-            @endforeach
-        ];
+            ],
+            negara = [
+                    @foreach($negara as $row)
+                {
+                    id: '{{$row->id}}',
+                    text: '{{$row->nama}}'
+                },
+                @endforeach
+            ];
 
         $(function () {
             $("#kewarganegaraan").select2({
@@ -647,9 +646,22 @@
                 allowClear: true,
                 width: '100%',
             });
-        });
 
-        $("#kota_id").val();
+            $("#summary").summernote({
+                placeholder: 'Tulis summary Anda disini...',
+                tabsize: 2,
+                height: 150,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
 
         document.getElementById("input-background").onchange = function () {
             var files_size = this.files[0].size,

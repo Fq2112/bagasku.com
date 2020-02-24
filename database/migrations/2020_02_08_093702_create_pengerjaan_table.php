@@ -22,8 +22,6 @@ class CreatePengerjaanTable extends Migration
             $table->foreign('proyek_id')->references('id')->on('project')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->boolean('selesai')->default(false);
-            $table->boolean('ulasan_pekerja')->default(false);
-            $table->boolean('ulasan_klien')->default(false);
             $table->boolean('menyerah')->default(false);
             $table->text('alasan_menyerah')->nullable();
             $table->text('file_hasil')->nullable();

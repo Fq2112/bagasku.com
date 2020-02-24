@@ -1,8 +1,8 @@
 @extends('layouts.mst')
 @push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/card.css')}}">
     <link rel="stylesheet" href="{{asset('vendor/jquery-ui/jquery-ui.min.css')}}">
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.css" rel="stylesheet">
     <style>
         blockquote {
             background: unset;
@@ -24,6 +24,10 @@
             cursor: pointer;
             width: 100%;
         }
+
+        .note-placeholder {
+            text-transform: none;
+        }
     </style>
 @endpush
 @section('content')
@@ -34,7 +38,7 @@
     </section>
 @endsection
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.js"></script>
     <script src="{{asset('vendor/jquery-ui/jquery-ui.min.js')}}"></script>
     <script src="{{asset('vendor/smooth-scrollbar/smooth-scrollbar.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.js"></script>
 @endpush

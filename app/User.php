@@ -5,7 +5,7 @@ namespace App;
 use App\Model\Bahasa;
 use App\Model\Bio;
 use App\Model\Pengerjaan;
-use App\Model\PengerjaannLayanan;
+use App\Model\PengerjaanLayanan;
 use App\Model\Portofolio;
 use App\Model\Project;
 use App\Model\Review;
@@ -138,7 +138,7 @@ class User extends Authenticatable
 
     public function get_pengerjaan_layanan()
     {
-        return $this->hasMany(PengerjaannLayanan::class, 'user_id');
+        return $this->hasMany(PengerjaanLayanan::class, 'user_id');
     }
 
     public function get_ulasan_layanan()

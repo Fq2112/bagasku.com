@@ -5,9 +5,9 @@ namespace App\Model;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
-class UlasanService extends Model
+class PengerjaanLayanan extends Model
 {
-    protected $table = 'ulasan_service';
+    protected $table = 'pengerjaan_layanan';
     protected $guarded = ['id'];
 
     public function get_user()
@@ -17,6 +17,6 @@ class UlasanService extends Model
 
     public function get_service()
     {
-        return $this->belongsTo(Services::class, 'pengerjaan_layanan_id');
+        return $this->belongsTo(Services::class, 'service_id');
     }
 }
