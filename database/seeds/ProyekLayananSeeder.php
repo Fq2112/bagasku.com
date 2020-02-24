@@ -56,7 +56,7 @@ class ProyekLayananSeeder extends Seeder
             ]);
 
             \App\Model\Pembayaran::create([
-                'pengerjaan_id' => $pengerjaan->id,
+                'proyek_id' => $proyek->id,
             ]);
 
             $review_klien = \App\Model\Review::create([

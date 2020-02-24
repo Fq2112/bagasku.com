@@ -15,11 +15,11 @@ class CreatePembayaransTable extends Migration
     {
         Schema::create('pembayaran', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('pengerjaan_id');
-            $table->foreign('pengerjaan_id')->references('id')->on('pengerjaan')
+            $table->unsignedBigInteger('proyek_id');
+            $table->foreign('proyek_id')->references('id')->on('project')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->boolean('isDP')->default(false);
-            $table->string('jumlahDP')->nullable();
+            $table->boolean('dp')->default(false);
+            $table->string('jumlah_pemmbayaran')->nullable();
             $table->timestamps();
         });
     }
