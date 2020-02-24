@@ -25,6 +25,9 @@
     @elseif(session('status'))
     swal('Sukses!', '{{ session('status') }}', 'success', '3500');
 
+    @elseif(session('create'))
+    swal('Sukses!', '{{ session('create') }}', 'success');
+
     @elseif(session('update'))
     swal('Sukses!', '{{ session('update') }}', 'success');
 

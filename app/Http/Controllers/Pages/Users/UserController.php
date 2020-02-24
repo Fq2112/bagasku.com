@@ -31,6 +31,116 @@ class UserController extends Controller
         return view('pages.main.users.sunting-profil', compact('user', 'negara', 'provinsi', 'bahasa', 'skill'));
     }
 
+    public function updateProfil(Request $request)
+    {
+        $user = User::findOrFail(Auth::id());
+
+        if ($request->hasFile('latar_belakang')) {
+            $this->validate($request, [
+                'latar_belakang' => 'image|mimes:jpg,jpeg,gif,png|max:2048',
+            ]);
+
+            $name = $request->file('latar_belakang')->getClientOriginalName();
+
+            if ($user->get_bio->latar_belakang != '') {
+                Storage::delete('public/users/latar_belakang/' . $user->get_bio->latar_belakang);
+            }
+
+            if ($request->file('latar_belakang')->isValid()) {
+                $request->latar_belakang->storeAs('public/users/latar_belakang', $name);
+                $user->get_bio->update(['latar_belakang' => $name]);
+                return asset('storage/users/latar_belakang/' . $name);
+            }
+
+        } else {
+            if ($request->check_form == 'kontak') {
+                $user->get_bio->update([
+                    'hp' => $request->hp,
+                    'alamat' => $request->alamat,
+                    'kode_pos' => $request->kode_pos,
+                    'kota_id' => $request->kota_id,
+                ]);
+
+            } elseif ($request->check_form == 'personal') {
+                $user->update(['name' => $request->name]);
+                $user->get_bio->update([
+                    'tgl_lahir' => $request->tgl_lahir,
+                    'jenis_kelamin' => $request->jenis_kelamin,
+                    'kewarganegaraan' => $request->kewarganegaraan,
+                    'website' => $request->website,
+                ]);
+
+            } elseif ($request->check_form == 'summary') {
+                $user->get_bio->update(['summary' => $request->summary]);
+
+            } elseif ($request->check_form == 'status') {
+                $user->get_bio->update(['status' => $request->status]);
+            }
+        }
+
+        return back()->with('update', 'Data ' . $request->check_form . ' Anda berhasil diperbarui!');
+    }
+
+    public function tambahBahasa(Request $request)
+    {
+        Bahasa::create([
+            'user_id' => Auth::id(),
+            'nama' => $request->nama,
+            'tingkatan' => $request->tingkatan,
+        ]);
+
+        return back()->with('update', 'Kemampuan berbahasa [' . $request->nama . '] berhasil ditambahkan!');
+    }
+
+    public function updateBahasa(Request $request)
+    {
+        $bahasa = Bahasa::find($request->id);
+        $bahasa->update([
+            'nama' => $request->nama,
+            'tingkatan' => $request->tingkatan,
+        ]);
+
+        return back()->with('update', 'Kemampuan berbahasa [' . $bahasa->nama . '] Anda berhasil diperbarui!');
+    }
+
+    public function hapusBahasa($id)
+    {
+        $bahasa = Bahasa::find(decrypt($id));
+        $bahasa->delete();
+
+        return back()->with('delete', 'Kemampuan berbahasa [' . $bahasa->nama . '] Anda berhasil dihapus!');
+    }
+
+    public function tambahSkill(Request $request)
+    {
+        Skill::create([
+            'user_id' => Auth::id(),
+            'nama' => $request->nama,
+            'tingkatan' => $request->tingkatan,
+        ]);
+
+        return back()->with('update', 'Skill [' . $request->nama . '] berhasil ditambahkan!');
+    }
+
+    public function updateSkill(Request $request)
+    {
+        $skill = Skill::find($request->id);
+        $skill->update([
+            'nama' => $request->nama,
+            'tingkatan' => $request->tingkatan,
+        ]);
+
+        return back()->with('update', 'Skill [' . $skill->nama . '] Anda berhasil diperbarui!');
+    }
+
+    public function hapusSkill($id)
+    {
+        $skill = Skill::find(decrypt($id));
+        $skill->delete();
+
+        return back()->with('delete', 'Skill [' . $skill->nama . '] Anda berhasil dihapus!');
+    }
+
     public function pengaturan()
     {
         $user = Auth::user();
@@ -71,7 +181,6 @@ class UserController extends Controller
                 $user->get_bio->update(['foto' => $name]);
                 return asset('storage/users/foto/' . $name);
             }
-
         }
     }
 }

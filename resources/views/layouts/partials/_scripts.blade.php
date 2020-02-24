@@ -2,12 +2,6 @@
     $(function () {
         window.mobilecheck() ? $("body").removeClass('use-nicescroll') : '';
 
-        AOS.init({
-            duration: 800,
-            easing: 'slide',
-            once: false,
-        });
-
         window.FontAwesomeConfig = {
             searchPseudoElements: true
         };

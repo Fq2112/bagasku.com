@@ -2,10 +2,10 @@
 @extends('layouts.auth.mst_user')
 @section('inner-content')
     <div class="row">
-        <div class="col-lg-3 col-md-6 col-sm-12 text-center" data-aos="fade-down">
+        <div class="col-lg-3 col-md-6 col-sm-12 text-center">
             @include('layouts.auth.partials._form-foto-user')
         </div>
-        <div class="col-lg-9 col-md-6 col-sm-12" data-aos="fade-down">
+        <div class="col-lg-9 col-md-6 col-sm-12">
             <div class="card">
                 <form class="form-horizontal" role="form" method="POST" id="form-password">
                     @csrf

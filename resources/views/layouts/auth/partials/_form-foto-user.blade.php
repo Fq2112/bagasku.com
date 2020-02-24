@@ -26,7 +26,8 @@
             <div class="card-title text-center">
                 <a href="{{route('user.profil')}}">
                     <h4 class="aj_name" style="color: #122752">{{$user->name}}</h4></a>
-                <small>{{$user->get_bio->status != "" ? $user->get_bio->status : 'Status (-)'}}</small>
+                <small
+                    style="text-transform: none">{{$user->get_bio->status != "" ? $user->get_bio->status : 'Status (-)'}}</small>
             </div>
             <div class="card-title">
                 <div id="show_status_settings" class="row justify-content-center"

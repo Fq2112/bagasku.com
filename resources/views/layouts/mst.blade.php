@@ -35,8 +35,6 @@
     <link href="{{asset('css/loading.css')}}" rel="stylesheet">
     <!-- Sweetalert2 -->
     <link rel="stylesheet" href="{{asset('vendor/sweetalert/sweetalert2.css')}}">
-    <!-- AOS -->
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
     <!-- Media queries -->
     <link rel="stylesheet" href="{{asset('css/media-query.css')}}">
 
@@ -387,8 +385,6 @@
 <script src="{{asset('vendor/nicescroll/jquery.nicescroll.js')}}"></script>
 <!-- Sweetalert2 -->
 <script src="{{asset('vendor/sweetalert/sweetalert.min.js')}}"></script>
-<!-- AOS -->
-<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 @stack('scripts')
 @include('layouts.partials._scripts')
 @include('layouts.partials._alert')

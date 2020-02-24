@@ -2,21 +2,21 @@
     $(function () {
         Scrollbar.initAll();
 
-        $('.datepicker').datepicker();
+        $('.datepicker').datepicker({dateFormat: 'yy-mm-dd'});
 
-        $("#jenis_kelamin, #tingkatan_bahasa, #tingkatan_skill").select2({
+        $("#jenis_kelamin, #tingkatan_bahasa, #tingkatan_skill, #kewarganegaraan").select2({
             placeholder: "-- Pilih --",
             allowClear: true,
             width: '100%',
         });
     });
 
-    $("#show_status_settings").on('click',function () {
+    $("#show_status_settings").on('click', function () {
         $("#status_settings").toggle(300);
         $("#btn_mode_publik").toggle(300);
     });
 
-    $("#show_lang_settings, #btn_cancel_lang input[type=reset]").click(function () {
+    $("#show_lang_settings, #btn_cancel_lang button").on('click', function () {
         $("#btn_cancel_lang").hide();
         $("#nama_bahasa").val(null);
         $("#tingkatan_bahasa").val(null).trigger('change');
@@ -31,7 +31,7 @@
         $("#form-lang input[name='_method']").val('POST');
     });
 
-    $("#show_skill_settings, #btn_cancel_skill input[type=reset]").click(function () {
+    $("#show_skill_settings, #btn_cancel_skill button").on('click', function () {
         $("#btn_cancel_skill").hide();
         $("#nama_skill").val(null);
         $("#tingkatan_skill").val(null).trigger('change');
@@ -70,7 +70,7 @@
         }
     });
 
-    $("#show_summary_settings").on('click',function () {
+    $("#show_summary_settings").on('click', function () {
         $("#summary_settings").toggle(300);
         $("#stats_summary").toggle(300);
         if ($("#btn_save_summary").attr('disabled')) {
@@ -80,7 +80,7 @@
         }
     });
 
-    $("#website").on("blur", function () {
+    $("#website").on("keyup", function () {
         var $uri = $(this).val().substr(0, 4) != 'http' ? 'http://' + $(this).val() : $(this).val();
         $(this).val($uri);
     });

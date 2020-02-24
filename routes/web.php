@@ -119,7 +119,7 @@ Route::group(['prefix' => 'akun'], function () {
                     'as' => 'tambah.bahasa'
                 ]);
 
-                Route::put('update/{id}', [
+                Route::put('update', [
                     'uses' => 'UserController@updateBahasa',
                     'as' => 'update.bahasa'
                 ]);
@@ -138,7 +138,7 @@ Route::group(['prefix' => 'akun'], function () {
                     'as' => 'tambah.skill'
                 ]);
 
-                Route::put('update/{id}', [
+                Route::put('update', [
                     'uses' => 'UserController@updateSkill',
                     'as' => 'update.skill'
                 ]);

@@ -93,9 +93,9 @@
     <section class="no-padding">
         <div class="row">
             <div class="col-lg-6">
-                <div data-aos="fade-down" id="map" style="width: 100%;height: 600px"></div>
+                <div id="map" style="width: 100%;height: 600px"></div>
             </div>
-            <div data-aos="fade-down" class="col-lg-6" style="padding: 3em 5em 0px 3em;">
+            <div class="col-lg-6" style="padding: 3em 5em 0px 3em;">
                 <form action="{{route('kirim.kontak')}}" method="post">
                     @csrf
                     <div class="row form-group">

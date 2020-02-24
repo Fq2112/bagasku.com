@@ -9,7 +9,7 @@
 @extends('layouts.auth.mst_user')
 @section('inner-content')
     <div class="row">
-        <div class="col-lg-4 col-md-6 col-sm-12 text-center" data-aos="fade-down">
+        <div class="col-lg-4 col-md-6 col-sm-12 text-center">
             <!-- foto profil -->
             <div class="row">
                 <div class="col-lg-12">
@@ -24,6 +24,7 @@
                               action="{{route('tambah.bahasa')}}">
                             @csrf
                             <input type="hidden" name="_method">
+                            <input type="hidden" name="id">
                             <div class="card-content">
                                 <div class="card-title">
                                     <small id="show_lang_settings">Bahasa
@@ -122,7 +123,9 @@
                                         </div>
                                         <div class="row form-group" id="btn_cancel_lang">
                                             <div class="col-lg-12">
-                                                <input type="reset" value="CANCEL" class="btn btn-default">
+                                                <button type="reset" class="btn btn-link"
+                                                        style="border: 1px solid #ccc">CANCEL
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -145,6 +148,7 @@
                               action="{{route('tambah.skill')}}">
                             @csrf
                             <input type="hidden" name="_method">
+                            <input type="hidden" name="id">
                             <div class="card-content">
                                 <div class="card-title">
                                     <small id="show_skill_settings">Skill
@@ -242,7 +246,9 @@
                                         </div>
                                         <div class="row form-group" id="btn_cancel_skill">
                                             <div class="col-lg-12">
-                                                <input type="reset" value="CANCEL" class="btn btn-default">
+                                                <button type="reset" class="btn btn-link"
+                                                        style="border: 1px solid #ccc">CANCEL
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -259,7 +265,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-8 col-md-6 col-sm-12" data-aos="fade-down">
+        <div class="col-lg-8 col-md-6 col-sm-12">
             <!-- latar belakang -->
             <div class="row">
                 <div class="col-lg-12">
@@ -408,11 +414,17 @@
                                         </div>
                                         <div class="row form-group">
                                             <div class="col-md-12">
-                                                <label class="form-control-label" for="kewarganegaraan">Kewarganegaraan</label>
+                                                <label class="form-control-label"
+                                                       for="kewarganegaraan">Kewarganegaraan</label>
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-flag"></i></span>
-                                                    <select id="kewarganegaraan" class="form-control" name="kewarganegaraan">
+                                                    <select id="kewarganegaraan" class="form-control"
+                                                            name="kewarganegaraan">
                                                         <option></option>
+                                                        @foreach($negara as $row)
+                                                            <option value="{{$row->nama}}" {{$user->get_bio
+                                                            ->kewarganegaraan == $row->nama ? 'selected' : ''}}>{{$row->nama}}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
@@ -540,7 +552,7 @@
                                                     <span class="input-group-addon"><i
                                                             class="fa fa-address-card"></i></span>
                                                     <input id="kode_pos" placeholder="612xx" type="text"
-                                                           class="form-control" name="zip_code" maxlength="5"
+                                                           class="form-control" name="kode_pos" maxlength="5"
                                                            onkeypress="return numberOnly(event, false)"
                                                            value="{{$user->get_bio->kode_pos}}">
                                                 </div>
@@ -607,45 +619,28 @@
 @push("scripts")
     @include('layouts.auth.partials._scripts')
     <script>
-        var kota = [
-                @foreach($provinsi as $prov)
-            {
-                id: '{{$prov->id}}',
-                text: '{{$prov->nama}}',
-                    children: [
-                            @foreach($prov->get_kota as $kota)
-                        {
-                            id: '{{$kota->id}}',
-                            text: '{{$kota->nama}}'
-                        },
-                        @endforeach
-                    ]
-                },
-                @endforeach
-            ],
-            negara = [
-                    @foreach($negara as $row)
-                {
-                    id: '{{$row->id}}',
-                    text: '{{$row->nama}}'
-                },
-                @endforeach
-            ];
-
         $(function () {
-            $("#kewarganegaraan").select2({
-                data: negara,
-                placeholder: "-- Pilih --",
-                allowClear: true,
-                width: '100%',
-            });
-
             $("#kota_id").select2({
-                data: kota,
+                data: [
+                        @foreach($provinsi as $prov)
+                    {
+                        id: '{{$prov->id}}',
+                        text: '{{$prov->nama}}',
+                        children: [
+                                @foreach($prov->get_kota as $kota)
+                            {
+                                id: '{{$kota->id}}',
+                                text: '{{$kota->nama}}'
+                            },
+                            @endforeach
+                        ]
+                    },
+                    @endforeach
+                ],
                 placeholder: "-- Pilih --",
                 allowClear: true,
                 width: '100%',
-            });
+            }).val('{{$user->get_bio->kota_id}}').trigger('change');
 
             $("#summary").summernote({
                 placeholder: 'Tulis summary Anda disini...',
@@ -662,6 +657,44 @@
                 ]
             });
         });
+
+        function format(option) {
+            return option.text;
+        }
+
+        function suntingBahasa(id, nama, tingkatan) {
+            $("#form-lang").attr("action", "{{route('update.bahasa')}}");
+            $("#form-lang input[name='_method']").val('PUT');
+            $("#form-lang input[name='id']").val(id);
+            $("#lang_settings").toggle(300);
+            $("#stats_lang").toggle(300);
+            if ($("#btn_save_lang").attr('disabled')) {
+                $("#btn_save_lang").removeAttr('disabled');
+            } else {
+                $("#btn_save_lang").attr('disabled', 'disabled');
+            }
+            $("#btn_cancel_lang").show();
+
+            $('#nama_bahasa').val(nama);
+            $('#tingkatan_bahasa').val(tingkatan).trigger("change");
+        }
+
+        function suntingSkill(id, nama, tingkatan) {
+            $("#form-skill").attr("action", "{{route('update.skill')}}");
+            $("#form-skill input[name='_method']").val('PUT');
+            $("#form-skill input[name='id']").val(id);
+            $("#skill_settings").toggle(300);
+            $("#stats_skill").toggle(300);
+            if ($("#btn_save_skill").attr('disabled')) {
+                $("#btn_save_skill").removeAttr('disabled');
+            } else {
+                $("#btn_save_skill").attr('disabled', 'disabled');
+            }
+            $("#btn_cancel_skill").show();
+
+            $('#nama_skill').val(nama);
+            $('#tingkatan_skill').val(tingkatan).trigger("change");
+        }
 
         document.getElementById("input-background").onchange = function () {
             var files_size = this.files[0].size,
@@ -718,8 +751,7 @@
                                         return xhr;
                                     },
                                     success: function (data) {
-                                        var url = 'url("{{asset('storage/users/latar_belakang')}}/' + data + '")';
-                                        $(".show_background").css('background-image', url);
+                                        $(".show_background").attr('src', data);
                                         $("#show_background_name").html("&nbsp;" + data);
 
                                         swal('SUKSES!', 'Latar belakang profil Anda berhasil diperbarui!', 'success');
