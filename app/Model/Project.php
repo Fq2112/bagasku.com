@@ -39,4 +39,8 @@ class Project extends Model
     {
         return $this->hasOne(ReviewWorker::class,'proyek_id');
     }
+
+    public function get_project(){
+        return $this->hasOne(Pembayaran::class,'proyek_id');
+    }
 }
