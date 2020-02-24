@@ -5,6 +5,7 @@ namespace App;
 use App\Model\Bahasa;
 use App\Model\Bio;
 use App\Model\Pengerjaan;
+use App\Model\PengerjaannLayanan;
 use App\Model\Portofolio;
 use App\Model\Project;
 use App\Model\Review;
@@ -12,6 +13,7 @@ use App\Model\ReviewWorker;
 use App\Model\Skill;
 use App\Model\Tawaran;
 use App\Model\Testimoni;
+use App\Model\UlasanService;
 use App\Model\Undangan;
 use App\Support\Role;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -132,6 +134,16 @@ class User extends Authenticatable
     public function get_undangan()
     {
         return $this->hasMany(Undangan::class, 'user_id');
+    }
+
+    public function get_pengerjaan_layanan()
+    {
+        return $this->hasMany(PengerjaannLayanan::class, 'user_id');
+    }
+
+    public function get_ulasan_layanan()
+    {
+        return $this->hasMany(UlasanService::class, 'user_id');
     }
 
     /**
