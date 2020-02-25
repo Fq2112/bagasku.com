@@ -122,6 +122,25 @@ Route::group(['prefix' => 'akun'], function () {
                 'as' => 'user.update.profil'
             ]);
 
+            Route::group(['prefix' => 'portofolio'], function () {
+
+                Route::post('tambah', [
+                    'uses' => 'UserController@tambahPortofolio',
+                    'as' => 'tambah.portofolio'
+                ]);
+
+                Route::put('update', [
+                    'uses' => 'UserController@updatePortofolio',
+                    'as' => 'update.portofolio'
+                ]);
+
+                Route::get('hapus/{id}', [
+                    'uses' => 'UserController@hapusPortofolio',
+                    'as' => 'hapus.portofolio'
+                ]);
+
+            });
+
             Route::group(['prefix' => 'bahasa'], function () {
 
                 Route::post('tambah', [

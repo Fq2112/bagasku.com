@@ -10,6 +10,7 @@ use App\Model\Portofolio;
 use App\Model\Project;
 use App\Model\Review;
 use App\Model\ReviewWorker;
+use App\Model\Services;
 use App\Model\Skill;
 use App\Model\Tawaran;
 use App\Model\Testimoni;
@@ -106,9 +107,30 @@ class User extends Authenticatable
         return $this->hasMany(Project::class, 'user_id');
     }
 
+    public function get_service()
+    {
+        return $this->hasMany(Services::class, 'user_id');
+    }
+
     public function get_pengerjaan()
     {
         return $this->hasMany(Pengerjaan::class, 'user_id');
+    }
+
+    public function get_rank_klien()
+    {
+        $collection = collect(Bio::orderByDesc('total_bintang_klien')->get());
+        $data = $collection->where('user_id', $this->id);
+
+        return $data->keys()->first() + 1;
+    }
+
+    public function get_rank_pekerja()
+    {
+        $collection = collect(Bio::orderByDesc('total_bintang_pekerja')->get());
+        $data = $collection->where('user_id', $this->id);
+
+        return $data->keys()->first() + 1;
     }
 
     public function get_ulasan()

@@ -110,17 +110,19 @@
                                            style="border: 1px solid #ccc">Lihat Mode Publik</a>
                                         <hr style="margin: 10px 0">
                                         <table class="stats" style="font-size: 14px; margin-top: 0">
-                                            <tr data-toggle="tooltip" title="Berasal dari">
-                                                <td><i class="fa fa-map-marked-alt"></i></td>
-                                                <td>&nbsp;</td>
-                                                <td style="text-transform: none;">{{$user->get_bio->kota_id != "" ? $user->get_bio
-                                                ->get_kota->nama.', '.$user->get_bio->get_kota->get_provinsi->nama : '(kosong)'}}
+                                            <tr>
+                                                <td><i class="fa fa-calendar-check"></i></td>
+                                                <td>&nbsp;Bergabung Sejak</td>
+                                                <td>
+                                                    : {{$user->created_at->format('j F Y')}}
                                                 </td>
                                             </tr>
-                                            <tr data-toggle="tooltip" title="Bergabung sejak">
-                                                <td><i class="fa fa-calendar-check"></i></td>
-                                                <td>&nbsp;</td>
-                                                <td style="text-transform: none;">{{$user->created_at->format('j F Y')}}</td>
+                                            <tr>
+                                                <td><i class="fa fa-clock"></i></td>
+                                                <td>&nbsp;Update Terakhir</td>
+                                                <td style="text-transform: none;">
+                                                    : {{$user->updated_at->diffForHumans()}}
+                                                </td>
                                             </tr>
                                         </table>
                                     </div>
@@ -146,8 +148,8 @@
                                             <hr class="mt-0">
                                             <div id="stats_lang" style="font-size: 14px; margin-top: 0">
                                                 @if(count($bahasa) == 0)
-                                                    <p>Kemampuan berbahasa Anda, baik bahasa daerah maupun bahasa asing.<br><br>
-                                                    </p>
+                                                    <p align="justify">Kemampuan berbahasa Anda, baik bahasa daerah
+                                                        maupun bahasa asing.</p>
                                                 @else
                                                     <div data-scrollbar>
                                                         @foreach($bahasa as $row)
@@ -754,6 +756,163 @@
                             </div>
                         </div>
                     </div>
+                    <!-- portofolio -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <form class="form-horizontal" role="form" method="POST" id="form-portofolio"
+                                      action="{{route('tambah.portofolio')}}" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" name="_method">
+                                    <input type="hidden" name="id">
+                                    <div class="card-content">
+                                        <div class="card-title">
+                                            <small id="show_portofolio_settings">Portofolio
+                                                <span class="pull-right" style="cursor: pointer; color: #122752">
+                                                    <i class="fa fa-briefcase"></i>&ensp;Tambah
+                                                </span>
+                                            </small>
+                                            <hr class="mt-0">
+                                            <div id="stats_portofolio"
+                                                 style="font-size: 14px; margin-top: 0">
+                                                @if(count($portofolio) == 0)
+                                                    <p align="justify">Hal-hal yang pernah Anda buat/kerjakan, misalnya
+                                                        Desain Grafis, Aplikasi Desktop/Web/Mobile, 2D/3D Modeling, dll.
+                                                    </p>
+                                                @else
+                                                    <div data-scrollbar>
+                                                        @foreach($portofolio as $row)
+                                                            <div class="row">
+                                                                <div class="col-lg-12">
+                                                                    <div class="media">
+                                                                        <div class="media-left media-middle"
+                                                                             style="width: 25%">
+                                                                            <img class="media-object" alt="icon"
+                                                                                 src="{{asset('storage/users/portofolio/'.$row->foto)}}">
+                                                                        </div>
+                                                                        <div class="media-body">
+                                                                            <p class="media-heading">
+                                                                                <i class="fa fa-briefcase"></i>&nbsp;
+                                                                                <small
+                                                                                    style="text-transform: uppercase">{{$row->judul}}
+                                                                                    <sub>{{$row->tahun}}</sub>
+                                                                                </small>
+                                                                                <span class="pull-right">
+                                                                                <a style="color: #122752;cursor: pointer;"
+                                                                                   onclick="suntingPortofolio('{{$row->id}}',
+                                                                                       '{{$row->foto}}','{{$row->judul}}',
+                                                                                       '{{$row->deskripsi}}','{{$row->tahun}}',
+                                                                                       '{{$row->tautan}}')">SUNTING&ensp;<i
+                                                                                        class="fa fa-edit"></i></a>
+                                                                                <small style="color: #7f7f7f">&nbsp;&#124;&nbsp;</small>
+                                                                                <a href="{{route('hapus.portofolio',
+                                                                                ['id' => encrypt($row->id)])}}"
+                                                                                   class="delete-data"
+                                                                                   style="color: #122752;">
+                                                                                    <i class="fa fa-eraser"></i>&ensp;HAPUS</a>
+                                                                            </span>
+                                                                            </p>
+                                                                            <blockquote
+                                                                                style="font-size: 12px;text-transform: none">
+                                                                                <p align="justify">{{$row->deskripsi}}</p>
+                                                                                @if($row->tautan != "")
+                                                                                    <hr style="margin: 0 0 10px 0">
+                                                                                    Tautan:
+                                                                                    <a href="{{$row->tautan}}"
+                                                                                       target="_blank">{{$row->tautan}}
+                                                                                    </a>
+                                                                                @endif
+                                                                            </blockquote>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <hr class="mt-0">
+                                                        @endforeach
+                                                    </div>
+                                                @endif
+                                            </div>
+
+                                            <div id="portofolio_settings" style="display: none">
+                                                <div class="row form-group has-feedback">
+                                                    <div class="col-md-12">
+                                                        <label for="txt_attach" class="form-control-label">Foto <span
+                                                                class="required">*</span></label>
+                                                        <input type="file" name="foto" accept="image/*"
+                                                               id="attach-files" style="display: none;">
+                                                        <div class="input-group">
+                                                            <input type="text" id="txt_attach" style="cursor: pointer"
+                                                                   class="browse_files form-control" readonly
+                                                                   placeholder="Unggah foto disini..."
+                                                                   data-toggle="tooltip" data-placement="top"
+                                                                   title="Ekstensi yang diizinkan: jpg, jpeg, gif, png. Ukuran yang diizinkan: < 5 MB">
+                                                            <span class="input-group-btn">
+                                                                <button
+                                                                    class="browse_files btn btn-link btn-sm btn-block"
+                                                                    type="button" style="border: 1px solid #ccc">
+                                                                    <i class="fa fa-search"></i></button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group has-feedback">
+                                                    <div class="col-md-12">
+                                                        <label for="judul" class="form-control-label">Judul <span
+                                                                class="required">*</span></label>
+                                                        <input id="judul" type="text" name="judul" class="form-control"
+                                                               placeholder="Judul" required>
+                                                        <span
+                                                            class="glyphicon glyphicon-text-width form-control-feedback"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group has-feedback">
+                                                    <div class="col-md-12">
+                                                        <label for="deskripsi" class="form-control-label">Deskripsi
+                                                            <span
+                                                                class="required">*</span></label>
+                                                        <textarea id="deskripsi" name="deskripsi" class="form-control"
+                                                                  placeholder="Tulis deskripsi singkatnya disini..."
+                                                                  required></textarea>
+                                                        <span
+                                                            class="glyphicon glyphicon-text-height form-control-feedback"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <div class="col-md-3 has-feedback">
+                                                        <label for="tahun" class="form-control-label">Tahun <span
+                                                                class="required">*</span></label>
+                                                        <input id="tahun" class="form-control yearpicker" name="tahun"
+                                                               type="text" placeholder="yyyy" required>
+                                                        <span
+                                                            class="glyphicon glyphicon-calendar form-control-feedback"></span>
+                                                    </div>
+                                                    <div class="col-md-9 has-feedback">
+                                                        <label for="tautan" class="form-control-label">Tautan</label>
+                                                        <input id="tautan" type="text" name="tautan"
+                                                               class="form-control" placeholder="http://example.com">
+                                                        <span
+                                                            class="glyphicon glyphicon-globe form-control-feedback"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group" id="btn_cancel_portofolio">
+                                                    <div class="col-lg-12">
+                                                        <button type="reset" class="btn btn-link"
+                                                                style="border: 1px solid #ccc">CANCEL
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-read-more">
+                                        <button id="btn_save_portofolio" class="btn btn-link btn-block" disabled>
+                                            <i class="fa fa-briefcase"></i>&nbsp;SIMPAN PERUBAHAN
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -768,6 +927,37 @@
             Scrollbar.initAll();
 
             $('.datepicker').datepicker({dateFormat: 'yy-mm-dd'});
+            $('.yearpicker').datepicker({
+                dateFormat: "yy",
+                yearRange: "c-100:c",
+                changeMonth: false,
+                changeYear: true,
+                showButtonPanel: false,
+                closeText: 'Select',
+                currentText: 'This year',
+                onChangeMonthYear: function (dateText, inst) {
+                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                    $(this).val($.datepicker.formatDate("yy", new Date(year, 0, 1)));
+                    $(this).datepicker('hide');
+                },
+                beforeShow: function (input, inst) {
+                    if ($(this).val() != '') {
+                        var tmpyear = $(this).val();
+                        $(this).datepicker('option', 'defaultDate', new Date(tmpyear, 0, 1));
+                    }
+                }
+            }).focus(function () {
+                $(".ui-datepicker-month").hide();
+                $(".ui-datepicker-calendar").hide();
+                $(".ui-datepicker-current").hide();
+                $(".ui-datepicker-prev").hide();
+                $(".ui-datepicker-next").hide();
+                $("#ui-datepicker-div").position({
+                    my: "left top",
+                    at: "left bottom",
+                    of: $(this)
+                });
+            });
 
             $("#jenis_kelamin, #tingkatan_bahasa, #tingkatan_skill, #kewarganegaraan").select2({
                 placeholder: "-- Pilih --",
@@ -882,7 +1072,28 @@
             }
         });
 
+        $("#show_portofolio_settings, #btn_cancel_portofolio button").on('click', function () {
+            $("#btn_cancel_portofolio").hide();
+            $("#txt_attach, #judul, #deskripsi, #tahun, #tautan").val(null);
+            $("#txt_attach[data-toggle=tooltip]").attr('data-original-title',
+                'Ekstensi yang diizinkan: jpg, jpeg, gif, png. Ukuran yang diizinkan: < 5 MB');
+            $("#portofolio_settings").toggle(300);
+            $("#stats_portofolio").toggle(300);
+            if ($("#btn_save_portofolio").attr('disabled')) {
+                $("#btn_save_portofolio").removeAttr('disabled');
+            } else {
+                $("#btn_save_portofolio").attr('disabled', 'disabled');
+            }
+            $("#form-portofolio").attr('action', '{{route('tambah.portofolio')}}');
+            $("#form-portofolio input[name='_method']").val('POST');
+        });
+
         $("#website").on("keyup", function () {
+            var $uri = $(this).val().substr(0, 4) != 'http' ? 'http://' + $(this).val() : $(this).val();
+            $(this).val($uri);
+        });
+
+        $("#tautan").on("keyup", function () {
             var $uri = $(this).val().substr(0, 4) != 'http' ? 'http://' + $(this).val() : $(this).val();
             $(this).val($uri);
         });
@@ -921,6 +1132,26 @@
             $('#tingkatan_skill').val(tingkatan).trigger("change");
         }
 
+        function suntingPortofolio(id, foto, judul, deskripsi, tahun, tautan) {
+            $("#form-portofolio").attr("action", "{{route('update.portofolio')}}");
+            $("#form-portofolio input[name='_method']").val('PUT');
+            $("#form-portofolio input[name='id']").val(id);
+            $("#portofolio_settings").toggle(300);
+            $("#stats_portofolio").toggle(300);
+            if ($("#btn_save_portofolio").attr('disabled')) {
+                $("#btn_save_portofolio").removeAttr('disabled');
+            } else {
+                $("#btn_save_portofolio").attr('disabled', 'disabled');
+            }
+            $("#btn_cancel_portofolio").show();
+
+            $("#txt_attach").val(foto);
+            $('#judul').val(judul);
+            $('#deskripsi').val(deskripsi);
+            $('#tahun').val(tahun);
+            $('#tautan').val(tautan);
+        }
+
         $("#form-status").on("submit", function (e) {
             $.ajax({
                 type: 'POST',
@@ -944,6 +1175,27 @@
                 }
             });
             return false;
+        });
+
+        $(".browse_files").on('click', function () {
+            $("#attach-files").trigger('click');
+        });
+
+        $("#attach-files").on('change', function () {
+            var files = $(this).prop("files"), names = $.map(files, function (val) {
+                return val.name;
+            });
+            $("#txt_attach").val(names);
+            $("#txt_attach[data-toggle=tooltip]").attr('data-original-title', names);
+        });
+
+        $("#form-portofolio").on('submit', function (e) {
+            e.preventDefault();
+            if ($("#form-portofolio input[name='_method']").val() != 'PUT' && !$("#attach-files").val()) {
+                swal('PERHATIAN!', 'Foto portofolio tidak boleh kosong!', 'warning');
+            } else {
+                $(this)[0].submit();
+            }
         });
 
         document.getElementById("file-input").onchange = function () {

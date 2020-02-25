@@ -18,10 +18,11 @@ class CreatePortofolioTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->string('tahun');
+            $table->text('foto');
+            $table->string('judul');
             $table->text('deskripsi');
-            $table->string('tautan');
-            $table->string('foto');
+            $table->string('tahun', 4);
+            $table->string('tautan')->nullable();
             $table->timestamps();
         });
     }

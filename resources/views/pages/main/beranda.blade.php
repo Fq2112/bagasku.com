@@ -237,7 +237,7 @@
                                     asset('storage/users/foto/'.$row->get_user->get_bio->foto) :
                                     asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
                                     <span>{{$row->get_user->name}}</span>
-                                    <p>
+                                    <p style="color: #ffc100">
                                         @if(round($rate * 2) / 2 == 1)
                                             <i class="fa fa-star"></i>
                                             <i class="far fa-star"></i>
@@ -348,7 +348,7 @@
                                     asset('storage/users/foto/'.$row->get_user->get_bio->foto) :
                                     asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
                                     <span>{{$row->get_user->name}}</span>
-                                    <p>
+                                    <p style="color: #ffc100">
                                         @if(round($rate * 2) / 2 == 1)
                                             <i class="fa fa-star"></i>
                                             <i class="far fa-star"></i>
@@ -454,7 +454,7 @@
                                     <img src="{{$row->foto != "" ? asset('storage/users/foto/'.$row->foto) :
                                     asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
                                     <span>{{$row->get_user->name}}</span>
-                                    <p>
+                                    <p style="color: #ffc100">
                                         @if(round($rate * 2) / 2 == 1)
                                             <i class="fa fa-star"></i>
                                             <i class="far fa-star"></i>
@@ -565,7 +565,7 @@
                                         asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
                                     </div>
                                     <div class="txt-info">
-                                        <h5>
+                                        <h5 style="color: #ffc100">
                                             @if($row->bintang == 1)
                                                 <i class="fa fa-star"></i>
                                                 <i class="far fa-star"></i>

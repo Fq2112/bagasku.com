@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pages\Users;
 use App\Http\Controllers\Controller;
 use App\Model\Bahasa;
 use App\Model\Negara;
+use App\Model\Portofolio;
 use App\Model\Provinsi;
 use App\Model\Skill;
 use App\User;
@@ -27,8 +28,10 @@ class UserController extends Controller
         $provinsi = Provinsi::all();
         $bahasa = Bahasa::where('user_id', Auth::id())->orderByDesc('id')->get();
         $skill = Skill::where('user_id', Auth::id())->orderByDesc('id')->get();
+        $portofolio = Portofolio::where('user_id', Auth::id())->orderByDesc('tahun')->get();
 
-        return view('pages.main.users.sunting-profil', compact('user', 'negara', 'provinsi', 'bahasa', 'skill'));
+        return view('pages.main.users.sunting-profil', compact('user', 'negara', 'provinsi',
+            'bahasa', 'skill', 'portofolio'));
     }
 
     public function updateProfil(Request $request)
@@ -82,6 +85,57 @@ class UserController extends Controller
         return back()->with('update', 'Data ' . $request->check_form . ' Anda berhasil diperbarui!');
     }
 
+    public function tambahPortofolio(Request $request)
+    {
+        $this->validate($request, ['foto' => 'image|mimes:jpg,jpeg,gif,png|max:2048']);
+        $foto = $request->file('foto')->getClientOriginalName();
+        $request->file('foto')->storeAs('public/users/portofolio', $foto);
+
+        Portofolio::create([
+            'user_id' => Auth::id(),
+            'foto' => $foto,
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'tahun' => $request->tahun,
+            'tautan' => $request->tautan,
+        ]);
+
+        return back()->with('create', 'Portofolio [' . $request->judul . ' - ' . $request->tahun . '] Anda berhasil ditambahkan!');
+    }
+
+    public function updatePortofolio(Request $request)
+    {
+        $portofolio = Portofolio::find($request->id);
+
+        if ($request->hasFile('foto')) {
+            $this->validate($request, ['foto' => 'image|mimes:jpg,jpeg,gif,png|max:2048']);
+            $foto = $request->file('foto')->getClientOriginalName();
+            Storage::delete('public/users/portofolio/' . $portofolio->foto);
+            $request->file('foto')->storeAs('public/users/portofolio', $foto);
+        } else {
+            $foto = $portofolio->foto;
+        }
+
+        $portofolio->update([
+            'foto' => $foto,
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'tahun' => $request->tahun,
+            'tautan' => $request->tautan,
+        ]);
+
+        return back()->with('update', 'Portofolio [' . $portofolio->judul . ' - ' . $portofolio->tahun . '] Anda berhasil diperbarui!');
+    }
+
+    public function hapusPortofolio($id)
+    {
+        $portofolio = Portofolio::find(decrypt($id));
+        Storage::delete('public/users/portofolio/' . $portofolio->foto);
+        $portofolio->delete();
+
+        return back()->with('delete', 'Portofolio [' . $portofolio->judul . ' - ' . $portofolio->tahun . '] Anda berhasil dihapus!');
+    }
+
     public function tambahBahasa(Request $request)
     {
         Bahasa::create([
@@ -90,7 +144,7 @@ class UserController extends Controller
             'tingkatan' => $request->tingkatan,
         ]);
 
-        return back()->with('update', 'Kemampuan berbahasa [' . $request->nama . '] berhasil ditambahkan!');
+        return back()->with('create', 'Kemampuan berbahasa [' . $request->nama . '] berhasil ditambahkan!');
     }
 
     public function updateBahasa(Request $request)
@@ -120,7 +174,7 @@ class UserController extends Controller
             'tingkatan' => $request->tingkatan,
         ]);
 
-        return back()->with('update', 'Skill [' . $request->nama . '] berhasil ditambahkan!');
+        return back()->with('create', 'Skill [' . $request->nama . '] berhasil ditambahkan!');
     }
 
     public function updateSkill(Request $request)

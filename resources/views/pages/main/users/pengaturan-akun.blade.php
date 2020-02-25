@@ -101,17 +101,19 @@
                                    style="border: 1px solid #ccc">Lihat Mode Publik</a>
                                 <hr style="margin: 10px 0">
                                 <table class="stats" style="font-size: 14px; margin-top: 0">
-                                    <tr data-toggle="tooltip" title="Berasal dari">
-                                        <td><i class="fa fa-map-marked-alt"></i></td>
-                                        <td>&nbsp;</td>
-                                        <td style="text-transform: none;">{{$user->get_bio->kota_id != "" ? $user->get_bio
-                                        ->get_kota->nama.', '.$user->get_bio->get_kota->get_provinsi->nama : '(kosong)'}}
+                                    <tr>
+                                        <td><i class="fa fa-calendar-check"></i></td>
+                                        <td>&nbsp;Bergabung Sejak</td>
+                                        <td>
+                                            : {{$user->created_at->format('j F Y')}}
                                         </td>
                                     </tr>
-                                    <tr data-toggle="tooltip" title="Bergabung sejak">
-                                        <td><i class="fa fa-calendar-check"></i></td>
-                                        <td>&nbsp;</td>
-                                        <td style="text-transform: none;">{{$user->created_at->format('j F Y')}}</td>
+                                    <tr>
+                                        <td><i class="fa fa-clock"></i></td>
+                                        <td>&nbsp;Update Terakhir</td>
+                                        <td style="text-transform: none;">
+                                            : {{$user->updated_at->diffForHumans()}}
+                                        </td>
                                     </tr>
                                 </table>
                             </div>

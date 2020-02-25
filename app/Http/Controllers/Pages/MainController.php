@@ -36,8 +36,18 @@ class MainController extends Controller
     public function profilUser($username)
     {
         $user = User::where('username', $username)->first();
+        $total_user = User::where('role', Role::OTHER)->count();
 
-        return $user;
+        $total_ulasan_klien = Project::where('user_id', $user->id)->whereHas('get_ulasan')->count();
+        $rating_klien = $total_ulasan_klien > 0 ? $user->get_bio->total_bintang_klien / $total_ulasan_klien : 0;
+
+        $total_ulasan_pekerja = Project::whereHas('get_pengerjaan', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        })->whereHas('get_ulasan_pekerja')->count();
+        $rating_pekerja = $total_ulasan_pekerja > 0 ? $user->get_bio->total_bintang_pekerja / $total_ulasan_pekerja : 0;
+
+        return view('pages.main.users.profil-publik', compact('user', 'total_user',
+            'total_ulasan_klien', 'rating_klien', 'total_ulasan_pekerja', 'rating_pekerja'));
     }
 
     public function tentang()
