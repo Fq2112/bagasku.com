@@ -33,9 +33,11 @@ class MainController extends Controller
         return view('pages.main.beranda', compact('proyek', 'layanan', 'pekerja', 'testimoni', 'cek'));
     }
 
-    public function profilUser($user)
+    public function profilUser($username)
     {
+        $user = User::where('username', $username)->first();
 
+        return $user;
     }
 
     public function tentang()

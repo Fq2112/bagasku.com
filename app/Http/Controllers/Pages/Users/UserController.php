@@ -49,7 +49,7 @@ class UserController extends Controller
             if ($request->file('latar_belakang')->isValid()) {
                 $request->latar_belakang->storeAs('public/users/latar_belakang', $name);
                 $user->get_bio->update(['latar_belakang' => $name]);
-                return asset('storage/users/latar_belakang/' . $name);
+                return $name;
             }
 
         } else {
@@ -75,6 +75,7 @@ class UserController extends Controller
 
             } elseif ($request->check_form == 'status') {
                 $user->get_bio->update(['status' => $request->status]);
+                return $user->get_bio->status;
             }
         }
 
