@@ -11,6 +11,11 @@
         });
     });
 
+    $("#show_username_settings").on('click', function () {
+        $("#username_settings").toggle(300);
+        $("#btn_mode_publik").toggle(300);
+    });
+
     $("#show_status_settings").on('click', function () {
         $("#status_settings").toggle(300);
         $("#btn_mode_publik").toggle(300);
@@ -85,6 +90,34 @@
         $(this).val($uri);
     });
 
+    $("#form-username").on("submit", function (e) {
+        $.ajax({
+            type: 'POST',
+            url: '{{route('user.update.pengaturan')}}',
+            data: new FormData($("#form-username")[0]),
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data == 0) {
+                    swal('Pengaturan Akun', 'Username tersebut telah digunakan!', 'error');
+                    $("#error_username").addClass('has-error');
+                    $(".aj_username").text("Username tersebut telah digunakan!").parent().show();
+
+                } else {
+                    swal('Pengaturan Akun', 'Username Anda berhasil diperbarui!', 'success');
+                    $("#error_username").removeClass('has-error');
+                    $(".aj_username").text("").parent().hide();
+                    $("#show_username_settings").click();
+                    $(".show_username").text(data);
+                }
+            },
+            error: function () {
+                swal('Oops...', 'Terjadi suatu kesalahan! Silahkan segarkan browser Anda.', 'error');
+            }
+        });
+        return false;
+    });
+
     $("#form-password").on("submit", function (e) {
         $.ajax({
             type: 'POST',
@@ -95,29 +128,23 @@
             success: function (data) {
                 if (data == 0) {
                     swal('Pengaturan Akun', 'Kata sandi lama Anda salah!', 'error');
-                    $("#error_curr_pass").addClass('has-danger');
-                    $("#error_new_pass").removeClass('has-danger');
-                    $("#check_password").addClass('is-invalid');
-                    $("#password, #password-confirm").removeClass('is-invalid');
+                    $("#error_curr_pass").addClass('has-error');
+                    $("#error_new_pass").removeClass('has-error');
                     $(".aj_pass").text("Password lama Anda salah!").parent().show();
                     $(".aj_new_pass").text("").parent().hide();
 
                 } else if (data == 1) {
                     swal('Pengaturan Akun', 'Konfirmasi kata sandi Anda tidak cocok!', 'error');
-                    $("#error_curr_pass").removeClass('has-danger');
-                    $("#error_new_pass").addClass('has-danger');
-                    $("#check_password").removeClass('is-invalid');
-                    $("#password, #password-confirm").addClass('is-invalid');
+                    $("#error_curr_pass").removeClass('has-error');
+                    $("#error_new_pass").addClass('has-error');
                     $(".aj_pass").text("").parent().hide();
                     $(".aj_new_pass").text("Konfirmasi kata sandi Anda tidak cocok!").parent().show();
 
                 } else {
                     swal('Pengaturan Akun', 'Kata sandi Anda berhasil diperbarui!', 'success');
                     $("#form-password").trigger("reset");
-                    $("#error_curr_pass").removeClass('has-danger');
-                    $("#error_new_pass").removeClass('has-danger');
-                    $("#check_password").removeClass('is-invalid');
-                    $("#password, #password-confirm").removeClass('is-invalid');
+                    $("#error_curr_pass").removeClass('has-error');
+                    $("#error_new_pass").removeClass('has-error');
                     $(".aj_pass").text("").parent().hide();
                     $(".aj_new_pass").text("").parent().hide();
                     $("#show_password_settings").click();

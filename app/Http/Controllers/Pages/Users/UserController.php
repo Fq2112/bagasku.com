@@ -151,35 +151,44 @@ class UserController extends Controller
     public function updatePengaturan(Request $request)
     {
         $user = User::findOrFail(Auth::id());
-        $img = $request->file('foto');
 
-        if ($img == null) {
-            $input = $request->all();
-            if (!Hash::check($input['password'], $user->password)) {
-                return 0;
-            } else {
-                if ($input['new_password'] != $input['password_confirmation']) {
-                    return 1;
-                } else {
-                    $user->update(['password' => bcrypt($input['new_password'])]);
-                    return 2;
-                }
-            }
-        } else {
-            $this->validate($request, [
-                'foto' => 'image|mimes:jpg,jpeg,gif,png|max:2048',
-            ]);
+        if ($request->hasFile('foto')) {
+            $this->validate($request, ['foto' => 'image|mimes:jpg,jpeg,gif,png|max:2048']);
 
-            $name = $img->getClientOriginalName();
+            $name = $request->file('foto')->getClientOriginalName();
 
             if ($user->get_bio->foto != '') {
                 Storage::delete('public/users/foto/' . $user->get_bio->foto);
             }
 
-            if ($img->isValid()) {
+            if ($request->file('foto')->isValid()) {
                 $request->foto->storeAs('public/users/foto', $name);
                 $user->get_bio->update(['foto' => $name]);
                 return asset('storage/users/foto/' . $name);
+            }
+
+        } else {
+            if ($request->has('username')) {
+                $check = User::where('username', $request->username)->first();
+
+                if (!$check || $request->username == Auth::user()->username) {
+                    $user->update(['username' => $request->username]);
+                    return $user->username;
+                } else {
+                    return 0;
+                }
+
+            } else {
+                if (!Hash::check($request->password, $user->password)) {
+                    return 0;
+                } else {
+                    if ($request->new_password != $request->password_confirmation) {
+                        return 1;
+                    } else {
+                        $user->update(['password' => bcrypt($request->new_password)]);
+                        return 2;
+                    }
+                }
             }
         }
     }

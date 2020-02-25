@@ -19,6 +19,7 @@ class UserTableSeeder extends Seeder
             if ($role == \App\Support\Role::ADMIN) {
                 User::create([
                     'name' => "ADMIN",
+                    'username' => "admin",
                     'email' => "admin@bagasku.com",
                     'password' => bcrypt('secret'),
                     'role' => $role
@@ -26,6 +27,7 @@ class UserTableSeeder extends Seeder
             } elseif ($role == \App\Support\Role::ROOT) {
                 User::create([
                     'name' => "ADMIN",
+                    'username' => "root",
                     'email' => "root@bagasku.com",
                     'password' => bcrypt('secret'),
                     'role' => $role
@@ -33,9 +35,11 @@ class UserTableSeeder extends Seeder
 
             } elseif ($role == \App\Support\Role::OTHER) {
                 for ($c = 0; $c < (($role == \App\Support\Role::OTHER) ? 20 : 2); $c++) {
+                    $email = $faker->safeEmail;
                     $user = User::create([
                         'name' => $faker->name,
-                        'email' => $faker->safeEmail,
+                        'username' => strtok($email, '@'),
+                        'email' => $email,
                         'password' => bcrypt('secret'),
                         'role' => $role
                     ]);

@@ -36,13 +36,30 @@
         $("#btn_register").attr('disabled', 'disabled');
     }
 
+    $("#reg_username").on('blur', function () {
+        $.get('akun/cek/' + $("#reg_username").val(), function (data) {
+            if (data == 1) {
+                $("#reg_errorAlert").html(
+                    '<div class="alert alert-danger alert-dismissible">' +
+                    '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
+                    '<h4><i class="icon fa fa-times"></i> Error!</h4>Username tersebut telah digunakan!</div>'
+                );
+                $(".btn-register").attr('disabled', 'disabled');
+
+            } else {
+                $("#reg_errorAlert").html('');
+                $(".btn-register").removeAttr('disabled');
+            }
+        });
+    });
+
     $("#form-register").on("submit", function (e) {
         if (grecaptcha.getResponse(recaptcha_register).length === 0) {
             e.preventDefault();
             swal('PERHATIAN!', 'Mohon klik kotak dialog reCAPTCHA berikut.', 'warning');
         }
 
-        if ($.trim($("#reg_email,#reg_name,#reg_password,#reg_password_confirm").val()) === "") {
+        if ($.trim($("#reg_email,#reg_name,#reg_username,#reg_password,#reg_password_confirm").val()) === "") {
             return false;
 
         } else {

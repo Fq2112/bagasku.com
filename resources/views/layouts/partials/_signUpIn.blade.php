@@ -31,8 +31,9 @@
                                 @csrf
                                 <div class="row has-feedback">
                                     <div class="col-lg-12">
-                                        <input class="form-control" type="email" placeholder="Email"
-                                               name="email" value="{{ old('email') }}" required>
+                                        <input id="useremail" type="text" class="form-control" name="useremail"
+                                               placeholder="Username atau email" value="{{old('useremail')}}"
+                                               required autofocus>
                                         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                                     </div>
                                 </div>
@@ -97,6 +98,13 @@
                                     <div class="col-lg-12">
                                         <input id="reg_name" type="text" placeholder="Nama lengkap"
                                                class="form-control" name="name" required>
+                                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                                    </div>
+                                </div>
+                                <div class="row has-feedback">
+                                    <div class="col-lg-12">
+                                        <input id="reg_username" type="text" placeholder="Username"
+                                               class="form-control" name="username" minlength="4" required>
                                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
                                     </div>
                                 </div>

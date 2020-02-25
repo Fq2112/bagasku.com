@@ -2,10 +2,10 @@
 @extends('layouts.auth.mst_user')
 @section('inner-content')
     <div class="row">
-        <div class="col-lg-3 col-md-6 col-sm-12 text-center">
+        <div class="col-lg-4 col-md-6 col-sm-12 text-center">
             @include('layouts.auth.partials._form-foto-user')
         </div>
-        <div class="col-lg-9 col-md-6 col-sm-12">
+        <div class="col-lg-8 col-md-6 col-sm-12">
             <div class="card">
                 <form class="form-horizontal" role="form" method="POST" id="form-password">
                     @csrf
@@ -32,7 +32,7 @@
                                         <span class="glyphicon glyphicon-eye-open form-control-feedback"
                                               style="pointer-events: all;cursor: pointer"></span>
                                         <span class="help-block">
-                                            <strong class="aj_pass" style="text-transform: none"></strong>
+                                            <strong class="strong-error aj_pass" style="text-transform: none"></strong>
                                         </span>
                                     </div>
                                 </div>
@@ -45,26 +45,29 @@
                                               style="pointer-events: all;cursor: pointer"></span>
                                         @if ($errors->has('new_password'))
                                             <span class="help-block">
-                                                <strong>{{ $errors->first('new_password') }}</strong>
+                                                <strong
+                                                    class="strong-error">{{ $errors->first('new_password') }}</strong>
                                             </span>
                                         @endif
                                     </div>
                                     <div class="col-md-12">
-                                        <input placeholder="Ulangi kata sandi baru" id="password-confirm" type="password"
+                                        <input placeholder="Ulangi kata sandi baru" id="password-confirm"
+                                               type="password"
                                                class="form-control" name="password_confirmation" minlength="6" required
                                                onkeyup="return checkPassword()">
                                         <span class="glyphicon glyphicon-eye-open form-control-feedback"
                                               style="pointer-events: all;cursor: pointer"></span>
                                         <span class="help-block">
-                                            <strong class="aj_new_pass" style="text-transform: none"></strong>
+                                            <strong class="strong-error aj_new_pass"
+                                                    style="text-transform: none"></strong>
                                         </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer p-0">
-                        <button id="btn_save_password" class="btn btn-dark-red btn-block" disabled>
+                    <div class="card-read-more">
+                        <button id="btn_save_password" class="btn btn-link btn-block" disabled>
                             <i class="fa fa-lock mr-2"></i>SIMPAN PERUBAHAN
                         </button>
                     </div>
@@ -113,13 +116,11 @@
             var new_pas = $("#password").val(),
                 re_pas = $("#password-confirm").val();
             if (new_pas != re_pas) {
-                $("#password, #password-confirm").addClass('is-invalid');
-                $("#error_new_pass").addClass('has-danger');
+                $("#error_new_pass").addClass('has-error');
                 $(".aj_new_pass").text("Konfirmasi password harus sama dengan password baru Anda!").parent().show();
                 $("#btn_save_password").attr('disabled', 'disabled');
             } else {
-                $("#password, #password-confirm").removeClass('is-invalid');
-                $("#error_new_pass").removeClass('has-danger');
+                $("#error_new_pass").removeClass('has-error');
                 $(".aj_new_pass").text("").parent().hide();
                 $("#btn_save_password").removeAttr('disabled');
             }

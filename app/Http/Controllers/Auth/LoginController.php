@@ -64,13 +64,15 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        if (GlobalAuth::login(['email' => $request->email, 'password' => $request->password])) {
-            if (session()->has('intended')) {
-//                $this->redirectTo = session('intended');
-                session()->forget('intended');
-            }
+        $user = User::where('username', $request->useremail)->orwhere('email', $request->useremail)->first();
+        if (!is_null($user)) {
+            if (GlobalAuth::login(['email' => $user->email, 'password' => $request->password])) {
+                if (session()->has('intended')) {
+                    session()->forget('intended');
+                }
 
-            return $this->redirectTo();
+                return $this->redirectTo();
+            }
         }
 
         return back()->withInput($request->all())->with([

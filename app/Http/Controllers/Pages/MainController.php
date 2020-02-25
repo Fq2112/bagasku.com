@@ -7,6 +7,7 @@ use App\Model\Project;
 use App\Model\Services;
 use App\Model\Testimoni;
 use App\Support\Role;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -32,9 +33,18 @@ class MainController extends Controller
         return view('pages.main.beranda', compact('proyek', 'layanan', 'pekerja', 'testimoni', 'cek'));
     }
 
+    public function profilUser($user)
+    {
+
+    }
+
     public function tentang()
     {
-        $cek = null;
+        if (Auth::check()) {
+            $cek = Testimoni::where('user_id', Auth::id())->first();
+        } else {
+            $cek = null;
+        }
 
         return view('pages.info.tentang', compact('cek'));
     }

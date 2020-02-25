@@ -41,7 +41,8 @@
                 <img class="img-thumbnail show_ava" src="{{Auth::user()->get_bio->foto != "" ?
                 asset('storage/users/foto/'.Auth::user()->get_bio->foto) :
                 asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}">
-                {{Auth::user()->name}} <i class="fa fa-angle-down"></i></a>
+                <span class="show_username" style="text-transform: none">{{Auth::user()->username}}</span> <i
+                    class="fa fa-angle-down"></i></a>
             <ul class="dropdown-menu dropdown-arrow">
                 <li><a href="{{Auth::user()->isRoot() || Auth::user()->isAdmin() ? route('admin.dashboard') :
                 route('user.dashboard')}}"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a></li>

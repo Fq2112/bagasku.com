@@ -16,6 +16,11 @@ Route::group(['prefix' => '/', 'namespace' => 'Pages'], function () {
 
     });
 
+    Route::get('profil/{username}', [
+        'uses' => 'MainController@profilUser',
+        'as' => 'profil.user'
+    ]);
+
     Route::get('tentang', [
         'uses' => 'MainController@tentang',
         'as' => 'tentang'
@@ -72,6 +77,11 @@ Route::post('password/reset', 'Auth\ResetPasswordController@postReset')->name('p
 Auth::routes();
 
 Route::group(['prefix' => 'akun'], function () {
+
+    Route::get('cek/{username}', [
+        'uses' => 'Auth\RegisterController@cekUsername',
+        'as' => 'cek.username'
+    ]);
 
     Route::post('masuk', [
         'uses' => 'Auth\LoginController@login',
