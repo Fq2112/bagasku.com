@@ -105,7 +105,7 @@
                                         <td><i class="fa fa-calendar-check"></i></td>
                                         <td>&nbsp;Bergabung Sejak</td>
                                         <td>
-                                            : {{$user->created_at->format('j F Y')}}
+                                            : {{$user->created_at->formatLocalized('%d %B %Y')}}
                                         </td>
                                     </tr>
                                     <tr>

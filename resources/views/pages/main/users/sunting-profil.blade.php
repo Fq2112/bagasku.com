@@ -114,7 +114,7 @@
                                                 <td><i class="fa fa-calendar-check"></i></td>
                                                 <td>&nbsp;Bergabung Sejak</td>
                                                 <td>
-                                                    : {{$user->created_at->format('j F Y')}}
+                                                    : {{$user->created_at->formatLocalized('%d %B %Y')}}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -921,11 +921,8 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.js"></script>
     <script src="{{asset('vendor/jquery-ui/jquery-ui.min.js')}}"></script>
-    <script src="{{asset('vendor/smooth-scrollbar/smooth-scrollbar.js')}}"></script>
     <script>
         $(function () {
-            Scrollbar.initAll();
-
             $('.datepicker').datepicker({dateFormat: 'yy-mm-dd'});
             $('.yearpicker').datepicker({
                 dateFormat: "yy",

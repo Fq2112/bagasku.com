@@ -73,6 +73,10 @@
             margin-right: 0.5rem !important
         }
 
+        .ml-2, .my-2 {
+            margin-left: 0.5rem !important
+        }
+
         .p-0 {
             padding: 0 !important
         }
@@ -383,6 +387,8 @@
 <script src="{{asset('vendor/checkMobileDevice.js')}}"></script>
 <!-- Nicescroll -->
 <script src="{{asset('vendor/nicescroll/jquery.nicescroll.js')}}"></script>
+<!-- smooth-scrollbar -->
+<script src="{{asset('vendor/smooth-scrollbar/smooth-scrollbar.js')}}"></script>
 <!-- Sweetalert2 -->
 <script src="{{asset('vendor/sweetalert/sweetalert.min.js')}}"></script>
 @stack('scripts')

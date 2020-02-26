@@ -1,10 +1,10 @@
 @php $kategori = \App\Model\Kategori::orderBy('nama')->get(); @endphp
 <ul class="main-menu">
     <li><a class="{{\Illuminate\Support\Facades\Request::is('/*') ? 'active' : ''}}" href="{{route('beranda')}}">
-            Beranda</a></li>
+            <i class="fa fa-home mr-2"></i>Beranda</a></li>
     <li class="menu-item-has-children">
-        <a class="{{\Illuminate\Support\Facades\Request::is('proyek*') ? 'active' : ''}}" href="#">Tugas/Proyek <i
-                class="fa fa-angle-down"></i></a>
+        <a class="{{\Illuminate\Support\Facades\Request::is('proyek*') ? 'active' : ''}}" href="#">
+            <i class="fa fa-business-time mr-2"></i>Tugas/Proyek <i class="fa fa-angle-down"></i></a>
         <ul class="dropdown-menu dropdown-arrow">
             @foreach($kategori as $kat)
                 <li class="menu-item-has-children">
@@ -19,8 +19,8 @@
         </ul>
     </li>
     <li class="menu-item-has-children">
-        <a class="{{\Illuminate\Support\Facades\Request::is('layanan*') ? 'active' : ''}}" href="#">Layanan <i
-                class="fa fa-angle-down"></i></a>
+        <a class="{{\Illuminate\Support\Facades\Request::is('layanan*') ? 'active' : ''}}" href="#">
+            <i class="fa fa-tools mr-2"></i>Layanan <i class="fa fa-angle-down"></i></a>
         <ul class="dropdown-menu dropdown-arrow">
             @foreach($kategori as $kat)
                 <li class="menu-item-has-children">

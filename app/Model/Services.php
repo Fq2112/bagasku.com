@@ -30,9 +30,13 @@ class Services extends Model
         return $this->hasMany(PengerjaanLayanan::class, 'service_id');
     }
 
-
     public function get_ulasan()
     {
         return $this->hasMany(UlasanService::class, 'pengerjaann_layanan_id');
+    }
+
+    public function get_judul_uri()
+    {
+        return preg_replace("![^a-z0-9]+!i", "-", strtolower($this->judul));
     }
 }

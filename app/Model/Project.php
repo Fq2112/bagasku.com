@@ -37,10 +37,16 @@ class Project extends Model
 
     public function get_ulasan_pekerja()
     {
-        return $this->hasOne(ReviewWorker::class,'proyek_id');
+        return $this->hasOne(ReviewWorker::class, 'proyek_id');
     }
 
-    public function get_project(){
-        return $this->hasOne(Pembayaran::class,'proyek_id');
+    public function get_project()
+    {
+        return $this->hasOne(Pembayaran::class, 'proyek_id');
+    }
+
+    public function get_judul_uri()
+    {
+        return preg_replace("![^a-z0-9]+!i", "-", strtolower($this->judul));
     }
 }

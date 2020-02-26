@@ -21,6 +21,16 @@ Route::group(['prefix' => '/', 'namespace' => 'Pages'], function () {
         'as' => 'profil.user'
     ]);
 
+    Route::get('proyek/{username}/{judul}', [
+        'uses' => 'MainController@detailProyek',
+        'as' => 'detail.proyek'
+    ]);
+
+    Route::get('layanan/{username}/{judul}', [
+        'uses' => 'MainController@detailLayanan',
+        'as' => 'detail.layanan'
+    ]);
+
     Route::get('tentang', [
         'uses' => 'MainController@tentang',
         'as' => 'tentang'
