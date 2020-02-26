@@ -107,6 +107,23 @@
                                         != "" ? $user->get_bio->status : 'Status (-)'}}</small>
                                     </div>
                                     <div class="card-title">
+                                        <div class="row text-center">
+                                            <div class="col-lg-12">
+                                                <div class="input-group">
+                                            <span class="input-group-btn ld ld-breath">
+                                                <button id="btn_hire" class="btn btn-link btn-sm" type="button"
+                                                        data-toggle="tooltip" style="border: 1px solid #ccc"
+                                                        title="Pekerjakan {{$user->name}} untuk menyelesaikan tugas/proyek pribadi Anda!">
+                                                    <b><i class="fa fa-business-time mr-2"></i>HIRE ME</b></button>
+                                                <button id="btn_invite_to_bid" class="btn btn-link btn-sm" type="button"
+                                                        data-toggle="tooltip" style="border: 1px solid #ccc"
+                                                        title="Ajak {{$user->name}} ke salah satu bid tugas/proyek Anda!">
+                                                    <b><i class="fa fa-paper-plane mr-2"></i>INVITE TO BID</b></button>
+                                            </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr style="margin: 10px 0">
                                         <table style="font-size: 14px;">
                                             <tr>
                                                 <td><i class="fa fa-envelope"></i></td>
@@ -852,6 +869,39 @@
             mouseleave: function () {
                 $(this).parent().css('border-color', '#eee');
             }
+        });
+
+        $("#btn_hire, #btn_invite_to_bid").on({
+            mouseenter: function () {
+                $(this).parent().removeClass('ld ld-breath');
+            },
+            mouseleave: function () {
+                $(this).parent().addClass('ld ld-breath');
+            }
+        });
+
+        $("#btn_hire").on('click', function () {
+            @auth
+            @if(Auth::user()->isOther())
+            // open hire form
+            @else
+            swal('PERHATIAN!', 'Fitur ini hanya berfungsi ketika Anda masuk sebagai Klien/Pekerja');
+            @endif
+            @else
+            openLoginModal();
+            @endauth
+        });
+
+        $("#btn_invite_to_bid").on('click', function () {
+            @auth
+            @if(Auth::user()->isOther())
+            // open invite to bid form
+            @else
+            swal('PERHATIAN!', 'Fitur ini hanya berfungsi ketika Anda masuk sebagai Klien/Pekerja');
+            @endif
+            @else
+            openLoginModal();
+            @endauth
         });
     </script>
 @endpush
