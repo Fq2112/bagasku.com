@@ -103,86 +103,89 @@
         </div>
         <div class="container">
             <div id="testimoni" class="testi-slider testi-dark">
-                <div class="education-testimonials">
-                    <div class="col-md-6 item">
-                        <div class="education-content">
-                            <div class="img-info">
-                                <img src="{{asset('images/faces/thumbs50x50/1.jpg')}}">
+                @foreach($testimoni->chunk(2) as $two)
+                    <div class="education-testimonials">
+                        @foreach($two as $row)
+                            <div class="col-md-6 item">
+                                <div class="education-content">
+                                    <div class="img-info">
+                                        <img src="{{$row->get_user->get_bio->foto != "" ?
+                                        asset('storage/users/foto/'.$row->get_user->get_bio->foto) :
+                                        asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
+                                    </div>
+                                    <div class="txt-info">
+                                        <h5 style="color: #ffc100">
+                                            @if($row->bintang == 1)
+                                                <i class="fa fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            @elseif($row->bintang == 2)
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            @elseif($row->bintang == 3)
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            @elseif($row->bintang == 4)
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            @elseif($row->bintang == 5)
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            @elseif($row->bintang == 0.5)
+                                                <i class="fa fa-star-half-alt"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            @elseif($row->bintang == 1.5)
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star-half-alt"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            @elseif($row->bintang == 2.5)
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star-half-alt"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                            @elseif($row->bintang == 3.5)
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star-half-alt"></i>
+                                                <i class="far fa-star"></i>
+                                            @elseif($row->bintang == 4.5)
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star-half-alt"></i>
+                                            @endif
+                                        </h5>
+                                        <p>{{$row->deskripsi}}</p>
+                                        <h3>{{$row->get_user->name}}</h3>
+                                        <span><i class="fa fa-clock"></i> {{\Carbon\Carbon::parse($row->updated_at)->diffForHumans()}}</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="txt-info">
-                                <h5>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                </h5>
-                                <p>Komentar...</p>
-                                <h3>Nama Pengguna</h3>
-                                <span><i class="fa fa-calendar-alt"></i> Terakhir diperbarui</span>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
-                    <div class="col-md-6 item">
-                        <div class="education-content">
-                            <div class="img-info">
-                                <img src="{{asset('images/faces/thumbs50x50/2.jpg')}}">
-                            </div>
-                            <div class="txt-info">
-                                <h5>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-half-alt"></i>
-                                </h5>
-                                <p>Komentar...</p>
-                                <h3>Nama Pengguna</h3>
-                                <span><i class="fa fa-calendar-alt"></i> Terakhir diperbarui</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="education-testimonials">
-                    <div class="col-md-6 item">
-                        <div class="education-content">
-                            <div class="img-info">
-                                <img src="{{asset('images/faces/thumbs50x50/3.jpg')}}">
-                            </div>
-                            <div class="txt-info">
-                                <h5>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                </h5>
-                                <p>Komentar...</p>
-                                <h3>Nama Pengguna</h3>
-                                <span><i class="fa fa-calendar-alt"></i> Terakhir diperbarui</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 item">
-                        <div class="education-content">
-                            <div class="img-info">
-                                <img src="{{asset('images/faces/thumbs50x50/4.jpg')}}">
-                            </div>
-                            <div class="txt-info">
-                                <h5>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                </h5>
-                                <p>Komentar...</p>
-                                <h3>Nama Pengguna</h3>
-                                <span><i class="fa fa-calendar-alt"></i> Terakhir diperbarui</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>

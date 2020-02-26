@@ -147,7 +147,7 @@
     <!-- form pencarian -->
     <div class="course-search">
         <div class="search-center">
-            <form id="form-pencarian" class="search-category" action="{{route('beranda')}}">
+            <form id="form-pencarian" class="search-category" action="{{route('cari.data')}}">
                 <div class="input-group">
                     <div class="input-group-btn search-panel">
                         <button type="button" class="btn-course border-radius-2 dropdown-toggle"
@@ -156,6 +156,7 @@
                         <ul id="filter-pencarian" class="dropdown-Menu" role="menu">
                             <li data-filter="proyek"><a href="#">TUGAS/PROYEK</a></li>
                             <li data-filter="layanan"><a href="#">LAYANAN</a></li>
+                            <li data-filter="pekerja"><a href="#">PEKERJA</a></li>
                         </ul>
                     </div>
                     <input id="keyword" type="text" class="form-control-2 padd-size size-2" name="q"
@@ -214,9 +215,9 @@
         </div>
         <div class="our-projects color-2">
             <ul id="filter-daftar" class="filter-projects none-style">
-                <li><a href="#" class="current" data-filter=".proyek" title="">TUGAS/PROYEK</a></li>
-                <li><a href="#" data-filter=".layanan" title="">LAYANAN</a></li>
-                <li><a href="#" data-filter=".pekerja" title="">PEKERJA TERBAIK</a></li>
+                <li><a href="#" class="current" data-filter=".proyek" data-id="proyek" title="">TUGAS/PROYEK</a></li>
+                <li><a href="#" data-filter=".layanan" data-id="layanan" title="">LAYANAN</a></li>
+                <li><a href="#" data-filter=".pekerja" data-id="pekerja" title="">PEKERJA TERBAIK</a></li>
             </ul>
 
             <div id="update-terbaru" class="all-projects projects-4">
@@ -228,15 +229,20 @@
                     <div class="item proyek">
                         <div class="our-courses">
                             <div class="img-wrapper">
-                                <img src="{{$row->thumbnail != "" ? asset('storage/proyek/thumbnail/'.$row->thumbnail)
-                                : asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
+                                <a href="{{route('detail.proyek',['username' => $row->get_user->username, 'judul' =>
+                                $row->get_judul_uri()])}}">
+                                    <img src="{{$row->thumbnail!="" ? asset('storage/proyek/thumbnail/'.$row->thumbnail)
+                                    : asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
+                                </a>
                             </div>
                             <div class="course-info">
                                 <div class="pull-left course-img">
-                                    <img src="{{$row->get_user->get_bio->foto != "" ?
-                                    asset('storage/users/foto/'.$row->get_user->get_bio->foto) :
-                                    asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
-                                    <span>{{$row->get_user->name}}</span>
+                                    <a href="{{route('profil.user', ['username' => $row->get_user->username])}}">
+                                        <img src="{{$row->get_user->get_bio->foto != "" ?
+                                        asset('storage/users/foto/'.$row->get_user->get_bio->foto) :
+                                        asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
+                                        <span>{{$row->get_user->name}}</span>
+                                    </a>
                                     <p style="color: #ffc100">
                                         @if(round($rate * 2) / 2 == 1)
                                             <i class="fa fa-star"></i>
@@ -312,7 +318,8 @@
                                 </div>
                             </div>
                             <div class="text-center middle-info">
-                                <h3><a href="#">{{$row->judul}}</a></h3>
+                                <h3><a href="{{route('detail.proyek',['username' => $row->get_user->username, 'judul' =>
+                                $row->get_judul_uri()])}}">{{$row->judul}}</a></h3>
                                 {!! \Illuminate\Support\Str::words($row->deskripsi,10,'...') !!}
                             </div>
                             <div class="date-info">
@@ -339,15 +346,20 @@
                     <div class="item layanan">
                         <div class="our-courses">
                             <div class="img-wrapper">
-                                <img src="{{$row->thumbnail != "" ? asset('storage/layanan/thumbnail/'.$row->thumbnail)
-                                : asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                                <a href="{{route('detail.layanan',['username' => $row->get_user->username, 'judul' =>
+                                $row->get_judul_uri()])}}">
+                                    <img src="{{$row->thumbnail != "" ? asset('storage/layanan/thumbnail/'.$row->thumbnail)
+                                    : asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                                </a>
                             </div>
                             <div class="course-info">
                                 <div class="pull-left course-img">
-                                    <img src="{{$row->get_user->get_bio->foto != "" ?
-                                    asset('storage/users/foto/'.$row->get_user->get_bio->foto) :
-                                    asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
-                                    <span>{{$row->get_user->name}}</span>
+                                    <a href="{{route('profil.user', ['username' => $row->get_user->username])}}">
+                                        <img src="{{$row->get_user->get_bio->foto != "" ?
+                                        asset('storage/users/foto/'.$row->get_user->get_bio->foto) :
+                                        asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
+                                        <span>{{$row->get_user->name}}</span>
+                                    </a>
                                     <p style="color: #ffc100">
                                         @if(round($rate * 2) / 2 == 1)
                                             <i class="fa fa-star"></i>
@@ -423,7 +435,8 @@
                                 </div>
                             </div>
                             <div class="text-center middle-info">
-                                <h3><a href="#">{{$row->judul}}</a></h3>
+                                <h3><a href="{{route('detail.layanan',['username' => $row->get_user->username, 'judul' =>
+                                $row->get_judul_uri()])}}">{{$row->judul}}</a></h3>
                                 {!! \Illuminate\Support\Str::words($row->deskripsi,10,'...') !!}
                             </div>
                             <div class="date-info">
@@ -446,14 +459,18 @@
                     <div class="item pekerja">
                         <div class="our-courses">
                             <div class="img-wrapper">
-                                <img src="{{$row->latar_belakang != "" ? asset('storage/users/latar_belakang/'.$row->latar_belakang)
-                                : asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                                <a href="{{route('profil.user', ['username' => $row->get_user->username])}}">
+                                    <img src="{{$row->latar_belakang != "" ? asset('storage/users/latar_belakang/'.$row->latar_belakang)
+                                    : asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
+                                </a>
                             </div>
                             <div class="course-info">
                                 <div class="pull-left course-img">
-                                    <img src="{{$row->foto != "" ? asset('storage/users/foto/'.$row->foto) :
-                                    asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
-                                    <span>{{$row->get_user->name}}</span>
+                                    <a href="{{route('profil.user', ['username' => $row->get_user->username])}}">
+                                        <img src="{{$row->foto != "" ? asset('storage/users/foto/'.$row->foto) :
+                                        asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg')}}" alt="avatar">
+                                        <span>{{$row->get_user->name}}</span>
+                                    </a>
                                     <p style="color: #ffc100">
                                         @if(round($rate * 2) / 2 == 1)
                                             <i class="fa fa-star"></i>
@@ -543,6 +560,14 @@
                     </div>
                 @endforeach
             </div>
+
+            <div class="row text-center">
+                <div class="col-lg-12">
+                    <a id="btn-more" href="{{route('cari.data', ['filter' => 'proyek'])}}"
+                       class="btn btn-dark-red btn-sm ld ld-breath">
+                        <b><i class="fa fa-business-time"></i> TAMPILKAN LEBIH</b></a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -630,7 +655,7 @@
                                         </h5>
                                         <p>{{$row->deskripsi}}</p>
                                         <h3>{{$row->get_user->name}}</h3>
-                                        <span><i class="fa fa-calendar-alt"></i> {{\Carbon\Carbon::parse($row->updated_at)->diffForHumans()}}</span>
+                                        <span><i class="fa fa-clock"></i> {{\Carbon\Carbon::parse($row->updated_at)->diffForHumans()}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -757,7 +782,7 @@
             $("#btn_reset").show();
             $("#txt_filter").text($(this).text());
             $("#form-pencarian input[name='filter']").val($(this).data('filter'));
-            keyword.removeAttr('disabled').attr('required', 'required')
+            keyword.val(null).removeAttr('disabled').attr('required', 'required')
                 .attr('placeholder', 'Cari ' + $(this).text().toLowerCase() + '...').focus();
         });
 
@@ -767,7 +792,7 @@
 
         keyword.autocomplete({
             source: function (request, response) {
-                $.getJSON('/cari/data/' + $("#form-pencarian input[name='filter']").val() + '/' + keyword.val(), {
+                $.getJSON('/cari/data?filter=' + $("#form-pencarian input[name='filter']").val() + '&keyword=' + keyword.val(), {
                     name: request.term,
                 }, function (data) {
                     response(data);
@@ -823,6 +848,17 @@
                 $daftar_terbaru.isotope({
                     filter: $(this).attr('data-filter'),
                 });
+
+                if ($(this).attr('data-id') == 'proyek') {
+                    $("#btn-more").attr('href', '{{route('cari.data', ['filter' => 'proyek'])}}');
+                    $("#btn-more b").html('<i class="fa fa-business-time"></i> TAMPILKAN LEBIH');
+                } else if ($(this).attr('data-id') == 'layanan') {
+                    $("#btn-more").attr('href', '{{route('cari.data', ['filter' => 'layanan'])}}');
+                    $("#btn-more b").html('<i class="fa fa-tools"></i> TAMPILKAN LEBIH');
+                } else {
+                    $("#btn-more").attr('href', '{{route('cari.data', ['filter' => 'pekerja'])}}');
+                    $("#btn-more b").html('<i class="fa fa-hard-hat"></i> TAMPILKAN LEBIH');
+                }
 
                 return false;
             });

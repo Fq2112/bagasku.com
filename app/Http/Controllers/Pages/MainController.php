@@ -67,13 +67,14 @@ class MainController extends Controller
 
     public function tentang()
     {
+        $testimoni = Testimoni::where('bintang', '>', 3)->orderByDesc('id')->take(12)->get();
         if (Auth::check()) {
             $cek = Testimoni::where('user_id', Auth::id())->first();
         } else {
             $cek = null;
         }
 
-        return view('pages.info.tentang', compact('cek'));
+        return view('pages.info.tentang', compact('testimoni', 'cek'));
     }
 
     public function caraKerja()

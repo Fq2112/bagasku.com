@@ -9,7 +9,12 @@ Route::group(['prefix' => '/', 'namespace' => 'Pages'], function () {
 
     Route::group(['prefix' => 'cari'], function () {
 
-        Route::get('data/{filter}/{keyword}', [
+        Route::get('/', [
+            'uses' => 'CariController@cariData',
+            'as' => 'cari.data'
+        ]);
+
+        Route::get('data', [
             'uses' => 'CariController@getCariData',
             'as' => 'get.cari.data'
         ]);
