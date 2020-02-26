@@ -19,8 +19,7 @@ class BiodataMiddleware
         if (Auth::check()) {
             if (Auth::user()->isOther() &&
                 Auth::user()->get_bio->tgl_lahir != null && Auth::user()->get_bio->jenis_kelamin != null &&
-                Auth::user()->get_bio->alamat != null && Auth::user()->get_bio->provinsi_id != null &&
-                Auth::user()->get_bio->kota_id != null && Auth::user()->get_bio->hp != null) {
+                Auth::user()->get_bio->alamat != null && Auth::user()->get_bio->kota_id != null && Auth::user()->get_bio->hp != null) {
                 return $next($request);
             }
 
