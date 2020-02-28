@@ -9,6 +9,7 @@ class PengerjaanLayanan extends Model
 {
     protected $table = 'pengerjaan_layanan';
     protected $guarded = ['id'];
+    protected $casts = ['file_hasil' => 'array'];
 
     public function get_user()
     {

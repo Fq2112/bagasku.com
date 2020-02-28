@@ -883,6 +883,7 @@ h2.text-heading.coffee-color:after {
 
 .btn:hover, .btn:focus, .btn:active {
     color: white !important;
+    text-decoration: none !important;
 }
 
 .btn:hover:before, .btn:focus:before, .btn:active:before {

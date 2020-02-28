@@ -26,7 +26,7 @@ class CariController extends Controller
 
         } else {
             if ($request->filter == 'proyek') {
-                $data = Project::where('judul', 'like', '%' . $request->keyword . '%')->get();
+                $data = Project::where('pribadi', false)->where('judul', 'like', '%' . $request->keyword . '%')->get();
             } else {
                 $data = Services::where('judul', 'like', '%' . $request->keyword . '%')->get();
             }

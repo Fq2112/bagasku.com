@@ -39,6 +39,12 @@
 
     @elseif(session('success'))
     swal('Sukses!', '{{ session('success') }}', 'success');
+
+    @elseif(session('hire_me'))
+    swal('Sukses!', '{{ session('hire_me') }}', 'success');
+
+    @elseif(session('invite_to_bid'))
+    swal('Sukses!', '{{ session('invite_to_bid') }}', 'success');
     @endif
 
     @if (count($errors) > 0)

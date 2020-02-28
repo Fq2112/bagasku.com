@@ -21,10 +21,26 @@ Route::group(['prefix' => '/', 'namespace' => 'Pages'], function () {
 
     });
 
-    Route::get('profil/{username}', [
-        'uses' => 'MainController@profilUser',
-        'as' => 'profil.user'
-    ]);
+    Route::group(['namespace' => 'Users', 'prefix' => 'profil/{username}'], function () {
+
+        Route::get('/', [
+            'uses' => 'UserController@profilUser',
+            'as' => 'profil.user'
+        ]);
+
+        Route::post('hire-me', [
+            'middleware' => ['auth', 'user', 'user.bio'],
+            'uses' => 'UserController@userHireMe',
+            'as' => 'user.hire-me'
+        ]);
+
+        Route::post('invite-to-bid', [
+            'middleware' => ['auth', 'user', 'user.bio'],
+            'uses' => 'UserController@userInviteToBid',
+            'as' => 'user.invite-to-bid'
+        ]);
+
+    });
 
     Route::get('proyek/{username}/{judul}', [
         'uses' => 'MainController@detailProyek',
@@ -111,46 +127,46 @@ Route::group(['prefix' => 'akun'], function () {
     Route::group(['namespace' => 'Pages\Users', 'middleware' => ['auth','user']], function () {
 
         Route::get('dashboard', [
-            'uses' => 'UserController@dashboard',
+            'uses' => 'AkunController@dashboard',
             'as' => 'user.dashboard'
         ]);
 
         Route::get('pengaturan', [
-            'uses' => 'UserController@pengaturan',
+            'uses' => 'AkunController@pengaturan',
             'as' => 'user.pengaturan'
         ]);
 
         Route::put('pengaturan/update', [
-            'uses' => 'UserController@updatePengaturan',
+            'uses' => 'AkunController@updatePengaturan',
             'as' => 'user.update.pengaturan'
         ]);
 
         Route::group(['prefix' => 'profil'], function () {
 
             Route::get('/', [
-                'uses' => 'UserController@profil',
+                'uses' => 'AkunController@profil',
                 'as' => 'user.profil'
             ]);
 
             Route::put('update', [
-                'uses' => 'UserController@updateProfil',
+                'uses' => 'AkunController@updateProfil',
                 'as' => 'user.update.profil'
             ]);
 
             Route::group(['prefix' => 'portofolio'], function () {
 
                 Route::post('tambah', [
-                    'uses' => 'UserController@tambahPortofolio',
+                    'uses' => 'AkunController@tambahPortofolio',
                     'as' => 'tambah.portofolio'
                 ]);
 
                 Route::put('update', [
-                    'uses' => 'UserController@updatePortofolio',
+                    'uses' => 'AkunController@updatePortofolio',
                     'as' => 'update.portofolio'
                 ]);
 
                 Route::get('hapus/{id}', [
-                    'uses' => 'UserController@hapusPortofolio',
+                    'uses' => 'AkunController@hapusPortofolio',
                     'as' => 'hapus.portofolio'
                 ]);
 
@@ -159,17 +175,17 @@ Route::group(['prefix' => 'akun'], function () {
             Route::group(['prefix' => 'bahasa'], function () {
 
                 Route::post('tambah', [
-                    'uses' => 'UserController@tambahBahasa',
+                    'uses' => 'AkunController@tambahBahasa',
                     'as' => 'tambah.bahasa'
                 ]);
 
                 Route::put('update', [
-                    'uses' => 'UserController@updateBahasa',
+                    'uses' => 'AkunController@updateBahasa',
                     'as' => 'update.bahasa'
                 ]);
 
                 Route::get('hapus/{id}', [
-                    'uses' => 'UserController@hapusBahasa',
+                    'uses' => 'AkunController@hapusBahasa',
                     'as' => 'hapus.bahasa'
                 ]);
 
@@ -178,17 +194,17 @@ Route::group(['prefix' => 'akun'], function () {
             Route::group(['prefix' => 'skill'], function () {
 
                 Route::post('tambah', [
-                    'uses' => 'UserController@tambahSkill',
+                    'uses' => 'AkunController@tambahSkill',
                     'as' => 'tambah.skill'
                 ]);
 
                 Route::put('update', [
-                    'uses' => 'UserController@updateSkill',
+                    'uses' => 'AkunController@updateSkill',
                     'as' => 'update.skill'
                 ]);
 
                 Route::get('hapus/{id}', [
-                    'uses' => 'UserController@hapusSkill',
+                    'uses' => 'AkunController@hapusSkill',
                     'as' => 'hapus.skill'
                 ]);
 

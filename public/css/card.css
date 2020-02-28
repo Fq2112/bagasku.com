@@ -62,8 +62,14 @@
 }
 
 .card-title a {
-    color: #000;
+    color: #777;
+    font-weight: 700;
+    transition: all .3s ease;
     text-decoration: none !important;
+}
+
+.card-title a:hover, .card-title a:focus, .card-title a:active {
+    color: #122752;
 }
 
 .card .card-footer button {

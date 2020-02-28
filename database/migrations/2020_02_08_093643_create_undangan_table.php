@@ -21,7 +21,7 @@ class CreateUndanganTable extends Migration
             $table->unsignedBigInteger('proyek_id');
             $table->foreign('proyek_id')->references('id')->on('project')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->boolean('terima')->default(null);
+            $table->boolean('terima')->nullable();
             $table->timestamps();
         });
     }

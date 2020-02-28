@@ -9,6 +9,7 @@ class Project extends Model
 {
     protected $table = 'project';
     protected $guarded = ['id'];
+    protected $casts = ['lampiran' => 'array'];
 
     public function get_user()
     {

@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{asset('css/grid-list.css')}}">
     <link rel="stylesheet" href="{{asset('css/list-accordion.css')}}">
     <link rel="stylesheet" href="{{asset('vendor/lightgallery/dist/css/lightgallery.min.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.css" rel="stylesheet">
     <style>
         blockquote {
             background: unset;
@@ -113,7 +114,7 @@
                                             <span class="input-group-btn ld ld-breath">
                                                 <button id="btn_hire" class="btn btn-link btn-sm" type="button"
                                                         data-toggle="tooltip" style="border: 1px solid #ccc"
-                                                        title="Pekerjakan {{$user->name}} untuk menyelesaikan tugas/proyek pribadi Anda!">
+                                                        title="Pekerjakan {{$user->name}} untuk menyelesaikan tugas/proyek privat Anda!">
                                                     <b><i class="fa fa-business-time mr-2"></i>HIRE ME</b></button>
                                                 <button id="btn_invite_to_bid" class="btn btn-link btn-sm" type="button"
                                                         data-toggle="tooltip" style="border: 1px solid #ccc"
@@ -128,12 +129,19 @@
                                             <tr>
                                                 <td><i class="fa fa-envelope"></i></td>
                                                 <td>&nbsp;</td>
-                                                <td style="text-transform: none">{{$user->email}}</td>
+                                                <td style="text-transform: none"><a
+                                                        href="mailto:{{$user->email}}">{{$user->email}}</a></td>
                                             </tr>
                                             <tr>
                                                 <td><i class="fa fa-phone"></i></td>
                                                 <td>&nbsp;</td>
-                                                <td>{{$user->get_bio->hp != "" ? $user->get_bio->hp : 'No. HP/Telp. (-)'}}
+                                                <td>
+                                                    @if($user->get_bio->hp != "")
+                                                        <a href="{{$user->get_bio->hp}}" target="_blank"
+                                                           style="text-transform: none">{{$user->get_bio->hp}}</a>
+                                                    @else
+                                                        No. HP/Telp. (-)
+                                                    @endif
                                                 </td>
                                             </tr>
                                             <tr>
@@ -313,7 +321,7 @@
                 </div>
                 <div class="col-lg-8 col-md-6 col-sm-12">
                     <!-- summary -->
-                    <div class="row">
+                    <div class="row card-data">
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-content">
@@ -330,7 +338,7 @@
                         </div>
                     </div>
                     <!-- rating -->
-                    <div class="row">
+                    <div class="row card-data">
                         <!-- rating klien -->
                         <div class="col-lg-6">
                             <div class="card">
@@ -536,7 +544,7 @@
                         </div>
                     </div>
                     <!-- tabs portofolio, proyek, layanan, ulasan klien, ulasan pekerja -->
-                    <div class="row">
+                    <div class="row card-data">
                         <div class="col-lg-12">
                             <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
                                 <ul id="myTab" class="nav nav-tabs nav-tabs-responsive" role="tablist">
@@ -784,6 +792,186 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- form hire -->
+                    <form class="form-horizontal" role="form" method="POST" id="form-hire" enctype="multipart/form-data"
+                          action="{{route('user.hire-me', ['username' => $user->username])}}" style="display: none">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{$user->id}}">
+                        <div class="row card-form">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="card-title">
+                                            <small>Hire {{$user->name.' ['.$user->username.']'}}</small>
+                                            <hr class="mt-0">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <label class="form-control-label" for="subkategori_id">Kategori
+                                                        <span class="required">*</span></label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-tag"></i></span>
+                                                        <select id="subkategori_id" class="form-control use-select2"
+                                                                name="subkategori_id" required>
+                                                            <option></option>
+                                                            @foreach($kategori as $row)
+                                                                <optgroup label="{{$row->nama}}">
+                                                                    @foreach($row->get_sub as $sub)
+                                                                        <option
+                                                                            value="{{$sub->id}}">{{$sub->nama}}</option>
+                                                                    @endforeach
+                                                                </optgroup>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <label for="judul" class="form-control-label">Judul <span
+                                                            class="required">*</span></label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-text-width"></i></span>
+                                                        <input id="judul" type="text" name="judul" class="form-control"
+                                                               placeholder="Judul" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <label for="deskripsi" class="form-control-label">Deskripsi
+                                                        <span class="required">*</span></label>
+                                                    <textarea id="deskripsi" name="deskripsi"
+                                                              class="form-control"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-md-5">
+                                                    <label class="form-control-label" for="waktu_pengerjaan">
+                                                        Batas Waktu Pengerjaan <span class="required">*</span></label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i
+                                                                class="fa fa-calendar-week"></i></span>
+                                                        <input id="waktu_pengerjaan" class="form-control"
+                                                               name="waktu_pengerjaan" type="text" placeholder="0"
+                                                               onkeypress="return numberOnly(event, false)" required>
+                                                        <span class="input-group-addon"><b style="text-transform: none">hari</b></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <label class="form-control-label" for="harga">Harga/Budget Proyek
+                                                        <span class="required">*</span></label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><b>Rp</b></span>
+                                                        <input id="harga" class="form-control rupiah" name="harga"
+                                                               type="text" placeholder="0" required>
+                                                        <span class="input-group-addon"><i
+                                                                class="fa fa-money-bill-wave-alt"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-md-5 has-feedback">
+                                                    <label for="txt_thumbnail"
+                                                           class="form-control-label">Thumbnail</label>
+                                                    <input type="file" name="thumbnail" accept="image/*"
+                                                           id="attach-thumbnail" style="display: none;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i
+                                                                class="fa fa-image"></i></span>
+                                                        <input type="text" id="txt_thumbnail" style="cursor: pointer"
+                                                               class="browse_thumbnail form-control" readonly
+                                                               placeholder="Pilih File" data-toggle="tooltip"
+                                                               data-placement="top"
+                                                               title="Ekstensi yang diizinkan: jpg, jpeg, gif, png. Ukuran yang diizinkan: < 5 MB">
+                                                        <span class="input-group-btn">
+                                                                <button
+                                                                    class="browse_thumbnail btn btn-link btn-sm btn-block"
+                                                                    type="button" style="border: 1px solid #ccc">
+                                                                    <i class="fa fa-search"></i></button>
+                                                            </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <label for="txt_lampiran"
+                                                           class="form-control-label">Lampiran</label>
+                                                    <input type="file" name="lampiran[]" id="attach-lampiran"
+                                                           accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.odt,.ppt,.pptx"
+                                                           style="display: none;" multiple>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i
+                                                                class="fa fa-archive"></i></span>
+                                                        <input type="text" id="txt_lampiran" style="cursor: pointer"
+                                                               class="browse_lampiran form-control" readonly
+                                                               placeholder="Pilih File" data-toggle="tooltip"
+                                                               data-placement="top"
+                                                               title="Ekstensi yang diizinkan: jpg, jpeg, gif, png, pdf, doc, docx, xls, xlsx, odt, ppt, pptx. Ukuran yang diizinkan: < 5 MB">
+                                                        <span class="input-group-btn">
+                                                                <button
+                                                                    class="browse_lampiran btn btn-link btn-sm btn-block"
+                                                                    type="button" style="border: 1px solid #ccc">
+                                                                    <i class="fa fa-search"></i></button>
+                                                            </span>
+                                                    </div>
+                                                    <span class="help-block">
+                                                        <small id="count_lampiran"></small>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-read-more">
+                                        <button class="btn btn-link btn-block" type="submit">
+                                            <i class="fa fa-business-time"></i>&nbsp;BUAT PROYEK PRIVAT
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- form invite to bid -->
+                    <form class="form-horizontal" role="form" method="POST" id="form-bid" style="display: none"
+                          action="{{route('user.invite-to-bid', ['username' => $user->username])}}">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{$user->id}}">
+                        <div class="row card-form">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="card-title">
+                                            <small>Invite {{$user->name.' ['.$user->username.']'}} to Bid</small>
+                                            <hr class="mt-0">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <label class="form-control-label" for="proyek_id">Tugas/Proyek
+                                                        <span class="required">*</span></label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i
+                                                                class="fa fa-business-time"></i></span>
+                                                        <select id="proyek_id" class="form-control" name="proyek_id"
+                                                                required>
+                                                            <option></option>
+                                                            @foreach($auth_proyek as $row)
+                                                                <option value="{{$row->id}}" data-image="{{$row->thumbnail != "" ?
+                                                                asset('storage/proyek/thumbnail/'.$row->thumbnail) :
+                                                                asset('images/slider/beranda-proyek.jpg')}}">{{$row->judul.
+                                                                ' [Rp'.number_format($row->harga,2,',','.').']'}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-read-more">
+                                        <button class="btn btn-link btn-block" type="submit">
+                                            <i class="fa fa-paper-plane"></i>&nbsp;KIRIM UNDANGAN
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -794,6 +982,7 @@
     <script src="{{asset('vendor/lightgallery/lib/picturefill.min.js')}}"></script>
     <script src="{{asset('vendor/lightgallery/dist/js/lightgallery-all.min.js')}}"></script>
     <script src="{{asset('vendor/lightgallery/modules/lg-video.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-lite.min.js"></script>
     <script>
         $(function () {
             var Accordion = function (el, multiple) {
@@ -818,7 +1007,47 @@
             };
 
             var accordion = new Accordion($('#accordion'), false);
+
+            $("#deskripsi").summernote({
+                placeholder: 'Deskripsikan tugas/proyek Anda disini...',
+                tabsize: 2,
+                height: 150,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+
+            $("#proyek_id").select2({
+                placeholder: "-- Pilih --",
+                allowClear: true,
+                width: '100%',
+                templateResult: format,
+                templateSelection: format,
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
         });
+
+        function format(option) {
+            var optimage = $(option.element).data('image');
+
+            if (!option.id) {
+                return option.text;
+            }
+
+            if (!optimage) {
+                return option.text;
+            } else {
+                return '<img width="64" alt="thumbnail" src="' + optimage + '" style="padding: 5px">' + option.text;
+            }
+        }
 
         $(document).on('show.bs.tab', '.nav-tabs-responsive [data-toggle="tab"]', function (e) {
             var $target = $(e.target);
@@ -883,9 +1112,19 @@
         $("#btn_hire").on('click', function () {
             @auth
             @if(Auth::user()->isOther())
-            // open hire form
+            @if($user->id == Auth::id())
+            swal('PERHATIAN!', 'Maaf, Anda tidak bisa mempekerjakan diri Anda sendiri.', 'warning');
             @else
-            swal('PERHATIAN!', 'Fitur ini hanya berfungsi ketika Anda masuk sebagai Klien/Pekerja');
+            if ($('#form-hire').is(':hidden')) {
+                $("#form-hire").toggle(300);
+                $(".card-data, #form-bid").hide();
+            } else {
+                $("#form-hire, #form-bid").hide();
+                $(".card-data").toggle(300);
+            }
+            @endif
+            @else
+            swal('PERHATIAN!', 'Fitur ini hanya berfungsi ketika Anda masuk sebagai Klien/Pekerja.', 'warning');
             @endif
             @else
             openLoginModal();
@@ -895,13 +1134,61 @@
         $("#btn_invite_to_bid").on('click', function () {
             @auth
             @if(Auth::user()->isOther())
-            // open invite to bid form
+            @if($user->id == Auth::id())
+            swal('PERHATIAN!', 'Maaf, Anda tidak bisa mengajak diri Anda sendiri ke salah satu bid tugas/proyek Anda.', 'warning');
             @else
-            swal('PERHATIAN!', 'Fitur ini hanya berfungsi ketika Anda masuk sebagai Klien/Pekerja');
+                @if(Auth::user()->get_project->count() > 0)
+            if ($('#form-bid').is(':hidden')) {
+                $("#form-bid").toggle(300);
+                $(".card-data, #form-hire").hide();
+            } else {
+                $("#form-hire, #form-bid").hide();
+                $(".card-data").toggle(300);
+            }
+            @else
+            swal('PERHATIAN!', 'Maaf, saat ini Anda tidak mempunyai tugas/proyek yang sedang menerima bid.', 'warning');
+            @endif
+            @endif
+            @else
+            swal('PERHATIAN!', 'Fitur ini hanya berfungsi ketika Anda masuk sebagai Klien/Pekerja.', 'warning');
             @endif
             @else
             openLoginModal();
             @endauth
+        });
+
+        $(".browse_thumbnail").on('click', function () {
+            $("#attach-thumbnail").trigger('click');
+        });
+
+        $("#attach-thumbnail").on('change', function () {
+            var thumbnail = $(this).prop("files"), names = $.map(thumbnail, function (val) {
+                return val.name;
+            });
+            $("#txt_thumbnail").val(names);
+            $("#txt_thumbnail[data-toggle=tooltip]").attr('data-original-title', names);
+        });
+
+        $(".browse_lampiran").on('click', function () {
+            $("#attach-lampiran").trigger('click');
+        });
+
+        $("#attach-lampiran").on('change', function () {
+            var lampiran = $(this).prop("files"), names = $.map(lampiran, function (val) {
+                return val.name;
+            });
+            $("#txt_lampiran").val(names);
+            $("#txt_lampiran[data-toggle=tooltip]").attr('data-original-title', names);
+            $("#count_lampiran").text($(this).get(0).files.length + " file dipilih!");
+        });
+
+        $("#form-hire").on('submit', function (e) {
+            e.preventDefault();
+            if ($('#deskripsi').summernote('isEmpty')) {
+                swal('PERHATIAN!', 'Deskripsi tugas/proyek Anda tidak boleh kosong!', 'warning');
+            } else {
+                $(this)[0].submit();
+            }
         });
     </script>
 @endpush

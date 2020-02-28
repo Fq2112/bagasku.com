@@ -2,17 +2,11 @@
 
 namespace App\Http\Controllers\Pages;
 
-use App\Model\Bahasa;
 use App\Model\Bio;
-use App\Model\Portofolio;
 use App\Model\Project;
-use App\Model\Review;
-use App\Model\ReviewWorker;
 use App\Model\Services;
-use App\Model\Skill;
 use App\Model\Testimoni;
 use App\Support\Role;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -22,7 +16,7 @@ class MainController extends Controller
 {
     public function index()
     {
-        $proyek = Project::orderByDesc('id')->take(8)->get();
+        $proyek = Project::where('pribadi', false)->orderByDesc('id')->take(8)->get();
         $layanan = Services::orderByDesc('id')->take(8)->get();
         $pekerja = Bio::whereHas('get_user', function ($q) {
             $q->where('role', Role::OTHER);
@@ -36,33 +30,6 @@ class MainController extends Controller
         }
 
         return view('pages.main.beranda', compact('proyek', 'layanan', 'pekerja', 'testimoni', 'cek'));
-    }
-
-    public function profilUser($username)
-    {
-        $user = User::where('username', $username)->first();
-        $total_user = User::where('role', Role::OTHER)->count();
-
-        $bahasa = Bahasa::where('user_id', $user->id)->orderByDesc('id')->get();
-        $skill = Skill::where('user_id', $user->id)->orderByDesc('id')->get();
-        $proyek = Project::where('user_id', $user->id)->orderByDesc('id')->get();
-        $layanan = Services::where('user_id', $user->id)->orderByDesc('id')->get();
-        $portofolio = Portofolio::where('user_id', $user->id)->orderByDesc('tahun')->get();
-
-        $ulasan_klien = Review::whereHas('get_project', function ($q) use ($user) {
-            $q->where('user_id', $user->id);
-        })->get();
-        $rating_klien = count($ulasan_klien) > 0 ? $user->get_bio->total_bintang_klien / count($ulasan_klien) : 0;
-
-        $ulasan_pekerja = ReviewWorker::whereHas('get_project', function ($q) use ($user) {
-            $q->whereHas('get_pengerjaan', function ($q) use ($user) {
-                $q->where('user_id', $user->id);
-            });
-        })->get();
-        $rating_pekerja = count($ulasan_pekerja) > 0 ? $user->get_bio->total_bintang_pekerja / count($ulasan_pekerja) : 0;
-
-        return view('pages.main.users.profil-publik', compact('user', 'total_user', 'bahasa', 'skill',
-            'proyek', 'layanan', 'portofolio', 'ulasan_klien', 'rating_klien', 'ulasan_pekerja', 'rating_pekerja'));
     }
 
     public function tentang()

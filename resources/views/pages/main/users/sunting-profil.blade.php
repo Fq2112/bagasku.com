@@ -230,9 +230,8 @@
                                                         <div class="input-group">
                                                     <span class="input-group-addon"><i
                                                             class="fa fa-chart-line"></i></span>
-                                                            <select class="form-control" id="tingkatan_bahasa"
-                                                                    name="tingkatan"
-                                                                    required>
+                                                            <select id="tingkatan_bahasa" name="tingkatan" required
+                                                                    class="form-control use-select2">
                                                                 <option></option>
                                                                 <option value="dasar">Dasar</option>
                                                                 <option value="percakapan">Percakapan</option>
@@ -360,9 +359,9 @@
                                                         <div class="input-group">
                                                     <span class="input-group-addon"><i
                                                             class="fa fa-chart-line"></i></span>
-                                                            <select class="form-control" id="tingkatan_skill"
-                                                                    name="tingkatan"
-                                                                    required>
+                                                            <select id="tingkatan_skill"
+                                                                    class="form-control use-select2"
+                                                                    name="tingkatan" required>
                                                                 <option></option>
                                                                 <option value="pemula">Pemula</option>
                                                                 <option value="menengah">Menengah</option>
@@ -529,9 +528,8 @@
                                                         <div class="input-group">
                                                     <span class="input-group-addon"><i
                                                             class="fa fa-transgender"></i></span>
-                                                            <select id="jenis_kelamin" class="form-control"
-                                                                    name="jenis_kelamin"
-                                                                    required>
+                                                            <select id="jenis_kelamin" class="form-control use-select2"
+                                                                    name="jenis_kelamin" required>
                                                                 <option></option>
                                                                 <option value="pria" {{$user->get_bio->jenis_kelamin ==
                                                         "pria" ? 'selected' : ''}}>Pria
@@ -553,7 +551,8 @@
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i
                                                                     class="fa fa-flag"></i></span>
-                                                            <select id="kewarganegaraan" class="form-control"
+                                                            <select id="kewarganegaraan"
+                                                                    class="form-control use-select2"
                                                                     name="kewarganegaraan">
                                                                 <option></option>
                                                                 @foreach($negara as $row)
@@ -667,9 +666,18 @@
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i
                                                                     class="fa fa-map-marked-alt"></i></span>
-                                                            <select id="kota_id" class="form-control" name="kota_id"
-                                                                    required>
+                                                            <select id="kota_id" class="form-control use-select2"
+                                                                    name="kota_id" required>
                                                                 <option></option>
+                                                                @foreach($provinsi as $prov)
+                                                                    <optgroup label="{{$prov->nama}}">
+                                                                        @foreach($prov->get_kota as $kota)
+                                                                            <option value="{{$kota->id}}" {{$user->get_bio
+                                                                            ->kota_id == $kota->id ? 'selected' : ''}}>
+                                                                                {{$kota->nama}}</option>
+                                                                        @endforeach
+                                                                    </optgroup>
+                                                                @endforeach
                                                             </select>
                                                         </div>
                                                     </div>
@@ -955,34 +963,6 @@
                     of: $(this)
                 });
             });
-
-            $("#jenis_kelamin, #tingkatan_bahasa, #tingkatan_skill, #kewarganegaraan").select2({
-                placeholder: "-- Pilih --",
-                allowClear: true,
-                width: '100%',
-            });
-
-            $("#kota_id").select2({
-                data: [
-                        @foreach($provinsi as $prov)
-                    {
-                        id: '{{$prov->id}}',
-                        text: '{{$prov->nama}}',
-                        children: [
-                                @foreach($prov->get_kota as $kota)
-                            {
-                                id: '{{$kota->id}}',
-                                text: '{{$kota->nama}}'
-                            },
-                            @endforeach
-                        ]
-                    },
-                    @endforeach
-                ],
-                placeholder: "-- Pilih --",
-                allowClear: true,
-                width: '100%',
-            }).val('{{$user->get_bio->kota_id}}').trigger('change');
 
             $("#summary").summernote({
                 placeholder: 'Tulis summary Anda disini...',

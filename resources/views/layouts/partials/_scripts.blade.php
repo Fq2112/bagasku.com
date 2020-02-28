@@ -11,6 +11,14 @@
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
 
+        $(".use-select2").select2({
+            placeholder: "-- Pilih --",
+            allowClear: true,
+            width: '100%',
+        });
+
+        $(".rupiah").maskMoney({thousands: '.', decimal: ',', precision: 0});
+
         @if(session('success') || session('error') || session('logout') || session('expire') || session('unknown') || session('recovered'))
         openLoginModal();
         @elseif($errors->has('email') || $errors->has('password') || $errors->has('name'))

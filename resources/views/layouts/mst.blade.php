@@ -131,6 +131,10 @@
             border-color: #112141;
         }
 
+        .select2-selection {
+            height: auto !important;
+        }
+
         .btn-primary .badge {
             color: #122752;
             background-color: #fff;
@@ -381,6 +385,8 @@
 <script src="{{asset('js/modal.js')}}"></script>
 <!-- toggle password -->
 <script src="{{asset('js/hideShowPassword.min.js')}}"></script>
+<!-- jquery-maskMoney -->
+<script src="{{asset('js/jquery.maskMoney.js')}}"></script>
 <!-- select2 -->
 <script src="{{asset('vendor/select2/dist/js/select2.full.min.js')}}"></script>
 <!-- check-mobile -->
