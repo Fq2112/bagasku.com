@@ -4,247 +4,108 @@ namespace App\Http\Controllers\Pages\Users;
 
 use App\Http\Controllers\Controller;
 use App\Model\Bahasa;
-use App\Model\Negara;
+use App\Model\Kategori;
 use App\Model\Portofolio;
-use App\Model\Provinsi;
+use App\Model\Project;
+use App\Model\Review;
+use App\Model\ReviewWorker;
+use App\Model\Services;
 use App\Model\Skill;
+use App\Model\Undangan;
+use App\Support\Role;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    public function dashboard()
+    public function profilUser($username)
     {
-        return null;
+        $user = User::where('username', $username)->first();
+        $total_user = User::where('role', Role::OTHER)->count();
+
+        $bahasa = Bahasa::where('user_id', $user->id)->orderByDesc('id')->get();
+        $skill = Skill::where('user_id', $user->id)->orderByDesc('id')->get();
+        $proyek = Project::where('user_id', $user->id)->orderByDesc('id')->get();
+        $layanan = Services::where('user_id', $user->id)->orderByDesc('id')->get();
+        $portofolio = Portofolio::where('user_id', $user->id)->orderByDesc('tahun')->get();
+
+        $ulasan_klien = Review::whereHas('get_project', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        })->get();
+        $rating_klien = count($ulasan_klien) > 0 ? $user->get_bio->total_bintang_klien / count($ulasan_klien) : 0;
+
+        $ulasan_pekerja = ReviewWorker::whereHas('get_project', function ($q) use ($user) {
+            $q->whereHas('get_pengerjaan', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        })->get();
+        $rating_pekerja = count($ulasan_pekerja) > 0 ? $user->get_bio->total_bintang_pekerja / count($ulasan_pekerja) : 0;
+
+        $kategori = Kategori::orderBy('nama')->get();
+        $auth_proyek = Project::where('user_id', Auth::id())->where('pribadi', false)->get();
+
+        return view('pages.main.users.profil-publik', compact('user', 'total_user', 'bahasa', 'skill',
+            'proyek', 'layanan', 'portofolio', 'ulasan_klien', 'rating_klien', 'ulasan_pekerja', 'rating_pekerja',
+            'kategori', 'auth_proyek'));
     }
 
-    public function profil()
+    public function userHireMe(Request $request)
     {
-        $user = Auth::user();
-        $negara = Negara::all();
-        $provinsi = Provinsi::all();
-        $bahasa = Bahasa::where('user_id', Auth::id())->orderByDesc('id')->get();
-        $skill = Skill::where('user_id', Auth::id())->orderByDesc('id')->get();
-        $portofolio = Portofolio::where('user_id', Auth::id())->orderByDesc('tahun')->get();
+        if ($request->hasFile('thumbnail')) {
+            $this->validate($request, ['thumbnail' => 'image|mimes:jpg,jpeg,gif,png|max:2048']);
+            $thumbnail = $request->file('thumbnail')->getClientOriginalName();
+            $request->file('thumbnail')->storeAs('public/proyek/thumbnail', $thumbnail);
+        } else {
+            $thumbnail = null;
+        }
 
-        return view('pages.main.users.sunting-profil', compact('user', 'negara', 'provinsi',
-            'bahasa', 'skill', 'portofolio'));
-    }
-
-    public function updateProfil(Request $request)
-    {
-        $user = User::findOrFail(Auth::id());
-
-        if ($request->hasFile('latar_belakang')) {
+        if ($request->hasFile('lampiran')) {
             $this->validate($request, [
-                'latar_belakang' => 'image|mimes:jpg,jpeg,gif,png|max:2048',
+                'lampiran' => 'required|array',
+                'lampiran.*' => 'mimes:jpg,jpeg,gif,png,pdf,doc,docx,xls,xlsx,odt,ppt,pptx|max:5120'
             ]);
 
-            $name = $request->file('latar_belakang')->getClientOriginalName();
-
-            if ($user->get_bio->latar_belakang != '') {
-                Storage::delete('public/users/latar_belakang/' . $user->get_bio->latar_belakang);
+            $lampiran = [];
+            $i = 0;
+            foreach ($request->file('lampiran') as $file) {
+                $file->storeAs('public/proyek/lampiran', $file->getClientOriginalName());
+                $lampiran[$i] = $file->getClientOriginalName();
+                $i = 1 + $i;
             }
-
-            if ($request->file('latar_belakang')->isValid()) {
-                $request->latar_belakang->storeAs('public/users/latar_belakang', $name);
-                $user->get_bio->update(['latar_belakang' => $name]);
-                return $name;
-            }
-
         } else {
-            if ($request->check_form == 'kontak') {
-                $user->get_bio->update([
-                    'hp' => $request->hp,
-                    'alamat' => $request->alamat,
-                    'kode_pos' => $request->kode_pos,
-                    'kota_id' => $request->kota_id,
-                ]);
-
-            } elseif ($request->check_form == 'personal') {
-                $user->update(['name' => $request->name]);
-                $user->get_bio->update([
-                    'tgl_lahir' => $request->tgl_lahir,
-                    'jenis_kelamin' => $request->jenis_kelamin,
-                    'kewarganegaraan' => $request->kewarganegaraan,
-                    'website' => $request->website,
-                ]);
-
-            } elseif ($request->check_form == 'summary') {
-                $user->get_bio->update(['summary' => $request->summary]);
-
-            } elseif ($request->check_form == 'status') {
-                $user->get_bio->update(['status' => $request->status]);
-                return $user->get_bio->status;
-            }
+            $lampiran = null;
         }
 
-        return back()->with('update', 'Data ' . $request->check_form . ' Anda berhasil diperbarui!');
-    }
-
-    public function tambahPortofolio(Request $request)
-    {
-        $this->validate($request, ['foto' => 'image|mimes:jpg,jpeg,gif,png|max:2048']);
-        $foto = $request->file('foto')->getClientOriginalName();
-        $request->file('foto')->storeAs('public/users/portofolio', $foto);
-
-        Portofolio::create([
+        $proyek = Project::create([
             'user_id' => Auth::id(),
-            'foto' => $foto,
+            'subkategori_id' => $request->subkategori_id,
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
-            'tahun' => $request->tahun,
-            'tautan' => $request->tautan,
+            'waktu_pengerjaan' => $request->waktu_pengerjaan,
+            'harga' => str_replace('.', '', $request->harga),
+            'thumbnail' => $thumbnail,
+            'lampiran' => $lampiran,
+            'pribadi' => true,
         ]);
 
-        return back()->with('create', 'Portofolio [' . $request->judul . ' - ' . $request->tahun . '] Anda berhasil ditambahkan!');
-    }
-
-    public function updatePortofolio(Request $request)
-    {
-        $portofolio = Portofolio::find($request->id);
-
-        if ($request->hasFile('foto')) {
-            $this->validate($request, ['foto' => 'image|mimes:jpg,jpeg,gif,png|max:2048']);
-            $foto = $request->file('foto')->getClientOriginalName();
-            Storage::delete('public/users/portofolio/' . $portofolio->foto);
-            $request->file('foto')->storeAs('public/users/portofolio', $foto);
-        } else {
-            $foto = $portofolio->foto;
-        }
-
-        $portofolio->update([
-            'foto' => $foto,
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'tahun' => $request->tahun,
-            'tautan' => $request->tautan,
+        $undangan = Undangan::create([
+            'user_id' => $request->user_id,
+            'proyek_id' => $proyek->id,
         ]);
 
-        return back()->with('update', 'Portofolio [' . $portofolio->judul . ' - ' . $portofolio->tahun . '] Anda berhasil diperbarui!');
+        return back()->with('hire_me', 'Permintaan Anda berhasil dikirimkan! Silahkan tunggu tanggapan dari ' .
+            $undangan->get_user->name . ', terimakasih.');
     }
 
-    public function hapusPortofolio($id)
+    public function userInviteToBid(Request $request)
     {
-        $portofolio = Portofolio::find(decrypt($id));
-        Storage::delete('public/users/portofolio/' . $portofolio->foto);
-        $portofolio->delete();
-
-        return back()->with('delete', 'Portofolio [' . $portofolio->judul . ' - ' . $portofolio->tahun . '] Anda berhasil dihapus!');
-    }
-
-    public function tambahBahasa(Request $request)
-    {
-        Bahasa::create([
-            'user_id' => Auth::id(),
-            'nama' => $request->nama,
-            'tingkatan' => $request->tingkatan,
+        $undangan = Undangan::create([
+            'user_id' => $request->user_id,
+            'proyek_id' => $request->proyek_id,
         ]);
 
-        return back()->with('create', 'Kemampuan berbahasa [' . $request->nama . '] berhasil ditambahkan!');
-    }
-
-    public function updateBahasa(Request $request)
-    {
-        $bahasa = Bahasa::find($request->id);
-        $bahasa->update([
-            'nama' => $request->nama,
-            'tingkatan' => $request->tingkatan,
-        ]);
-
-        return back()->with('update', 'Kemampuan berbahasa [' . $bahasa->nama . '] Anda berhasil diperbarui!');
-    }
-
-    public function hapusBahasa($id)
-    {
-        $bahasa = Bahasa::find(decrypt($id));
-        $bahasa->delete();
-
-        return back()->with('delete', 'Kemampuan berbahasa [' . $bahasa->nama . '] Anda berhasil dihapus!');
-    }
-
-    public function tambahSkill(Request $request)
-    {
-        Skill::create([
-            'user_id' => Auth::id(),
-            'nama' => $request->nama,
-            'tingkatan' => $request->tingkatan,
-        ]);
-
-        return back()->with('create', 'Skill [' . $request->nama . '] berhasil ditambahkan!');
-    }
-
-    public function updateSkill(Request $request)
-    {
-        $skill = Skill::find($request->id);
-        $skill->update([
-            'nama' => $request->nama,
-            'tingkatan' => $request->tingkatan,
-        ]);
-
-        return back()->with('update', 'Skill [' . $skill->nama . '] Anda berhasil diperbarui!');
-    }
-
-    public function hapusSkill($id)
-    {
-        $skill = Skill::find(decrypt($id));
-        $skill->delete();
-
-        return back()->with('delete', 'Skill [' . $skill->nama . '] Anda berhasil dihapus!');
-    }
-
-    public function pengaturan()
-    {
-        $user = Auth::user();
-
-        return view('pages.main.users.pengaturan-akun', compact('user'));
-    }
-
-    public function updatePengaturan(Request $request)
-    {
-        $user = User::findOrFail(Auth::id());
-
-        if ($request->hasFile('foto')) {
-            $this->validate($request, ['foto' => 'image|mimes:jpg,jpeg,gif,png|max:2048']);
-
-            $name = $request->file('foto')->getClientOriginalName();
-
-            if ($user->get_bio->foto != '') {
-                Storage::delete('public/users/foto/' . $user->get_bio->foto);
-            }
-
-            if ($request->file('foto')->isValid()) {
-                $request->foto->storeAs('public/users/foto', $name);
-                $user->get_bio->update(['foto' => $name]);
-                return asset('storage/users/foto/' . $name);
-            }
-
-        } else {
-            if ($request->has('username')) {
-                $check = User::where('username', $request->username)->first();
-
-                if (!$check || $request->username == Auth::user()->username) {
-                    $user->update(['username' => $request->username]);
-                    return $user->username;
-                } else {
-                    return 0;
-                }
-
-            } else {
-                if (!Hash::check($request->password, $user->password)) {
-                    return 0;
-                } else {
-                    if ($request->new_password != $request->password_confirmation) {
-                        return 1;
-                    } else {
-                        $user->update(['password' => bcrypt($request->new_password)]);
-                        return 2;
-                    }
-                }
-            }
-        }
+        return back()->with('invite_to_bid', 'Permintaan Anda berhasil dikirimkan! Silahkan tunggu tanggapan dari ' .
+            $undangan->get_user->name . ', terimakasih.');
     }
 }
