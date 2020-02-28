@@ -21,7 +21,7 @@ class CreateBidTable extends Migration
             $table->unsignedBigInteger('proyek_id');
             $table->foreign('proyek_id')->references('id')->on('project')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->boolean('tolak')->default(null);
+            $table->boolean('tolak')->nullable();
             $table->timestamps();
         });
     }
