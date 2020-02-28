@@ -46,6 +46,9 @@
             <ul class="dropdown-menu dropdown-arrow">
                 <li><a href="{{Auth::user()->isRoot() || Auth::user()->isAdmin() ? route('admin.dashboard') :
                 route('user.dashboard')}}"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a></li>
+                <li><a href="{{route('user.proyek')}}"><i class="fa fa-business-time mr-2"></i>Kelola Tugas/Proyek</a>
+                </li>
+                <li><a href="{{route('user.layanan')}}"><i class="fa fa-tools mr-2"></i>Kelola Layanan</a></li>
                 <li><a href="{{Auth::user()->isRoot() || Auth::user()->isAdmin() ? route('admin.edit.profile') :
                 route('user.profil')}}"><i class="fa fa-user-edit mr-2"></i>Sunting Profil</a></li>
                 <li><a href="{{Auth::user()->isRoot() || Auth::user()->isAdmin() ? route('admin.settings') :

@@ -21,9 +21,9 @@ class Project extends Model
         return $this->belongsTo(SubKategori::class, 'subkategori_id');
     }
 
-    public function get_tawaran()
+    public function get_bid()
     {
-        return $this->hasMany(Tawaran::class, 'proyek_id');
+        return $this->hasMany(Bid::class, 'proyek_id');
     }
 
     public function get_pengerjaan()

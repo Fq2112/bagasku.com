@@ -329,7 +329,7 @@
                                 </div>
                                 <div class="pull-right">
                                     <p data-toggle="tooltip" title="Total bid">
-                                        <i class="fa fa-paper-plane"></i> {{$row->get_tawaran->count()}} bid</p>
+                                        <i class="fa fa-paper-plane"></i> {{$row->get_bid->count()}} bid</p>
                                 </div>
                             </div>
                         </div>

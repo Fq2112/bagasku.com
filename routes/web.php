@@ -127,8 +127,18 @@ Route::group(['prefix' => 'akun'], function () {
     Route::group(['namespace' => 'Pages\Users', 'middleware' => ['auth','user']], function () {
 
         Route::get('dashboard', [
-            'uses' => 'AkunController@dashboard',
+            'uses' => 'DashboardController@dashboard',
             'as' => 'user.dashboard'
+        ]);
+
+        Route::get('proyek', [
+            'uses' => 'DashboardController@proyek',
+            'as' => 'user.proyek'
+        ]);
+
+        Route::get('layanan', [
+            'uses' => 'DashboardController@layanan',
+            'as' => 'user.layanan'
         ]);
 
         Route::get('pengaturan', [

@@ -16,11 +16,6 @@ use Illuminate\Support\Facades\Storage;
 
 class AkunController extends Controller
 {
-    public function dashboard()
-    {
-        return null;
-    }
-
     public function profil()
     {
         $user = Auth::user();

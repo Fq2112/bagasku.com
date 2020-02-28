@@ -12,7 +12,7 @@ use App\Model\Review;
 use App\Model\ReviewWorker;
 use App\Model\Services;
 use App\Model\Skill;
-use App\Model\Tawaran;
+use App\Model\Bid;
 use App\Model\Testimoni;
 use App\Model\UlasanService;
 use App\Model\Undangan;
@@ -148,9 +148,9 @@ class User extends Authenticatable
         return $this->hasOne(Testimoni::class, 'user_id');
     }
 
-    public function get_tawaran()
+    public function get_bid()
     {
-        return $this->hasMany(Tawaran::class, 'user_id');
+        return $this->hasMany(Bid::class, 'user_id');
     }
 
     public function get_undangan()

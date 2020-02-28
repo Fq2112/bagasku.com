@@ -594,7 +594,7 @@
                                                             </div>
                                                             <div class="list-content">
                                                                 <p class="list-price">
-                                                                    <sub class="list-category">Total bid: <span>{{$row->get_tawaran->count()}} bid</span></sub>
+                                                                    <sub class="list-category">Total bid: <span>{{$row->get_bid->count()}} bid</span></sub>
                                                                     <br>Rp{{number_format($row->harga,2,',','.')}}
                                                                     <span class="list-date"><i
                                                                             class="fa fa-calendar-week"></i>{{$row->waktu_pengerjaan}} hari</span>

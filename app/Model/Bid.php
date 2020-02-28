@@ -5,9 +5,9 @@ namespace App\Model;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 
-class Tawaran extends Model
+class Bid extends Model
 {
-    protected $table = 'tawaran';
+    protected $table = 'bid';
     protected $guarded = ['id'];
 
     public function get_user()
