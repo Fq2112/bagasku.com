@@ -47,8 +47,15 @@ class ProyekLayananSeeder extends Seeder
         $arr_pekerja = $pekerja->pluck('id')->toArray();
         $arr_rate = ["3.5", "4", "4.5", "5"];
         foreach (\App\Model\Project::all() as $proyek) {
+            $user_id = $arr_pekerja[array_rand($arr_pekerja)];
+            \App\Model\Bid::create([
+                'user_id' => $user_id,
+                'proyek_id' => $proyek->id,
+                'tolak' => false
+            ]);
+
             $pengerjaan = \App\Model\Pengerjaan::create([
-                'user_id' => $arr_pekerja[array_rand($arr_pekerja)],
+                'user_id' => $user_id,
                 'proyek_id' => $proyek->id,
                 'selesai' => true,
                 'tautan' => $faker->imageUrl(),
@@ -56,6 +63,7 @@ class ProyekLayananSeeder extends Seeder
 
             \App\Model\Pembayaran::create([
                 'proyek_id' => $proyek->id,
+                'jumlah_pembayaran' => $proyek->harga
             ]);
 
             $review_klien = \App\Model\Review::create([
@@ -106,6 +114,16 @@ class ProyekLayananSeeder extends Seeder
                 'pengerjaan_layanan_id' => $pengeraanLayanan->id,
                 'deskripsi' => '<p>' . $faker->paragraph . '</p>',
                 'bintang' => $arr_rate[array_rand($arr_rate)]
+            ]);
+
+            \App\Model\Undangan::create([
+                'user_id' => $row->id,
+                'proyek_id' => rand(\App\Model\Project::min('id'), \App\Model\Project::max('id'))
+            ]);
+
+            \App\Model\Undangan::create([
+                'user_id' => $row->id,
+                'proyek_id' => rand(\App\Model\Project::min('id'), \App\Model\Project::max('id'))
             ]);
         }
     }

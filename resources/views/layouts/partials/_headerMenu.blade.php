@@ -11,7 +11,9 @@
                     <a href="#">{{$kat->nama}} <i class="fa fa-angle-down"></i></a>
                     <ul class="dropdown-menu dropdown-arrow">
                         @foreach($kat->get_sub as $row)
-                            <li><a href="#">{{$row->nama}}</a></li>
+                            <li>
+                                <a href="{{route('cari.data', ['filter' => 'proyek', 'sub_kat' => $row->id])}}">{{$row->nama}}</a>
+                            </li>
                         @endforeach
                     </ul>
                 </li>
@@ -27,7 +29,9 @@
                     <a href="#">{{$kat->nama}} <i class="fa fa-angle-down"></i></a>
                     <ul class="dropdown-menu dropdown-arrow">
                         @foreach($kat->get_sub as $row)
-                            <li><a href="#">{{$row->nama}}</a></li>
+                            <li>
+                                <a href="{{route('cari.data', ['filter' => 'proyek', 'sub_kat' => $row->id])}}">{{$row->nama}}</a>
+                            </li>
                         @endforeach
                     </ul>
                 </li>

@@ -126,10 +126,29 @@ Route::group(['prefix' => 'akun'], function () {
 
     Route::group(['namespace' => 'Pages\Users', 'middleware' => ['auth','user']], function () {
 
-        Route::get('dashboard', [
-            'uses' => 'DashboardController@dashboard',
-            'as' => 'user.dashboard'
-        ]);
+        Route::group(['prefix' => 'dashboard'], function () {
+
+            Route::get('/', [
+                'uses' => 'DashboardController@dashboard',
+                'as' => 'user.dashboard'
+            ]);
+
+            Route::get('bid/{id}/hapus', [
+                'uses' => 'DashboardController@hapusBid',
+                'as' => 'user.hapus.bid'
+            ]);
+
+            Route::get('undangan/{id}/terima', [
+                'uses' => 'DashboardController@terimaUndangan',
+                'as' => 'user.terima.undangan'
+            ]);
+
+            Route::get('undangan/{id}/tolak', [
+                'uses' => 'DashboardController@tolakUndangan',
+                'as' => 'user.tolak.undangan'
+            ]);
+
+        });
 
         Route::get('proyek', [
             'uses' => 'DashboardController@proyek',
@@ -139,16 +158,6 @@ Route::group(['prefix' => 'akun'], function () {
         Route::get('layanan', [
             'uses' => 'DashboardController@layanan',
             'as' => 'user.layanan'
-        ]);
-
-        Route::get('pengaturan', [
-            'uses' => 'AkunController@pengaturan',
-            'as' => 'user.pengaturan'
-        ]);
-
-        Route::put('pengaturan/update', [
-            'uses' => 'AkunController@updatePengaturan',
-            'as' => 'user.update.pengaturan'
         ]);
 
         Route::group(['prefix' => 'profil'], function () {
@@ -221,6 +230,16 @@ Route::group(['prefix' => 'akun'], function () {
             });
 
         });
+
+        Route::get('pengaturan', [
+            'uses' => 'AkunController@pengaturan',
+            'as' => 'user.pengaturan'
+        ]);
+
+        Route::put('pengaturan/update', [
+            'uses' => 'AkunController@updatePengaturan',
+            'as' => 'user.update.pengaturan'
+        ]);
 
     });
 

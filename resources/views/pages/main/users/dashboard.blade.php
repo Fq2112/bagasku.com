@@ -4,7 +4,8 @@
     <link rel="stylesheet" href="{{asset('css/card.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap-tabs-responsive.css')}}">
     <link rel="stylesheet" href="{{asset('admins/modules/datatables/datatables.min.css')}}">
-    <link rel="stylesheet" href="{{asset('admins/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap.min.css')}}">
+    <link rel="stylesheet"
+          href="{{asset('admins/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('admins/modules/datatables/Select-1.2.4/css/select.bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('admins/modules/datatables/Buttons-1.5.6/css/buttons.bootstrap.min.css')}}">
     <style>
@@ -13,7 +14,7 @@
         }
 
         .btn-link {
-            border:1px solid #ccc;
+            border: 1px solid #ccc;
         }
 
         .custom-control {
@@ -126,13 +127,16 @@
         <div class="breadcrumbs-overlay"></div>
         <div class="page-title">
             <h2>Dashboard: {{$user->username}}</h2>
-            <p>Halaman ini menampilkan daftar bid yang telah Anda kirimkan dan juga daftar undangan tugas/proyek yang Anda terima.</p>
+            <p>Halaman ini menampilkan daftar bid yang telah Anda kirimkan, undangan tugas/proyek yang Anda terima, dan
+                juga daftar tugas/proyek serta layanan yang sedang Anda kerjakan.</p>
         </div>
         <ul class="crumb">
             <li><a href="{{route('beranda')}}"><i class="fa fa-home"></i></a></li>
             <li><i class="fa fa-angle-double-right"></i> <a href="{{route('beranda')}}">Beranda</a></li>
             <li><i class="fa fa-angle-double-right"></i> <a href="{{route('user.dashboard')}}">Dashboard</a></li>
-            <li><a href="#" onclick="goToAnchor()"><i class="fa fa-angle-double-right"></i> Daftar Bid & Undangan</a></li>
+            <li><a href="#" onclick="goToAnchor()"><i class="fa fa-angle-double-right"></i> Daftar Bid, Undangan, &
+                    Pengerjaan</a>
+            </li>
         </ul>
     </div>
 
@@ -187,23 +191,33 @@
                                     <i class="fa fa-envelope mr-2"></i>UNDANGAN <span class="badge badge-secondary">
                                         {{count($undangan) > 999 ? '999+' : count($undangan)}}</span></a>
                             </li>
+                            <li role="presentation" class="next">
+                                <a class="nav-item nav-link" href="#pengerjaan-proyek" id="pengerjaan-proyek-tab"
+                                   role="tab" data-toggle="tab" aria-controls="pengerjaan-proyek" aria-expanded="true">
+                                    <i class="fa fa-business-time mr-2"></i>PENGERJAAN PROYEK
+                                    <span class="badge badge-secondary">
+                                        {{count($pengerjaan_proyek) > 999 ? '999+' : count($pengerjaan_proyek)}}</span>
+                                </a>
+                            </li>
+                            <li role="presentation" class="next">
+                                <a class="nav-item nav-link" href="#pengerjaan-layanan" id="pengerjaan-layanan-tab"
+                                   role="tab" data-toggle="tab" aria-controls="pengerjaan-layanan" aria-expanded="true">
+                                    <i class="fa fa-tools mr-2"></i>PENGERJAAN LAYANAN
+                                    <span class="badge badge-secondary">
+                                        {{count($pengerjaan_layanan) >999 ? '999+' : count($pengerjaan_layanan)}}</span>
+                                </a>
+                            </li>
                         </ul>
                         <div id="myTabContent" class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active" id="bid" aria-labelledby="bid-tab"
                                  style="border: none">
                                 <div class="table-responsive">
-                                    <table class="table table-striped" id="dt-buttons">
+                                    <table class="table table-striped" id="dt-bid">
                                         <thead>
                                         <tr>
-                                            <th class="text-center">
-                                                <div class="custom-checkbox custom-control">
-                                                    <input type="checkbox" class="custom-control-input" id="cb-all">
-                                                    <label for="cb-all" class="custom-control-label">#</label>
-                                                </div>
-                                            </th>
-                                            <th class="text-center">ID</th>
+                                            <th class="text-center">#</th>
                                             <th>Tugas/Proyek</th>
-                                            <th>Waktu Pengerjaan</th>
+                                            <th class="text-center">Batas Waktu</th>
                                             <th class="text-right">Harga (Rp)</th>
                                             <th class="text-center">Status</th>
                                             <th class="text-center">Aksi</th>
@@ -212,38 +226,50 @@
                                         <tbody>
                                         @php $no = 1; @endphp
                                         @foreach($bid as $row)
+                                            @php
+                                                if(is_null($row->tolak)){
+                                                    $class = 'warning';
+                                                    $status = 'DIPROSES';
+                                                    $attr = '';
+                                                } else {
+                                                    if($row->tolak == true){
+                                                        $class = 'danger';
+                                                        $status = 'DITOLAK';
+                                                        $attr = 'disabled';
+                                                    } else {
+                                                        $class = 'success';
+                                                        $status = 'DITERIMA';
+                                                        $attr = 'disabled';
+                                                    }
+                                                }
+                                            @endphp
                                             <tr>
+                                                <td style="vertical-align: middle" align="center">{{$no++}}</td>
+                                                <td style="vertical-align: middle">{{$row->get_project->judul}}</td>
                                                 <td style="vertical-align: middle" align="center">
-                                                    <div class="custom-checkbox custom-control">
-                                                        <input type="checkbox" id="cb-{{$row->id}}"
-                                                               class="custom-control-input dt-checkboxes">
-                                                        <label for="cb-{{$row->id}}"
-                                                               class="custom-control-label">{{$no++}}</label>
-                                                    </div>
+                                                    {{$row->get_project->waktu_pengerjaan}} hari
                                                 </td>
-                                                <td style="vertical-align: middle" align="center">{{$row->id}}</td>
-                                                <td style="vertical-align: middle">
-                                                    <b>{{$row->get_project->judul}}</b></td>
-                                                <td style="vertical-align: middle">{{$row->get_project->waktu_pengerjaan}} hari</td>
                                                 <td style="vertical-align: middle" align="right">
                                                     {{number_format($row->get_project->harga,2,',','.')}}</td>
                                                 <td style="vertical-align: middle" align="center">
-                                                    @if($row->tolak == null)
-                                                        <span class="label label-warning">PROSES</span>
-                                                    @elseif($row->tolak == true)
-                                                        <span class="label label-danger">DITOLAK</span>
-                                                    @else
-                                                        <span class="label label-success">DITERIMA</span>
-                                                    @endif
+                                                    <span class="label label-{{$class}}">{{$status}}</span>
                                                 </td>
                                                 <td style="vertical-align: middle" align="center">
                                                     <div class="input-group">
                                                         <span class="input-group-btn">
-                                                            <a class="btn btn-link btn-sm" data-toggle="tooltip"
-                                                               title="Lihat Proyek" href="#"><i class="fa fa-info" style="margin-right: 0"></i></a>
-                                                            <a class="btn btn-link btn-sm delete-data"
-                                                               data-toggle="tooltip" title="Hapus Bid"
-                                                               href="#"><i class="fa fa-trash-alt" style="margin-right: 0"></i></a>
+                                                            <a class="btn btn-link btn-sm" style="margin-right: 0"
+                                                               href="{{route('detail.proyek',
+                                                               ['username' => $row->get_project->get_user->username,
+                                                               'judul' => $row->get_project->get_judul_uri()])}}"
+                                                               data-toggle="tooltip" title="Lihat Proyek">
+                                                                <i class="fa fa-info" style="margin-right: 0"></i>
+                                                            </a>
+                                                            <button class="btn btn-link btn-sm" type="button"
+                                                                    data-toggle="tooltip" title="Batalkan Bid" {{$attr}}
+                                                                    onclick="batalkanBid('{{route("user.hapus.bid",
+                                                                    ["id" => $row->id])}}','{{$row->get_project->judul}}')">
+                                                                <i class="fa fa-trash-alt" style="margin-right: 0"></i>
+                                                            </button>
                                                         </span>
                                                     </div>
                                                 </td>
@@ -251,22 +277,84 @@
                                         @endforeach
                                         </tbody>
                                     </table>
-                                    <form method="post" id="form-bid">
-                                        @csrf
-                                        <input type="hidden" name="bid_ids">
-                                    </form>
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane fade" id="undangan" aria-labelledby="undangan-tab"
                                  style="border: none">
-                                @if(count($undangan) > 0)
-                                    <div class="row">
+                                <div class="table-responsive">
+                                    <table class="table table-striped" id="dt-undangan">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th>Tugas/Proyek</th>
+                                            <th class="text-center">Batas Waktu</th>
+                                            <th class="text-right">Harga (Rp)</th>
+                                            <th class="text-center">Jenis Proyek</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Aksi</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @php $no = 1; @endphp
                                         @foreach($undangan as $row)
+                                            @php
+                                                if(is_null($row->terima)){
+                                                    $class = 'warning';
+                                                    $status = 'MENUNGGU KONFIRMASI';
+                                                    $attr = '';
+                                                } else {
+                                                    if($row->terima == true){
+                                                        $class = 'danger';
+                                                        $status = 'DITERIMA';
+                                                        $attr = 'disabled';
+                                                    } else {
+                                                        $class = 'success';
+                                                        $status = 'DITOLAK';
+                                                        $attr = 'disabled';
+                                                    }
+                                                }
+                                            @endphp
+                                            <tr>
+                                                <td style="vertical-align: middle" align="center">{{$no++}}</td>
+                                                <td style="vertical-align: middle">{{$row->get_project->judul}}</td>
+                                                <td style="vertical-align: middle" align="center">
+                                                    {{$row->get_project->waktu_pengerjaan}} hari
+                                                </td>
+                                                <td style="vertical-align: middle" align="right">
+                                                    {{number_format($row->get_project->harga,2,',','.')}}</td>
+                                                <td style="vertical-align: middle" align="center">
+                                                    <span
+                                                        class="label label-{{$row->pribadi == false ? 'info' : 'primary'}}">
+                                                        {{$row->pribadi == false ? 'PUBLIK' : 'PRIVAT'}}</span>
+                                                <td style="vertical-align: middle" align="center">
+                                                    <span class="label label-{{$class}}">{{$status}}</span>
+                                                </td>
+                                                <td style="vertical-align: middle" align="center">
+                                                    <div class="input-group">
+                                                        <span class="input-group-btn">
+                                                            <a class="btn btn-link btn-sm" style="margin-right: 0"
+                                                               href="{{route('detail.proyek',
+                                                               ['username' => $row->get_project->get_user->username,
+                                                               'judul' => $row->get_project->get_judul_uri()])}}"
+                                                               data-toggle="tooltip" title="Lihat Proyek">
+                                                                <i class="fa fa-info" style="margin-right: 0"></i>
+                                                            </a>
+                                                            <button class="btn btn-link btn-sm" type="button" {{$attr}}
+                                                            data-toggle="tooltip" title="Konfirmasi Undangan"
+                                                                    onclick="konfirmasiUndangan('{{route("user.terima.undangan",
+                                                                    ["id" => $row->id])}}','{{route("user.tolak.undangan",
+                                                                    ["id" => $row->id])}}','{{$row->get_project->judul}}')">
+                                                                <i class="fa fa-clipboard-check"
+                                                                   style="margin-right: 0"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         @endforeach
-                                    </div>
-                                @else
-                                    <p>Anda belum mendapatkan undangan tugas/proyek apapun, baik yang bersifat publik maupun privat.</p>
-                                @endif
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -283,96 +371,124 @@
     <script src="{{asset('vendor/jquery-ui/jquery-ui.min.js')}}"></script>
     <script>
         $(function () {
-            var export_bid = 'Daftar Bid Tugas/Proyek ({{now()->format('j F Y')}})', bid_dt = $("#dt-buttons").DataTable({
+            var export_bid = 'Daftar Bid Tugas/Proyek ({{now()->format('j F Y')}})',
+                export_undangan = 'Daftar Undangan Tugas/Proyek ({{now()->format('j F Y')}})';
+
+            $("#dt-bid").DataTable({
                 dom: "<'row'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-5'B><'col-sm-12 col-md-4'f>>" +
                     "<'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                columnDefs: [
-                    {"sortable": false, "targets": 6},
-                    {targets: 1, visible: false, searchable: false}
-                ],
+                columnDefs: [{"sortable": false, "targets": 5}],
                 buttons: [
                     {
                         text: '<b class="text-uppercase"><i class="far fa-file-excel mr-2"></i>Excel</b>',
                         extend: 'excel',
                         exportOptions: {
-                            columns: [0, 2, 3, 4, 5]
+                            columns: [0, 1, 2, 3, 4]
                         },
                         className: 'btn btn-link btn-sm assets-export-btn export-xls ttip',
                         title: export_bid,
                         extension: '.xls'
                     }, {
+                        text: '<b class="text-uppercase"><i class="fa fa-file-pdf mr-2"></i>PDF</b>',
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4]
+                        },
+                        className: 'btn btn-link btn-sm assets-select-btn export-pdf',
+                        title: export_bid,
+                        extension: '.pdf'
+                    }, {
                         text: '<b class="text-uppercase"><i class="fa fa-print mr-2"></i>Cetak</b>',
                         extend: 'print',
                         exportOptions: {
-                            columns: [0, 2, 3, 4, 5]
+                            columns: [0, 1, 2, 3, 4]
                         },
                         className: 'btn btn-link btn-sm assets-select-btn export-print'
-                    }, {
-                        text: '<b class="text-uppercase"><i class="fa fa-trash-alt mr-2"></i>Hapus</b>',
-                        className: 'btn btn-link btn-sm btn_massDelete'
                     }
                 ],
                 fnDrawCallback: function (oSettings) {
                     $('.use-nicescroll').getNiceScroll().resize();
                     $('[data-toggle="tooltip"]').tooltip();
+                },
+            });
 
-                    $("#cb-all").on('click', function () {
-                        if ($(this).is(":checked")) {
-                            $("#dt-buttons tbody tr").addClass("terpilih")
-                                .find('.dt-checkboxes').prop("checked", true).trigger('change');
-                        } else {
-                            $("#dt-buttons tbody tr").removeClass("terpilih")
-                                .find('.dt-checkboxes').prop("checked", false).trigger('change');
-                        }
-                    });
-
-                    $("#dt-buttons tbody tr").on("click", function () {
-                        $(this).toggleClass("terpilih");
-                        if ($(this).hasClass('terpilih')) {
-                            $(this).find('.dt-checkboxes').prop("checked", true).trigger('change');
-                        } else {
-                            $(this).find('.dt-checkboxes').prop("checked", false).trigger('change');
-                        }
-                    });
-
-                    $('.dt-checkboxes').on('click', function () {
-                        if ($(this).is(':checked')) {
-                            $(this).parent().parent().parent().addClass("terpilih");
-                        } else {
-                            $(this).parent().parent().parent().removeClass("terpilih");
-                        }
-                    });
-
-                    $('.btn_massDelete').on("click", function () {
-                        var ids = $.map(bid_dt.rows('.terpilih').data(), function (item) {
-                            return item[1]
-                        });
-                        $("#form-bid input[name=bid_ids]").val(ids);
-                        $("#form-bid").attr("action", "#");
-
-                        if (ids.length > 0) {
-                            swal({
-                                title: 'Hapus Bid',
-                                text: 'Apakah Anda yakin untuk menghapus ' + ids.length + ' data tersebut? Anda tidak dapat mengembalikannya!',
-                                icon: 'warning',
-                                dangerMode: true,
-                                buttons: ["Tidak", "Ya"],
-                                closeOnEsc: false,
-                                closeOnClickOutside: false,
-                            }).then((confirm) => {
-                                if (confirm) {
-                                    swal({icon: "success", buttons: false});
-                                    $("#form-bid")[0].submit();
-                                }
-                            });
-                        } else {
-                            $("#cb-all").prop("checked", false).trigger('change');
-                            swal("Error!", "Tidak ada data yang dipilih!", "error");
-                        }
-                    });
+            $("#dt-undangan").DataTable({
+                dom: "<'row'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-5'B><'col-sm-12 col-md-4'f>>" +
+                    "<'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                columnDefs: [{"sortable": false, "targets": 6}],
+                buttons: [
+                    {
+                        text: '<b class="text-uppercase"><i class="far fa-file-excel mr-2"></i>Excel</b>',
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5]
+                        },
+                        className: 'btn btn-link btn-sm assets-export-btn export-xls ttip',
+                        title: export_undangan,
+                        extension: '.xls'
+                    }, {
+                        text: '<b class="text-uppercase"><i class="fa fa-file-pdf mr-2"></i>PDF</b>',
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5]
+                        },
+                        className: 'btn btn-link btn-sm assets-select-btn export-pdf',
+                        title: export_undangan,
+                        extension: '.pdf'
+                    }, {
+                        text: '<b class="text-uppercase"><i class="fa fa-print mr-2"></i>Cetak</b>',
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5]
+                        },
+                        className: 'btn btn-link btn-sm assets-select-btn export-print'
+                    }
+                ],
+                fnDrawCallback: function (oSettings) {
+                    $('.use-nicescroll').getNiceScroll().resize();
+                    $('[data-toggle="tooltip"]').tooltip();
                 },
             });
         });
+
+        function batalkanBid(url, judul) {
+            swal({
+                title: 'Batalkan Bid',
+                text: 'Apakah Anda yakin akan membatalkan bid tugas/proyek "' + judul + '"? ' +
+                    'Anda tidak dapat mengembalikannya!',
+                icon: 'warning',
+                dangerMode: true,
+                buttons: ["Tidak", "Ya"],
+                closeOnEsc: false,
+                closeOnClickOutside: false,
+            }).then((confirm) => {
+                if (confirm) {
+                    swal({icon: "success", buttons: false});
+                    window.location.href = url;
+                }
+            });
+        }
+
+        function konfirmasiUndangan(urlTerima, urlTolak, judul) {
+            swal({
+                title: 'Konfirmasi Undangan',
+                text: 'Apakah Anda yakin akan mengkonfirmasi undangan tugas/proyek "' + judul + '"? ' +
+                    'Anda tidak dapat mengembalikannya!',
+                icon: 'warning',
+                dangerMode: true,
+                buttons: ["Tolak", "Terima"],
+                closeOnEsc: false,
+                closeOnClickOutside: false,
+            }).then((confirm) => {
+                if (confirm) {
+                    swal({icon: "success", buttons: false});
+                    window.location.href = urlTerima;
+                } else {
+                    swal({icon: "success", buttons: false});
+                    window.location.href = urlTolak;
+                }
+            });
+        }
 
         $(document).on('show.bs.tab', '.nav-tabs-responsive [data-toggle="tab"]', function (e) {
             var $target = $(e.target);
