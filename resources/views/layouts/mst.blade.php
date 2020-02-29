@@ -373,8 +373,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <p>© {{now()->format('Y').' '.env('APP_NAME')}}. All rights reserved | Designed & Developed by
-                            <a href="http://rabbit-media.net" target="_blank">Rabbit Media</a></p>
+                        <p>© {{now()->format('Y').' '.env('APP_NAME')}}. All rights reserved.{{-- | Designed & Developed by
+                            <a href="http://rabbit-media.net" target="_blank">Rabbit Media</a>--}}</p>
                     </div>
                 </div>
             </div>

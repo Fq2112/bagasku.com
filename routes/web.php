@@ -225,12 +225,3 @@ Route::group(['prefix' => 'akun'], function () {
     });
 
 });
-
-Route::group(['namespace' => 'Pages\Admins', 'prefix' => 'admin', 'middleware' => 'admin'], function () {
-
-    Route::get('/', [
-        'uses' => 'AdminController@index',
-        'as' => 'admin.dashboard'
-    ]);
-
-});

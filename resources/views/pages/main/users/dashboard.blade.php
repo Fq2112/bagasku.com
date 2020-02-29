@@ -3,10 +3,10 @@
 @push('styles')
     <link rel="stylesheet" href="{{asset('css/card.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap-tabs-responsive.css')}}">
-    <link rel="stylesheet" href="{{asset('vendor/datatables/datatables.min.css')}}">
-    <link rel="stylesheet" href="{{asset('vendor/datatables/DataTables-1.10.16/css/dataTables.bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{asset('vendor/datatables/Select-1.2.4/css/select.bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{asset('vendor/datatables/Buttons-1.5.6/css/buttons.bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admins/modules/datatables/datatables.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admins/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admins/modules/datatables/Select-1.2.4/css/select.bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('admins/modules/datatables/Buttons-1.5.6/css/buttons.bootstrap.min.css')}}">
     <style>
         .table-striped tbody tr:nth-of-type(odd) {
             background-color: rgba(0, 0, 0, 0.05);
@@ -276,10 +276,10 @@
     </section>
 @endsection
 @push('scripts')
-    <script src="{{asset('vendor/datatables/datatables.min.js')}}"></script>
-    <script src="{{asset('vendor/datatables/DataTables-1.10.16/js/dataTables.bootstrap.min.js')}}"></script>
-    <script src="{{asset('vendor/datatables/Select-1.2.4/js/dataTables.select.min.js')}}"></script>
-    <script src="{{asset('vendor/datatables/Buttons-1.5.6/js/buttons.dataTables.min.js')}}"></script>
+    <script src="{{asset('admins/modules/datatables/datatables.min.js')}}"></script>
+    <script src="{{asset('admins/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap.min.js')}}"></script>
+    <script src="{{asset('admins/modules/datatables/Select-1.2.4/js/dataTables.select.min.js')}}"></script>
+    <script src="{{asset('admins/modules/datatables/Buttons-1.5.6/js/buttons.dataTables.min.js')}}"></script>
     <script src="{{asset('vendor/jquery-ui/jquery-ui.min.js')}}"></script>
     <script>
         $(function () {

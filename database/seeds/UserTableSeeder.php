@@ -17,21 +17,23 @@ class UserTableSeeder extends Seeder
 
         foreach (\App\Support\Role::ALL as $role) {
             if ($role == \App\Support\Role::ADMIN) {
-                User::create([
+                $user = User::create([
                     'name' => "ADMIN",
                     'username' => "admin",
                     'email' => "admin@bagasku.com",
                     'password' => bcrypt('secret'),
                     'role' => $role
                 ]);
+                \App\Model\Bio::create(['user_id' => $user->id]);
             } elseif ($role == \App\Support\Role::ROOT) {
-                User::create([
+                $user = User::create([
                     'name' => "ADMIN",
                     'username' => "root",
                     'email' => "root@bagasku.com",
                     'password' => bcrypt('secret'),
                     'role' => $role
                 ]);
+                \App\Model\Bio::create(['user_id' => $user->id]);
 
             } elseif ($role == \App\Support\Role::OTHER) {
                 for ($c = 0; $c < (($role == \App\Support\Role::OTHER) ? 20 : 2); $c++) {
