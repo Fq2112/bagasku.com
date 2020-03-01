@@ -467,7 +467,7 @@
                                                     <div class="row mb-1" style="border-bottom: 1px solid #eee">
                                                         <div class="col-lg-12">
                                                             <b>ULASAN KLIEN</b><br>
-                                                            @if(!is_null($row->get_project->get_ulasan_pekerja))
+                                                            @if(!is_null($row->get_ulasan_pekerja))
                                                                 <div class="media">
                                                                     <div class="media-left media-middle">
                                                                         <a href="{{route('profil.user', ['username' => $row->get_project->get_user->username])}}">
@@ -488,16 +488,16 @@
                                                                                 {{$row->get_project->get_user->name}}</a>
                                                                             <i class="fa fa-star"
                                                                                style="color: #ffc100;margin: 0 0 0 .5rem"></i>
-                                                                            <b>{{round($row->get_project->get_ulasan_pekerja->bintang * 2) / 2}}</b>
+                                                                            <b>{{round($row->get_ulasan_pekerja->bintang * 2) / 2}}</b>
                                                                             <span class="pull-right"
                                                                                   style="color: #999">
                                                                                 <i class="fa fa-clock"
                                                                                    style="color: #aaa;margin: 0"></i>
-                                                                                {{$row->get_project->get_ulasan_pekerja->created_at->diffForHumans()}}
+                                                                                {{$row->get_ulasan_pekerja->created_at->diffForHumans()}}
                                                                             </span>
                                                                         </p>
                                                                         <blockquote>
-                                                                            {!! $row->get_project->get_ulasan_pekerja->deskripsi !!}
+                                                                            {!! $row->get_ulasan_pekerja->deskripsi !!}
                                                                         </blockquote>
                                                                     </div>
                                                                 </div>
@@ -572,7 +572,7 @@
                                                                         '{{route('ulas.pengerjaan.proyek', ['id' => $row->id])}}',
                                                                         '{{route('data.ulasan.proyek', ['id' => $row->proyek_id])}}',
                                                                         '{{$row->get_project->judul}}')"
-                                                                {{is_null($row->get_project->get_ulasan_pekerja) ||
+                                                                {{is_null($row->get_ulasan_pekerja) ||
                                                                 $row->selesai == true ? 'disabled' : ''}}>
                                                                 <i class="fa fa-edit" style="margin-right: 0"></i>
                                                             </button>
