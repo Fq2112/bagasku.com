@@ -223,7 +223,9 @@
             <div id="update-terbaru" class="all-projects projects-4">
                 @foreach($proyek as $row)
                     @php
-                        $total_ulasan_klien = \App\Model\Project::where('user_id', $row->user_id)->whereHas('get_ulasan')->count();
+                        $total_ulasan_klien = \App\Model\Review::whereHas('get_project', function ($q) use ($row) {
+                            $q->where('user_id', $row->user_id);
+                        })->count();
                         $rate = $total_ulasan_klien > 0 ? $row->get_user->get_bio->total_bintang_klien / $total_ulasan_klien : 0;
                     @endphp
                     <div class="item proyek">
@@ -338,10 +340,14 @@
 
                 @foreach($layanan as $row)
                     @php
-                        $total_ulasan_pekerja = \App\Model\Project::whereHas('get_pengerjaan', function($q) use ($row) {
+                        $ulasan_pekerja = \App\Model\ReviewWorker::whereHas('get_pengerjaan', function ($q) use ($row) {
                             $q->where('user_id', $row->user_id);
-                        })->whereHas('get_ulasan_pekerja')->count();
-                        $rate = $total_ulasan_pekerja > 0 ? $row->get_user->get_bio->total_bintang_pekerja / $total_ulasan_pekerja : 0;
+                        })->count();
+                        $ulasan_layanan = \App\Model\UlasanService::whereHas('get_pengerjaan', function($q) use ($row) {
+                            $q->where('user_id', $row->user_id);
+                        })->count();
+                        $rate = $ulasan_pekerja + $ulasan_layanan > 0 ?
+                        $row->get_user->get_bio->total_bintang_pekerja / $ulasan_pekerja + $ulasan_layanan : 0;
                     @endphp
                     <div class="item layanan">
                         <div class="our-courses">
@@ -451,10 +457,14 @@
 
                 @foreach($pekerja as $row)
                     @php
-                        $total_ulasan_pekerja = \App\Model\Project::whereHas('get_pengerjaan', function($q) use ($row) {
+                        $ulasan_pekerja = \App\Model\ReviewWorker::whereHas('get_pengerjaan', function ($q) use ($row) {
                             $q->where('user_id', $row->user_id);
-                        })->whereHas('get_ulasan_pekerja')->count();
-                        $rate = $total_ulasan_pekerja > 0 ? $row->total_bintang_pekerja / $total_ulasan_pekerja : 0;
+                        })->count();
+                        $ulasan_layanan = \App\Model\UlasanService::whereHas('get_pengerjaan', function($q) use ($row) {
+                            $q->where('user_id', $row->user_id);
+                        })->count();
+                        $rate = $ulasan_pekerja + $ulasan_layanan > 0 ?
+                        $row->total_bintang_pekerja / $ulasan_pekerja + $ulasan_layanan : 0;
                     @endphp
                     <div class="item pekerja">
                         <div class="our-courses">

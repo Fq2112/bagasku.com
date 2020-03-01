@@ -46,7 +46,7 @@ class ProyekLayananSeeder extends Seeder
 
         $arr_pekerja = $pekerja->pluck('id')->toArray();
         $arr_rate = ["3.5", "4", "4.5", "5"];
-        foreach (\App\Model\Project::all() as $proyek) {
+        foreach (\App\Model\Project::take(10)->get() as $proyek) {
             $user_id = $arr_pekerja[array_rand($arr_pekerja)];
             \App\Model\Bid::create([
                 'user_id' => $user_id,
@@ -78,7 +78,7 @@ class ProyekLayananSeeder extends Seeder
 
             $review_pekerja = \App\Model\ReviewWorker::create([
                 'user_id' => $proyek->user_id,
-                'proyek_id' => $proyek->id,
+                'pengerjaan_id' => $pengerjaan->id,
                 'deskripsi' => '<p>' . $faker->paragraph . '</p>',
                 'bintang' => $arr_rate[array_rand($arr_rate)]
             ]);

@@ -698,13 +698,12 @@
                                                             <li>
                                                                 <a href="{{route('profil.user',['username' => $row->get_user->username])}}">
                                                                     <div class="media">
-                                                                        <div class="media-left media-middle"
-                                                                             style="width: 13%">
+                                                                        <div class="media-left media-middle">
                                                                             <img alt="avatar" src="{{$row->get_user->get_bio->foto
                                                                         == "" ? asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg') :
                                                                         asset('storage/users/foto/'.$row->get_user->get_bio->foto)}}"
                                                                                  class="media-object img-thumbnail"
-                                                                                 style="border-radius: 100%">
+                                                                                 width="64" style="border-radius: 100%">
                                                                         </div>
                                                                         <div class="media-body">
                                                                             <p class="media-heading">
@@ -748,13 +747,12 @@
                                                             <li>
                                                                 <a href="{{route('profil.user',['username' => $row->get_user->username])}}">
                                                                     <div class="media">
-                                                                        <div class="media-left media-middle"
-                                                                             style="width: 13%">
+                                                                        <div class="media-left media-middle">
                                                                             <img alt="avatar" src="{{$row->get_user->get_bio->foto
                                                                         == "" ? asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg') :
                                                                         asset('storage/users/foto/'.$row->get_user->get_bio->foto)}}"
                                                                                  class="media-object img-thumbnail"
-                                                                                 style="border-radius: 100%">
+                                                                                 width="64" style="border-radius: 100%">
                                                                         </div>
                                                                         <div class="media-body">
                                                                             <p class="media-heading">

@@ -15,8 +15,8 @@ class UlasanService extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function get_service()
+    public function get_pengerjaan()
     {
-        return $this->belongsTo(Services::class, 'pengerjaan_layanan_id');
+        return $this->belongsTo(PengerjaanLayanan::class, 'pengerjaan_layanan_id');
     }
 }

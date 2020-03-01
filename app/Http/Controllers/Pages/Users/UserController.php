@@ -11,6 +11,7 @@ use App\Model\Review;
 use App\Model\ReviewWorker;
 use App\Model\Services;
 use App\Model\Skill;
+use App\Model\UlasanService;
 use App\Model\Undangan;
 use App\Support\Role;
 use App\User;
@@ -35,12 +36,14 @@ class UserController extends Controller
         })->get();
         $rating_klien = count($ulasan_klien) > 0 ? $user->get_bio->total_bintang_klien / count($ulasan_klien) : 0;
 
-        $ulasan_pekerja = ReviewWorker::whereHas('get_project', function ($q) use ($user) {
-            $q->whereHas('get_pengerjaan', function ($q) use ($user) {
-                $q->where('user_id', $user->id);
-            });
+        $ulasan_pekerja = ReviewWorker::whereHas('get_pengerjaan', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
         })->get();
-        $rating_pekerja = count($ulasan_pekerja) > 0 ? $user->get_bio->total_bintang_pekerja / count($ulasan_pekerja) : 0;
+        $ulasan_layanan = UlasanService::whereHas('get_pengerjaan', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        })->count();
+        $rating_pekerja = count($ulasan_pekerja) + $ulasan_layanan > 0 ?
+            $user->get_bio->total_bintang_pekerja / count($ulasan_pekerja) + $ulasan_layanan : 0;
 
         $kategori = Kategori::orderBy('nama')->get();
         $auth_proyek = Project::where('user_id', Auth::id())->where('pribadi', false)->doesntHave('get_pengerjaan')->get();

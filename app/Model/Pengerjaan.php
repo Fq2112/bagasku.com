@@ -20,4 +20,9 @@ class Pengerjaan extends Model
     {
         return $this->belongsTo(Project::class, 'proyek_id');
     }
+
+    public function get_ulasan_pekerja()
+    {
+        return $this->hasOne(ReviewWorker::class, 'pengerjaan_id');
+    }
 }
