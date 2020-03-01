@@ -39,14 +39,14 @@
         .rating > input:checked ~ label,
         .rating:not(:checked) > label:hover,
         .rating:not(:checked) > label:hover ~ label {
-            color: #2251b6;
+            color: #ffc100;
         }
 
         .rating > input:checked + label:hover,
         .rating > input:checked ~ label:hover,
         .rating > label:hover ~ input:checked ~ label,
         .rating > input:checked ~ label:hover ~ label {
-            color: #3776ff;
+            color: #e1a500;
         }
     </style>
 @endpush

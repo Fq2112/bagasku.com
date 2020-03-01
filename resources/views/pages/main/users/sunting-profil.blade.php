@@ -244,7 +244,7 @@
                                                 <div class="row form-group" id="btn_cancel_lang">
                                                     <div class="col-lg-12">
                                                         <button type="reset" class="btn btn-link"
-                                                                style="border: 1px solid #ccc">CANCEL
+                                                                style="border: 1px solid #ccc">BATAL
                                                         </button>
                                                     </div>
                                                 </div>
@@ -373,7 +373,7 @@
                                                 <div class="row form-group" id="btn_cancel_skill">
                                                     <div class="col-lg-12">
                                                         <button type="reset" class="btn btn-link"
-                                                                style="border: 1px solid #ccc">CANCEL
+                                                                style="border: 1px solid #ccc">BATAL
                                                         </button>
                                                     </div>
                                                 </div>
@@ -905,7 +905,7 @@
                                                 <div class="row form-group" id="btn_cancel_portofolio">
                                                     <div class="col-lg-12">
                                                         <button type="reset" class="btn btn-link"
-                                                                style="border: 1px solid #ccc">CANCEL
+                                                                style="border: 1px solid #ccc">BATAL
                                                         </button>
                                                     </div>
                                                 </div>

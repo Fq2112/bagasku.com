@@ -69,7 +69,7 @@ class ProyekLayananSeeder extends Seeder
             $review_klien = \App\Model\Review::create([
                 'user_id' => $pengerjaan->user_id,
                 'proyek_id' => $proyek->id,
-                'deskripsi' => $faker->paragraph,
+                'deskripsi' => '<p>' . $faker->paragraph . '</p>',
                 'bintang' => $arr_rate[array_rand($arr_rate)]
             ]);
             $proyek->get_user->get_bio->update([
@@ -79,7 +79,7 @@ class ProyekLayananSeeder extends Seeder
             $review_pekerja = \App\Model\ReviewWorker::create([
                 'user_id' => $proyek->user_id,
                 'proyek_id' => $proyek->id,
-                'deskripsi' => $faker->paragraph,
+                'deskripsi' => '<p>' . $faker->paragraph . '</p>',
                 'bintang' => $arr_rate[array_rand($arr_rate)]
             ]);
             $pengerjaan->get_user->get_bio->update([
@@ -126,5 +126,42 @@ class ProyekLayananSeeder extends Seeder
                 'proyek_id' => rand(\App\Model\Project::min('id'), \App\Model\Project::max('id'))
             ]);
         }
+
+        $fq = \App\User::where('role', \App\Support\Role::OTHER)->whereHas('get_bio', function ($q) {
+            $q->orderByDesc('total_bintang_klien');
+        })->whereHas('get_bid')->whereHas('get_undangan')->first();
+
+        $fq->update([
+            'name' => 'Fiqy Ainuzzaqy',
+            'username' => 'fq_whysoserious',
+            'email' => 'fiqy_a@icloud.com'
+        ]);
+        $fq->get_bio->update([
+            'tgl_lahir' => '1997-10-15',
+            'jenis_kelamin' => 'pria',
+            'kewarganegaraan' => 'Indonesia',
+            'kota_id' => 259,
+            'alamat' => 'Jl. Hikmat 50A Betro, Sedati',
+            'kode_pos' => '61253',
+            'hp' => '081356598237',
+            'status' => 'Talk slowly, think quickly!',
+            'summary' => $faker->paragraph,
+            'website' => 'http://rabbit-media.net'
+        ]);
+        \App\Model\Bahasa::create([
+            'user_id' => $fq->id,
+            'nama' => 'Indonesia',
+            'tingkatan' => 'asli'
+        ]);
+        \App\Model\Bahasa::create([
+            'user_id' => $fq->id,
+            'nama' => 'Inggris',
+            'tingkatan' => 'percakapan'
+        ]);
+        \App\Model\Skill::create([
+            'user_id' => $fq->id,
+            'nama' => 'Pemrograman Web',
+            'tingkatan' => 'menengah'
+        ]);
     }
 }

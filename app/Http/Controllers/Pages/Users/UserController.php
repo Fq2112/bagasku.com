@@ -43,7 +43,7 @@ class UserController extends Controller
         $rating_pekerja = count($ulasan_pekerja) > 0 ? $user->get_bio->total_bintang_pekerja / count($ulasan_pekerja) : 0;
 
         $kategori = Kategori::orderBy('nama')->get();
-        $auth_proyek = Project::where('user_id', Auth::id())->where('pribadi', false)->get();
+        $auth_proyek = Project::where('user_id', Auth::id())->where('pribadi', false)->doesntHave('get_pengerjaan')->get();
 
         return view('pages.main.users.profil-publik', compact('user', 'total_user', 'bahasa', 'skill',
             'proyek', 'layanan', 'portofolio', 'ulasan_klien', 'rating_klien', 'ulasan_pekerja', 'rating_pekerja',

@@ -69,6 +69,10 @@
             margin-top: 0 !important
         }
 
+        .mb-1, .my-1 {
+            margin-bottom: 0.5rem !important
+        }
+
         .mr-2, .mx-2 {
             margin-right: 0.5rem !important
         }
@@ -79,6 +83,10 @@
 
         .p-0 {
             padding: 0 !important
+        }
+
+        .float-left {
+            float: left !important
         }
 
         .required {
@@ -92,6 +100,109 @@
             height: 45px;
             line-height: 45px;
             text-align: center;
+        }
+
+        .custom-control {
+            position: relative;
+            display: block;
+            min-height: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .custom-control-inline {
+            display: -ms-inline-flexbox;
+            display: inline-flex;
+            margin-right: 1rem;
+        }
+
+        .custom-control-input {
+            position: absolute;
+            z-index: -1;
+            opacity: 0;
+        }
+
+        .custom-control-input:checked ~ .custom-control-label::before {
+            color: #fff;
+            background-color: #122752;
+        }
+
+        .custom-control-input:focus ~ .custom-control-label::before {
+            box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem rgba(18, 39, 82, 0.25);
+        }
+
+        .custom-control-input:active ~ .custom-control-label::before {
+            color: #fff;
+            background-color: #377aff;
+        }
+
+        .custom-control-input:disabled ~ .custom-control-label {
+            color: #6c757d;
+        }
+
+        .custom-control-input:disabled ~ .custom-control-label::before {
+            background-color: #e9ecef;
+        }
+
+        .custom-control-label {
+            position: relative;
+            margin-bottom: 0;
+        }
+
+        .custom-control-label::before {
+            position: absolute;
+            top: 0.25rem;
+            left: -1.5rem;
+            display: block;
+            width: 1rem;
+            height: 1rem;
+            pointer-events: none;
+            content: "";
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-color: #dee2e6;
+        }
+
+        .custom-control-label::after {
+            position: absolute;
+            top: 0.25rem;
+            left: -1.5rem;
+            display: block;
+            width: 1rem;
+            height: 1rem;
+            content: "";
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 50% 50%;
+        }
+
+        .custom-checkbox .custom-control-label::before {
+            border-radius: 0.25rem;
+        }
+
+        .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+            background-color: #122752;
+        }
+
+        .custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3E%3C/svg%3E");
+        }
+
+        .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
+            background-color: #122752;
+        }
+
+        .custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::after {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 4'%3E%3Cpath stroke='%23fff' d='M0 2h4'/%3E%3C/svg%3E");
+        }
+
+        .custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before {
+            background-color: rgba(18, 39, 82, 0.5);
+        }
+
+        .custom-checkbox .custom-control-input:disabled:indeterminate ~ .custom-control-label::before {
+            background-color: rgba(18, 39, 82, 0.5);
         }
 
         .btn-primary {

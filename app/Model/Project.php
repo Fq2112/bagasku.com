@@ -26,6 +26,11 @@ class Project extends Model
         return $this->hasMany(Bid::class, 'proyek_id');
     }
 
+    public function get_pembayaran()
+    {
+        return $this->hasOne(Pembayaran::class, 'proyek_id');
+    }
+
     public function get_pengerjaan()
     {
         return $this->hasOne(Pengerjaan::class, 'proyek_id');
@@ -39,11 +44,6 @@ class Project extends Model
     public function get_ulasan_pekerja()
     {
         return $this->hasOne(ReviewWorker::class, 'proyek_id');
-    }
-
-    public function get_project()
-    {
-        return $this->hasOne(Pembayaran::class, 'proyek_id');
     }
 
     public function get_judul_uri()

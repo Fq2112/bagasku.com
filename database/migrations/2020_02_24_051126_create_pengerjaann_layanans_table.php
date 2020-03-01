@@ -22,8 +22,6 @@ class CreatePengerjaannLayanansTable extends Migration
             $table->foreign('service_id')->references('id')->on('service')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->boolean('selesai')->default(false);
-            $table->boolean('menyerah')->default(false);
-            $table->text('alasan_menyerah')->nullable();
             $table->text('file_hasil')->nullable();
             $table->text('tautan')->nullable();
             $table->timestamps();

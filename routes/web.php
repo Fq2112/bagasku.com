@@ -124,41 +124,73 @@ Route::group(['prefix' => 'akun'], function () {
         'as' => 'logout'
     ]);
 
-    Route::group(['namespace' => 'Pages\Users', 'middleware' => ['auth','user']], function () {
+    Route::group(['namespace' => 'Pages\Users', 'middleware' => ['auth', 'user']], function () {
 
         Route::group(['prefix' => 'dashboard'], function () {
 
-            Route::get('/', [
-                'uses' => 'DashboardController@dashboard',
-                'as' => 'user.dashboard'
-            ]);
+            Route::group(['prefix' => 'proyek'], function () {
 
-            Route::get('bid/{id}/hapus', [
-                'uses' => 'DashboardController@hapusBid',
-                'as' => 'user.hapus.bid'
-            ]);
+                Route::get('/', [
+                    'uses' => 'DashboardController@dashboardProyek',
+                    'as' => 'user.dashboard.proyek'
+                ]);
 
-            Route::get('undangan/{id}/terima', [
-                'uses' => 'DashboardController@terimaUndangan',
-                'as' => 'user.terima.undangan'
-            ]);
+                Route::get('bid/{id}/batalkan', [
+                    'uses' => 'DashboardController@batalkanBid',
+                    'as' => 'user.batalkan.bid'
+                ]);
 
-            Route::get('undangan/{id}/tolak', [
-                'uses' => 'DashboardController@tolakUndangan',
-                'as' => 'user.tolak.undangan'
-            ]);
+                Route::get('undangan/{id}/terima', [
+                    'uses' => 'DashboardController@terimaUndangan',
+                    'as' => 'user.terima.undangan'
+                ]);
+
+                Route::get('undangan/{id}/tolak', [
+                    'uses' => 'DashboardController@tolakUndangan',
+                    'as' => 'user.tolak.undangan'
+                ]);
+
+                Route::put('pengerjaan/{id}/update', [
+                    'uses' => 'DashboardController@updatePengerjaanProyek',
+                    'as' => 'update.pengerjaan.proyek'
+                ]);
+
+                Route::post('pengerjaan/{id}/ulas', [
+                    'uses' => 'DashboardController@ulasPengerjaanProyek',
+                    'as' => 'ulas.pengerjaan.proyek'
+                ]);
+
+                Route::get('pengerjaan/{id}/ulas/data', [
+                    'uses' => 'DashboardController@dataUlasanProyek',
+                    'as' => 'data.ulasan.proyek'
+                ]);
+
+            });
+
+            Route::group(['prefix' => 'layanan'], function () {
+
+                Route::get('/', [
+                    'uses' => 'DashboardController@dashboardLayanan',
+                    'as' => 'user.dashboard.layanan'
+                ]);
+
+            });
 
         });
 
-        Route::get('proyek', [
-            'uses' => 'DashboardController@proyek',
-            'as' => 'user.proyek'
-        ]);
+        Route::group(['prefix' => 'kelola-data'], function () {
 
-        Route::get('layanan', [
-            'uses' => 'DashboardController@layanan',
-            'as' => 'user.layanan'
-        ]);
+            Route::get('proyek', [
+                'uses' => 'DashboardController@kelolaDataProyek',
+                'as' => 'user.kelola-data.proyek'
+            ]);
+
+            Route::get('layanan', [
+                'uses' => 'DashboardController@kelolaDataLayanan',
+                'as' => 'user.kelola-data.layanan'
+            ]);
+
+        });
 
         Route::group(['prefix' => 'profil'], function () {
 

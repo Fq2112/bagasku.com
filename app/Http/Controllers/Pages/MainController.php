@@ -16,7 +16,7 @@ class MainController extends Controller
 {
     public function index()
     {
-        $proyek = Project::where('pribadi', false)->orderByDesc('id')->take(8)->get();
+        $proyek = Project::where('pribadi', false)->doesntHave('get_pengerjaan')->orderByDesc('id')->take(8)->get();
         $layanan = Services::orderByDesc('id')->take(8)->get();
         $pekerja = Bio::whereHas('get_user', function ($q) {
             $q->where('role', Role::OTHER);

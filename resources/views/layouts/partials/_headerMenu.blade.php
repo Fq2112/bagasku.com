@@ -30,7 +30,7 @@
                     <ul class="dropdown-menu dropdown-arrow">
                         @foreach($kat->get_sub as $row)
                             <li>
-                                <a href="{{route('cari.data', ['filter' => 'proyek', 'sub_kat' => $row->id])}}">{{$row->nama}}</a>
+                                <a href="{{route('cari.data', ['filter' => 'layanan', 'sub_kat' => $row->id])}}">{{$row->nama}}</a>
                             </li>
                         @endforeach
                     </ul>
@@ -48,16 +48,33 @@
                 <span class="show_username" style="text-transform: none">{{Auth::user()->username}}</span> <i
                     class="fa fa-angle-down"></i></a>
             <ul class="dropdown-menu dropdown-arrow">
-                <li><a href="{{Auth::user()->isRoot() || Auth::user()->isAdmin() ? route('admin.dashboard') :
-                route('user.dashboard')}}"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a></li>
-                <li><a href="{{route('user.proyek')}}"><i class="fa fa-business-time mr-2"></i>Kelola Tugas/Proyek</a>
-                </li>
-                <li><a href="{{route('user.layanan')}}"><i class="fa fa-tools mr-2"></i>Kelola Layanan</a></li>
+                @if(Auth::user()->isRoot() || Auth::user()->isAdmin())
+                    <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard</a>
+                    </li>
+                @else
+                    <li class="menu-item-has-children">
+                        <a href="#"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard <i class="fa fa-angle-down"></i></a>
+                        <ul class="dropdown-menu dropdown-arrow">
+                            <li><a href="{{route('user.dashboard.proyek')}}"><i class="fa fa-business-time mr-2"></i>Tugas/Proyek</a>
+                            </li>
+                            <li><a href="{{route('user.dashboard.layanan')}}"><i
+                                        class="fa fa-tools mr-2"></i>Layanan</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item-has-children">
+                        <a href="#"><i class="fa fa-database mr-2"></i>Kelola Data <i class="fa fa-angle-down"></i></a>
+                        <ul class="dropdown-menu dropdown-arrow">
+                            <li><a href="{{route('user.kelola-data.proyek')}}"><i class="fa fa-business-time mr-2"></i>Tugas/Proyek</a>
+                            </li>
+                            <li><a href="{{route('user.kelola-data.layanan')}}"><i class="fa fa-tools mr-2"></i>Layanan</a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
                 <li><a href="{{Auth::user()->isRoot() || Auth::user()->isAdmin() ? route('admin.edit.profile') :
                 route('user.profil')}}"><i class="fa fa-user-edit mr-2"></i>Sunting Profil</a></li>
                 <li><a href="{{Auth::user()->isRoot() || Auth::user()->isAdmin() ? route('admin.settings') :
                 route('user.pengaturan')}}"><i class="fa fa-cogs mr-2"></i>Pengaturan Akun</a></li>
-                <li class="dropdown-divider"></li>
                 <li>
                     <a href="#" class="btn_signOut"><i class="fa fa-sign-out-alt"></i>&ensp;Keluar</a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
