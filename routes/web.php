@@ -126,43 +126,13 @@ Route::group(['prefix' => 'akun'], function () {
 
     Route::group(['namespace' => 'Pages\Users', 'middleware' => ['auth', 'user']], function () {
 
-        Route::group(['prefix' => 'dashboard'], function () {
+        Route::group(['namespace' => 'Klien', 'prefix' => 'dashboard/klien'], function () {
 
             Route::group(['prefix' => 'proyek'], function () {
 
                 Route::get('/', [
-                    'uses' => 'DashboardController@dashboardProyek',
-                    'as' => 'user.dashboard.proyek'
-                ]);
-
-                Route::get('bid/{id}/batalkan', [
-                    'uses' => 'DashboardController@batalkanBid',
-                    'as' => 'user.batalkan.bid'
-                ]);
-
-                Route::get('undangan/{id}/terima', [
-                    'uses' => 'DashboardController@terimaUndangan',
-                    'as' => 'user.terima.undangan'
-                ]);
-
-                Route::get('undangan/{id}/tolak', [
-                    'uses' => 'DashboardController@tolakUndangan',
-                    'as' => 'user.tolak.undangan'
-                ]);
-
-                Route::put('pengerjaan/{id}/update', [
-                    'uses' => 'DashboardController@updatePengerjaanProyek',
-                    'as' => 'update.pengerjaan.proyek'
-                ]);
-
-                Route::post('pengerjaan/{id}/ulas', [
-                    'uses' => 'DashboardController@ulasPengerjaanProyek',
-                    'as' => 'ulas.pengerjaan.proyek'
-                ]);
-
-                Route::get('pengerjaan/{id}/ulas/data', [
-                    'uses' => 'DashboardController@dataUlasanProyek',
-                    'as' => 'data.ulasan.proyek'
+                    'uses' => 'ProyekController@dashboard',
+                    'as' => 'dashboard.klien.proyek'
                 ]);
 
             });
@@ -170,25 +140,63 @@ Route::group(['prefix' => 'akun'], function () {
             Route::group(['prefix' => 'layanan'], function () {
 
                 Route::get('/', [
-                    'uses' => 'DashboardController@dashboardLayanan',
-                    'as' => 'user.dashboard.layanan'
+                    'uses' => 'LayananController@dashboard',
+                    'as' => 'dashboard.klien.layanan'
                 ]);
 
             });
 
         });
 
-        Route::group(['prefix' => 'kelola-data'], function () {
+        Route::group(['namespace' => 'Pekerja', 'prefix' => 'dashboard/pekerja'], function () {
 
-            Route::get('proyek', [
-                'uses' => 'DashboardController@kelolaDataProyek',
-                'as' => 'user.kelola-data.proyek'
-            ]);
+            Route::group(['prefix' => 'proyek'], function () {
 
-            Route::get('layanan', [
-                'uses' => 'DashboardController@kelolaDataLayanan',
-                'as' => 'user.kelola-data.layanan'
-            ]);
+                Route::get('/', [
+                    'uses' => 'ProyekController@dashboard',
+                    'as' => 'dashboard.pekerja.proyek'
+                ]);
+
+                Route::get('bid/{id}/batalkan', [
+                    'uses' => 'ProyekController@batalkanBid',
+                    'as' => 'pekerja.batalkan.bid'
+                ]);
+
+                Route::get('undangan/{id}/terima', [
+                    'uses' => 'ProyekController@terimaUndangan',
+                    'as' => 'pekerja.terima.undangan'
+                ]);
+
+                Route::get('undangan/{id}/tolak', [
+                    'uses' => 'ProyekController@tolakUndangan',
+                    'as' => 'pekerja.tolak.undangan'
+                ]);
+
+                Route::put('pengerjaan/{id}/update', [
+                    'uses' => 'ProyekController@updatePengerjaanProyek',
+                    'as' => 'pekerja.update-pengerjaan.proyek'
+                ]);
+
+                Route::post('pengerjaan/{id}/ulas', [
+                    'uses' => 'ProyekController@ulasPengerjaanProyek',
+                    'as' => 'pekerja.ulas-pengerjaan.proyek'
+                ]);
+
+                Route::get('pengerjaan/{id}/ulas/data', [
+                    'uses' => 'ProyekController@dataUlasanProyek',
+                    'as' => 'pekerja.data-ulasan.proyek'
+                ]);
+
+            });
+
+            Route::group(['prefix' => 'layanan'], function () {
+
+                Route::get('/', [
+                    'uses' => 'LayananController@dashboard',
+                    'as' => 'dashboard.pekerja.layanan'
+                ]);
+
+            });
 
         });
 

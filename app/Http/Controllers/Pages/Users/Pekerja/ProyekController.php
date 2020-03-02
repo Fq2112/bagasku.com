@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Pages\Users;
+namespace App\Http\Controllers\Pages\Users\Pekerja;
 
 use App\Http\Controllers\Controller;
 use App\Model\Bid;
@@ -10,21 +10,21 @@ use App\Model\Undangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class DashboardController extends Controller
+class ProyekController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('user.bio')->except(['dashboardProyek', 'dashboardLayanan']);
+        $this->middleware('user.bio')->except('dashboard');
     }
 
-    public function dashboardProyek()
+    public function dashboard()
     {
         $user = Auth::user();
         $bid = Bid::where('user_id', $user->id)->get();
         $undangan = Undangan::where('user_id', $user->id)->get();
         $pengerjaan = Pengerjaan::where('user_id', $user->id)->get();
 
-        return view('pages.main.users.dashboard.proyek', compact('user', 'bid', 'undangan', 'pengerjaan'));
+        return view('pages.main.users.pekerja.proyek', compact('user', 'bid', 'undangan', 'pengerjaan'));
     }
 
     public function batalkanBid($id)

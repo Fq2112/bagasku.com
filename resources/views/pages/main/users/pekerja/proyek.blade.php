@@ -1,5 +1,5 @@
 @extends('layouts.mst')
-@section('title', 'Dashboard Tugas/Proyek: '.$user->name.' | '.env('APP_TITLE'))
+@section('title', 'Dashboard Pekerja: Tugas/Proyek – '.$user->name.' | '.env('APP_TITLE'))
 @push('styles')
     <link rel="stylesheet" href="{{asset('css/card.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap-tabs-responsive.css')}}">
@@ -142,14 +142,15 @@
     asset('storage/users/latar_belakang/'.$user->get_bio->latar_belakang) : asset('images/slider/beranda-proyek.jpg')}}')">
         <div class="breadcrumbs-overlay"></div>
         <div class="page-title">
-            <h2>Dashboard Tugas/Proyek</h2>
+            <h2>Dashboard Pekerja: Tugas/Proyek</h2>
             <p>Halaman ini menampilkan daftar bid yang telah Anda kirimkan, undangan tugas/proyek yang Anda terima, dan
                 juga daftar tugas/proyek yang sedang Anda kerjakan.</p>
         </div>
         <ul class="crumb">
             <li><a href="{{route('beranda')}}"><i class="fa fa-home"></i></a></li>
-            <li><i class="fa fa-angle-double-right"></i> <a href="#">Dashboard</a></li>
-            <li><i class="fa fa-angle-double-right"></i> <a href="{{route('user.dashboard.proyek')}}">Tugas/Proyek</a>
+            <li><i class="fa fa-angle-double-right"></i> <a href="#">Dashboard Pekerja</a></li>
+            <li><i class="fa fa-angle-double-right"></i> <a
+                    href="{{route('dashboard.pekerja.proyek')}}">Tugas/Proyek</a>
             </li>
             <li><a href="#" onclick="goToAnchor()"><i class="fa fa-angle-double-right"></i> Daftar Bid, Undangan, &
                     Pengerjaan</a>
@@ -278,7 +279,7 @@
                                                             </a>
                                                             <button class="btn btn-link btn-sm" type="button"
                                                                     data-toggle="tooltip" title="Batalkan Bid" {{$attr}}
-                                                                    onclick="batalkanBid('{{route("user.batalkan.bid",
+                                                                    onclick="batalkanBid('{{route("pekerja.batalkan.bid",
                                                                     ["id" => $row->id])}}','{{$row->get_project->judul}}')">
                                                                 <i class="fa fa-trash-alt" style="margin-right: 0"></i>
                                                             </button>
@@ -357,8 +358,8 @@
                                                             </a>
                                                             <button class="btn btn-link btn-sm" type="button" {{$attr}}
                                                             data-toggle="tooltip" title="Konfirmasi Undangan"
-                                                                    onclick="konfirmasiUndangan('{{route("user.terima.undangan",
-                                                                    ["id" => $row->id])}}','{{route("user.tolak.undangan",
+                                                                    onclick="konfirmasiUndangan('{{route("pekerja.terima.undangan",
+                                                                    ["id" => $row->id])}}','{{route("pekerja.tolak.undangan",
                                                                     ["id" => $row->id])}}','{{$row->get_project->judul}}',
                                                                         '{{$row->get_project->pribadi}}')">
                                                                 <i class="fa fa-clipboard-check"
@@ -561,7 +562,7 @@
                                                             <button class="btn btn-link btn-sm" style="margin-right: 0"
                                                                     data-toggle="tooltip" title="Update Hasil"
                                                                     onclick="updateHasil('{{$row->id}}','{{$row->tautan}}',
-                                                                        '{{route('update.pengerjaan.proyek', ['id' => $row->id])}}',
+                                                                        '{{route('pekerja.update-pengerjaan.proyek', ['id' => $row->id])}}',
                                                                         '{{$row->get_project->judul}}')"
                                                                 {{$row->selesai == true ? 'disabled' : ''}}>
                                                                 <i class="fa fa-upload" style="margin-right: 0"></i>
@@ -569,8 +570,8 @@
                                                             <button class="btn btn-link btn-sm" style="margin-right: 0"
                                                                     data-toggle="tooltip" title="Ulas Hasil"
                                                                     onclick="ulasHasil('{{$row->id}}',
-                                                                        '{{route('ulas.pengerjaan.proyek', ['id' => $row->id])}}',
-                                                                        '{{route('data.ulasan.proyek', ['id' => $row->proyek_id])}}',
+                                                                        '{{route('pekerja.ulas-pengerjaan.proyek', ['id' => $row->id])}}',
+                                                                        '{{route('pekerja.data-ulasan.proyek', ['id' => $row->proyek_id])}}',
                                                                         '{{$row->get_project->judul}}')"
                                                                 {{is_null($row->get_ulasan_pekerja) ||
                                                                 $row->selesai == true ? 'disabled' : ''}}>

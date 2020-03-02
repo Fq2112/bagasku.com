@@ -53,21 +53,22 @@
                     </li>
                 @else
                     <li class="menu-item-has-children">
-                        <a href="#"><i class="fa fa-tachometer-alt mr-2"></i>Dashboard <i class="fa fa-angle-down"></i></a>
+                        <a href="#"><i class="fa fa-user-tie mr-2"></i>Dashboard Klien <i class="fa fa-angle-down"></i></a>
                         <ul class="dropdown-menu dropdown-arrow">
-                            <li><a href="{{route('user.dashboard.proyek')}}"><i class="fa fa-business-time mr-2"></i>Tugas/Proyek</a>
-                            </li>
-                            <li><a href="{{route('user.dashboard.layanan')}}"><i
-                                        class="fa fa-tools mr-2"></i>Layanan</a></li>
+                            <li><a href="{{route('dashboard.klien.proyek')}}">
+                                    <i class="fa fa-business-time mr-2"></i>Tugas/Proyek</a></li>
+                            <li><a href="{{route('dashboard.klien.layanan')}}">
+                                    <i class="fa fa-tools mr-2"></i>Layanan</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children">
-                        <a href="#"><i class="fa fa-database mr-2"></i>Kelola Data <i class="fa fa-angle-down"></i></a>
+                        <a href="#"><i class="fa fa-hard-hat mr-2"></i>Dashboard Pekerja <i
+                                class="fa fa-angle-down"></i></a>
                         <ul class="dropdown-menu dropdown-arrow">
-                            <li><a href="{{route('user.kelola-data.proyek')}}"><i class="fa fa-business-time mr-2"></i>Tugas/Proyek</a>
-                            </li>
-                            <li><a href="{{route('user.kelola-data.layanan')}}"><i class="fa fa-tools mr-2"></i>Layanan</a>
-                            </li>
+                            <li><a href="{{route('dashboard.pekerja.proyek')}}">
+                                    <i class="fa fa-business-time mr-2"></i>Tugas/Proyek</a></li>
+                            <li><a href="{{route('dashboard.pekerja.layanan')}}">
+                                    <i class="fa fa-tools mr-2"></i>Layanan</a></li>
                         </ul>
                     </li>
                 @endif
