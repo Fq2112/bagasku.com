@@ -401,22 +401,22 @@
                                                                      src="{{$row->get_project->thumbnail != "" ?
                                                                      asset('storage/proyek/thumbnail/'.$row->get_project->thumbnail)
                                                                      : asset('images/slider/beranda-proyek.jpg')}}">
-                                                                @if($row->get_project->get_pembayaran->count() > 0)
+                                                                @if(!is_null($row->get_project->get_pembayaran))
                                                                     @if($row->get_project->get_pembayaran->dp == true)
                                                                         <span class="label label-default">DP {{round($row
                                                                         ->get_project->get_pembayaran->jumlah_pembayaran / $row
                                                                         ->get_project->harga * 100,1)}}%</span>
                                                                     @else
                                                                         <span class="label label-success">LUNAS</span>
-                                                                    @endif
+                                                                    @endif |
+                                                                    <span class="label label-{{$row->selesai == false ?
+                                                                    'warning' : 'success'}}">{{$row->selesai == false ?
+                                                                    'PROSES PENGERJAAN' : 'SELESAI'}}</span>
+                                                                    <br><b>{{$row->get_project->judul}}</b>
                                                                 @else
                                                                     <span
-                                                                        class="label label-danger">BELUM DIBAYAR</span>
-                                                                @endif |
-                                                                <span class="label label-{{$row->selesai == false ?
-                                                                'warning' : 'success'}}">{{$row->selesai == false ?
-                                                                'PROSES PENGERJAAN' : 'SELESAI'}}</span><br>
-                                                                <b>{{$row->get_project->judul}}</b>
+                                                                        class="label label-danger">MENUNGGU PEMBAYARAN</span>
+                                                                @endif
                                                             </a>
                                                             <p>
                                                                 Tugas/Proyek {{$row->get_project->pribadi == false ? 'PUBLIK' : 'PRIVAT'}}
@@ -564,7 +564,8 @@
                                                                     onclick="updateHasil('{{$row->id}}','{{$row->tautan}}',
                                                                         '{{route('pekerja.update-pengerjaan.proyek', ['id' => $row->id])}}',
                                                                         '{{$row->get_project->judul}}')"
-                                                                {{$row->selesai == true ? 'disabled' : ''}}>
+                                                                {{is_null($row->get_project->get_pembayaran) ||
+                                                                $row->selesai == true ? 'disabled' : ''}}>
                                                                 <i class="fa fa-upload" style="margin-right: 0"></i>
                                                             </button>
                                                             <button class="btn btn-link btn-sm" style="margin-right: 0"
