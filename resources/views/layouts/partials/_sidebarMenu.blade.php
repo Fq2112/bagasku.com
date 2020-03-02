@@ -6,6 +6,16 @@
         </a>
     </li>
 
+    <li class="menu-header">Data Pembayaran</li>
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="nav-link has-dropdown" data-toggle="dropdown">
+            <i class="fas fa-money-bill"></i><span>Jenis Pembayaran</span></a>
+        <ul class="dropdown-menu">
+            <li class=""><a href="#" class="nav-link">Proyek</a></li>
+            <li class=""><a href="#" class="nav-link">Layanan</a></li>
+        </ul>
+    </li>
+
     <li class="menu-header">Data Master</li>
     <li class="dropdown">
         <a href="javascript:void(0)" class="nav-link has-dropdown" data-toggle="dropdown">
@@ -13,6 +23,16 @@
         <ul class="dropdown-menu">
             <li class=""><a href="#" class="nav-link">Admin</a></li>
             <li class=""><a href="#" class="nav-link">User</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="nav-link has-dropdown" data-toggle="dropdown">
+            <i class="fas fa-map"></i><span>Lokasi</span></a>
+        <ul class="dropdown-menu">
+            <li class=""><a href="{{route('admin.show.negara')}}" class="nav-link">Negara</a></li>
+            <li class=""><a href="{{route('admin.show.provinsi')}}" class="nav-link">Provinsi</a></li>
+{{--            <li class=""><a href="#" class="nav-link">Kota</a></li>--}}
         </ul>
     </li>
 </ul>
