@@ -196,6 +196,31 @@ Route::group(['prefix' => 'akun'], function () {
                     'as' => 'dashboard.pekerja.layanan'
                 ]);
 
+                Route::post('tambah', [
+                    'uses' => 'LayananController@tambahLayanan',
+                    'as' => 'pekerja.tambah.layanan'
+                ]);
+
+                Route::get('sunting/{id}', [
+                    'uses' => 'LayananController@suntingLayanan',
+                    'as' => 'pekerja.sunting.layanan'
+                ]);
+
+                Route::put('update', [
+                    'uses' => 'LayananController@updateLayanan',
+                    'as' => 'pekerja.update.layanan'
+                ]);
+
+                Route::get('hapus/{id}', [
+                    'uses' => 'LayananController@hapusLayanan',
+                    'as' => 'pekerja.hapus.layanan'
+                ]);
+
+                Route::put('pengerjaan/{id}/update', [
+                    'uses' => 'LayananController@updatePengerjaanLayanan',
+                    'as' => 'pekerja.update-pengerjaan.layanan'
+                ]);
+
             });
 
         });

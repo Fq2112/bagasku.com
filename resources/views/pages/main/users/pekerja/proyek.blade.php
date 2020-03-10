@@ -381,7 +381,7 @@
                                         <thead>
                                         <tr>
                                             <th class="text-center">#</th>
-                                            <th>Detail Tugas/Proyek</th>
+                                            <th>Detail</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                         </thead>
@@ -412,11 +412,11 @@
                                                                     <span class="label label-{{$row->selesai == false ?
                                                                     'warning' : 'success'}}">{{$row->selesai == false ?
                                                                     'PROSES PENGERJAAN' : 'SELESAI'}}</span>
-                                                                    <br><b>{{$row->get_project->judul}}</b>
                                                                 @else
                                                                     <span
                                                                         class="label label-danger">MENUNGGU PEMBAYARAN</span>
                                                                 @endif
+                                                                <br><b>{{$row->get_project->judul}}</b>
                                                             </a>
                                                             <p>
                                                                 Tugas/Proyek {{$row->get_project->pribadi == false ? 'PUBLIK' : 'PRIVAT'}}
@@ -755,6 +755,27 @@
                 dom: "<'row'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-5'B><'col-sm-12 col-md-4'f>>" +
                     "<'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                 columnDefs: [{"sortable": false, "targets": 5}],
+                language: {
+                    "emptyTable": "Anda belum mengirimkan bid untuk tugas/proyek apapun",
+                    "info": "Menampilkan _START_ to _END_ of _TOTAL_ entri",
+                    "infoEmpty": "Menampilkan 0 entri",
+                    "infoFiltered": "(difilter dari _MAX_ total entri)",
+                    "lengthMenu": "Tampilkan _MENU_ entri",
+                    "loadingRecords": "Memuat...",
+                    "processing": "Mengolah...",
+                    "search": "Cari:",
+                    "zeroRecords": "Data yang Anda cari tidak ditemukan.",
+                    "paginate": {
+                        "first": "Pertama",
+                        "last": "Terakhir",
+                        "next": "Selanjutnya",
+                        "previous": "Sebelumnya"
+                    },
+                    "aria": {
+                        "sortAscending": ": aktifkan untuk mengurutkan kolom dari kecil ke besar (asc)",
+                        "sortDescending": ": aktifkan untuk mengurutkan kolom dari besar ke kecil (desc)"
+                    }
+                },
                 buttons: [
                     {
                         text: '<b class="text-uppercase"><i class="far fa-file-excel mr-2"></i>Excel</b>',
@@ -793,6 +814,27 @@
                 dom: "<'row'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-5'B><'col-sm-12 col-md-4'f>>" +
                     "<'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                 columnDefs: [{"sortable": false, "targets": 6}],
+                language: {
+                    "emptyTable": "Anda belum menerima undangan untuk tugas/proyek apapun",
+                    "info": "Menampilkan _START_ to _END_ of _TOTAL_ entri",
+                    "infoEmpty": "Menampilkan 0 entri",
+                    "infoFiltered": "(difilter dari _MAX_ total entri)",
+                    "lengthMenu": "Tampilkan _MENU_ entri",
+                    "loadingRecords": "Memuat...",
+                    "processing": "Mengolah...",
+                    "search": "Cari:",
+                    "zeroRecords": "Data yang Anda cari tidak ditemukan.",
+                    "paginate": {
+                        "first": "Pertama",
+                        "last": "Terakhir",
+                        "next": "Selanjutnya",
+                        "previous": "Sebelumnya"
+                    },
+                    "aria": {
+                        "sortAscending": ": aktifkan untuk mengurutkan kolom dari kecil ke besar (asc)",
+                        "sortDescending": ": aktifkan untuk mengurutkan kolom dari besar ke kecil (desc)"
+                    }
+                },
                 buttons: [
                     {
                         text: '<b class="text-uppercase"><i class="far fa-file-excel mr-2"></i>Excel</b>',
@@ -831,6 +873,27 @@
                 dom: "<'row'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-5'B><'col-sm-12 col-md-4'f>>" +
                     "<'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                 columnDefs: [{"sortable": false, "targets": 2}],
+                language: {
+                    "emptyTable": "Anda belum memiliki tanggungan pengerjaan tugas/proyek apapun",
+                    "info": "Menampilkan _START_ to _END_ of _TOTAL_ entri",
+                    "infoEmpty": "Menampilkan 0 entri",
+                    "infoFiltered": "(difilter dari _MAX_ total entri)",
+                    "lengthMenu": "Tampilkan _MENU_ entri",
+                    "loadingRecords": "Memuat...",
+                    "processing": "Mengolah...",
+                    "search": "Cari:",
+                    "zeroRecords": "Data yang Anda cari tidak ditemukan.",
+                    "paginate": {
+                        "first": "Pertama",
+                        "last": "Terakhir",
+                        "next": "Selanjutnya",
+                        "previous": "Sebelumnya"
+                    },
+                    "aria": {
+                        "sortAscending": ": aktifkan untuk mengurutkan kolom dari kecil ke besar (asc)",
+                        "sortDescending": ": aktifkan untuk mengurutkan kolom dari besar ke kecil (desc)"
+                    }
+                },
                 buttons: [
                     {
                         text: '<b class="text-uppercase"><i class="far fa-file-excel mr-2"></i>Excel</b>',

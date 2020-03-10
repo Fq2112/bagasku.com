@@ -881,7 +881,7 @@
                                                                class="browse_thumbnail form-control" readonly
                                                                placeholder="Pilih File" data-toggle="tooltip"
                                                                data-placement="top"
-                                                               title="Ekstensi yang diizinkan: jpg, jpeg, gif, png. Ukuran yang diizinkan: < 5 MB">
+                                                               title="Ekstensi yang diizinkan: jpg, jpeg, gif, png. Ukuran yang diizinkan: < 2 MB">
                                                         <span class="input-group-btn">
                                                                 <button
                                                                     class="browse_thumbnail btn btn-link btn-sm btn-block"

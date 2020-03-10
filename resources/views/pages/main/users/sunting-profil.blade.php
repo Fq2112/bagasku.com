@@ -1051,7 +1051,7 @@
 
         $("#show_portofolio_settings, #btn_cancel_portofolio button").on('click', function () {
             $("#btn_cancel_portofolio").hide();
-            $("#txt_attach, #judul, #deskripsi, #tahun, #tautan").val(null);
+            $("#txt_attach, #attach-files, #judul, #deskripsi, #tahun, #tautan").val(null);
             $("#txt_attach[data-toggle=tooltip]").attr('data-original-title',
                 'Ekstensi yang diizinkan: jpg, jpeg, gif, png. Ukuran yang diizinkan: < 5 MB');
             $("#portofolio_settings").toggle(300);

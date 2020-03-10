@@ -20,11 +20,6 @@ class Services extends Model
         return $this->belongsTo(SubKategori::class, 'subkategori_id');
     }
 
-    public function get_pembayaran()
-    {
-        return $this->hasMany(PembayaranLayanan::class, 'service_id');
-    }
-
     public function get_pengerjaan_layanan()
     {
         return $this->hasMany(PengerjaanLayanan::class, 'service_id');

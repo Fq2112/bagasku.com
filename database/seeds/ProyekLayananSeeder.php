@@ -97,15 +97,16 @@ class ProyekLayananSeeder extends Seeder
                 'judul' => \Faker\Factory::create()->jobTitle,
             ]);
 
+            $user_id = $klien_ids[array_rand($klien_ids)];
             $pengeraanLayanan = \App\Model\PengerjaanLayanan::create([
                 'service_id' => $service->id,
-                'user_id' => rand(1, 10),
+                'user_id' => $user_id,
                 'selesai' => true,
                 'tautan' => $faker->imageUrl()
             ]);
 
             \App\Model\PembayaranLayanan::create([
-                'service_id' => $service->id,
+                'pengerjaan_layanan_id' => $pengeraanLayanan->id,
                 'jumlah_pembayaran' => $service->harga
             ]);
 
