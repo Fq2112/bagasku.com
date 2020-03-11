@@ -92,49 +92,6 @@
         .lg-sub-html p {
             color: #bbb;
         }
-
-        .rating {
-            border: none;
-            float: left;
-        }
-
-        .rating > input {
-            display: none;
-        }
-
-        .rating > label:before {
-            margin: 0 5px 0 5px;
-            font-size: 1.25em;
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
-            display: inline-block;
-            content: "\f005";
-        }
-
-        .rating > .half:before {
-            font-family: 'Font Awesome 5 Free';
-            font-weight: 900;
-            content: "\f089";
-            position: absolute;
-        }
-
-        .rating > label {
-            color: #ddd;
-            float: right;
-        }
-
-        .rating > input:checked ~ label,
-        .rating:not(:checked) > label:hover,
-        .rating:not(:checked) > label:hover ~ label {
-            color: #ffc100;
-        }
-
-        .rating > input:checked + label:hover,
-        .rating > input:checked ~ label:hover,
-        .rating > label:hover ~ input:checked ~ label,
-        .rating > input:checked ~ label:hover ~ label {
-            color: #e1a500;
-        }
     </style>
 @endpush
 @section('content')
