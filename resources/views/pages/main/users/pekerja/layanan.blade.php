@@ -92,6 +92,11 @@
         .lg-sub-html p {
             color: #bbb;
         }
+
+        .note-editor.note-airframe .note-editing-area .note-editable, .note-editor.note-frame .note-editing-area .note-editable,
+        .note-editor.note-airframe .note-placeholder, .note-editor.note-frame .note-placeholder {
+            padding: 20px 30px;
+        }
     </style>
 @endpush
 @section('content')
@@ -228,16 +233,13 @@
                                                 <td style="vertical-align: middle" align="center">
                                                     <div class="input-group">
                                                         <span class="input-group-btn">
-                                                            <a class="btn btn-link btn-sm" style="margin-right: 0"
-                                                               href="{{route('detail.layanan', ['username' =>
-                                                               $row->get_user->username, 'judul' => $row->get_judul_uri()])}}"
+                                                            <a class="btn btn-link btn-sm" href="{{route('detail.layanan',
+                                                            ['username' => $row->get_user->username, 'judul' => $row->get_judul_uri()])}}"
                                                                data-toggle="tooltip" title="Lihat Layanan">
-                                                                <i class="fa fa-info-circle"
-                                                                   style="margin-right: 0"></i>
+                                                                <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>
-                                                            <button class="btn btn-link btn-sm" style="margin-right: 0"
-                                                                    data-toggle="tooltip" title="Sunting Layanan"
-                                                                    {{$attr}}
+                                                            <button class="btn btn-link btn-sm" data-toggle="tooltip"
+                                                                    title="Sunting Layanan" {{$attr}}
                                                                     onclick="suntingLayanan('{{route('pekerja.sunting.layanan', ['id' => $row->id])}}')">
                                                                 <i class="fa fa-edit" style="margin-right: 0"></i>
                                                             </button>
@@ -513,18 +515,16 @@
                                                 <td style="vertical-align: middle" align="center">
                                                     <div class="input-group">
                                                         <span class="input-group-btn">
-                                                            <a class="btn btn-link btn-sm" style="margin-right: 0"
-                                                               href="{{route('detail.layanan',
+                                                            <a class="btn btn-link btn-sm" href="{{route('detail.layanan',
                                                                ['username' => $row->get_service->get_user->username,
                                                                'judul' => $row->get_service->get_judul_uri()])}}"
                                                                data-toggle="tooltip" title="Lihat Layanan">
-                                                                <i class="fa fa-info-circle"
-                                                                   style="margin-right: 0"></i>
+                                                                <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>
-                                                            <button class="btn btn-link btn-sm" style="margin-right: 0"
-                                                                    data-toggle="tooltip" title="Update Hasil"
-                                                                    onclick="updateHasil('{{$row->id}}','{{$row->tautan}}',
-                                                                        '{{route('pekerja.update-pengerjaan.layanan', ['id' => $row->id])}}',
+                                                            <button class="btn btn-link btn-sm" data-toggle="tooltip"
+                                                                    title="Update Hasil"
+                                                                    onclick="updateHasil('{{$row->id}}',
+                                                                        '{{$row->tautan}}','{{route('pekerja.update-pengerjaan.layanan', ['id' => $row->id])}}',
                                                                         '{{$row->get_service->judul}}')"
                                                                 {{is_null($row->get_pembayaran) ||
                                                                 $row->selesai == true ? 'disabled' : ''}}>

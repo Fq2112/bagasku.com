@@ -20,6 +20,7 @@ class CreatePembayaranLayananTable extends Migration
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->boolean('dp')->default(false);
             $table->string('jumlah_pembayaran')->nullable();
+            $table->text('bukti_pembayaran')->nullable();
             $table->timestamps();
         });
     }

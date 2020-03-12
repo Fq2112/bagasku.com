@@ -135,6 +135,11 @@
         .rating > input:checked ~ label:hover ~ label {
             color: #e1a500;
         }
+
+        .note-editor.note-airframe .note-editing-area .note-editable, .note-editor.note-frame .note-editing-area .note-editable,
+        .note-editor.note-airframe .note-placeholder, .note-editor.note-frame .note-placeholder {
+            padding: 20px 30px;
+        }
     </style>
 @endpush
 @section('content')
@@ -269,13 +274,11 @@
                                                 <td style="vertical-align: middle" align="center">
                                                     <div class="input-group">
                                                         <span class="input-group-btn">
-                                                            <a class="btn btn-link btn-sm" style="margin-right: 0"
-                                                               href="{{route('detail.proyek',
+                                                            <a class="btn btn-link btn-sm" href="{{route('detail.proyek',
                                                                ['username' => $row->get_project->get_user->username,
                                                                'judul' => $row->get_project->get_judul_uri()])}}"
                                                                data-toggle="tooltip" title="Lihat Proyek">
-                                                                <i class="fa fa-info-circle"
-                                                                   style="margin-right: 0"></i>
+                                                                <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>
                                                             <button class="btn btn-link btn-sm" type="button"
                                                                     data-toggle="tooltip" title="Batalkan Bid" {{$attr}}
@@ -348,13 +351,11 @@
                                                 <td style="vertical-align: middle" align="center">
                                                     <div class="input-group">
                                                         <span class="input-group-btn">
-                                                            <a class="btn btn-link btn-sm" style="margin-right: 0"
-                                                               href="{{route('detail.proyek',
+                                                            <a class="btn btn-link btn-sm" href="{{route('detail.proyek',
                                                                ['username' => $row->get_project->get_user->username,
                                                                'judul' => $row->get_project->get_judul_uri()])}}"
                                                                data-toggle="tooltip" title="Lihat Proyek">
-                                                                <i class="fa fa-info-circle"
-                                                                   style="margin-right: 0"></i>
+                                                                <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>
                                                             <button class="btn btn-link btn-sm" type="button" {{$attr}}
                                                             data-toggle="tooltip" title="Konfirmasi Undangan"
@@ -551,31 +552,29 @@
                                                 <td style="vertical-align: middle" align="center">
                                                     <div class="input-group">
                                                         <span class="input-group-btn">
-                                                            <a class="btn btn-link btn-sm" style="margin-right: 0"
-                                                               href="{{route('detail.proyek',
+                                                            <a class="btn btn-link btn-sm" href="{{route('detail.proyek',
                                                                ['username' => $row->get_project->get_user->username,
                                                                'judul' => $row->get_project->get_judul_uri()])}}"
                                                                data-toggle="tooltip" title="Lihat Proyek">
-                                                                <i class="fa fa-info-circle"
-                                                                   style="margin-right: 0"></i>
+                                                                <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>
-                                                            <button class="btn btn-link btn-sm" style="margin-right: 0"
-                                                                    data-toggle="tooltip" title="Update Hasil"
-                                                                    onclick="updateHasil('{{$row->id}}','{{$row->tautan}}',
-                                                                        '{{route('pekerja.update-pengerjaan.proyek', ['id' => $row->id])}}',
+                                                            <button class="btn btn-link btn-sm" data-toggle="tooltip"
+                                                                    title="Update Hasil"
+                                                                    onclick="updateHasil('{{$row->id}}',
+                                                                        '{{$row->tautan}}','{{route('pekerja.update-pengerjaan.proyek', ['id' => $row->id])}}',
                                                                         '{{$row->get_project->judul}}')"
                                                                 {{is_null($row->get_project->get_pembayaran) ||
                                                                 $row->selesai == true ? 'disabled' : ''}}>
                                                                 <i class="fa fa-upload" style="margin-right: 0"></i>
                                                             </button>
-                                                            <button class="btn btn-link btn-sm" style="margin-right: 0"
-                                                                    data-toggle="tooltip" title="Ulas Hasil"
+                                                            <button class="btn btn-link btn-sm" data-toggle="tooltip"
+                                                                    title="Ulas Hasil"
                                                                     onclick="ulasHasil('{{$row->id}}',
                                                                         '{{route('pekerja.ulas-pengerjaan.proyek', ['id' => $row->id])}}',
                                                                         '{{route('pekerja.data-ulasan.proyek', ['id' => $row->proyek_id])}}',
                                                                         '{{$row->get_project->judul}}')"
                                                                 {{is_null($row->get_ulasan_pekerja) ||
-                                                                $row->selesai == true ? 'disabled' : ''}}>
+                                                                !is_null($row->get_project->get_ulasan)?'disabled':''}}>
                                                                 <i class="fa fa-edit" style="margin-right: 0"></i>
                                                             </button>
                                                         </span>

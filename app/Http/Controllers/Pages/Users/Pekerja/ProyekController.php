@@ -99,7 +99,6 @@ class ProyekController extends Controller
     public function ulasPengerjaanProyek(Request $request)
     {
         $pengerjaan = Pengerjaan::find($request->id);
-        $pengerjaan->update(['selesai' => true]);
         Review::create([
             'user_id' => $pengerjaan->user_id,
             'proyek_id' => $pengerjaan->proyek_id,
@@ -107,13 +106,11 @@ class ProyekController extends Controller
             'bintang' => $request->rating,
         ]);
 
-        return back()->with('pengerjaan', 'Tugas/proyek [' . $pengerjaan->get_project->judul . '] telah selesai!');
+        return back()->with('pengerjaan', 'Tugas/proyek [' . $pengerjaan->get_project->judul . '] telah selesai dan berhasil diulas!');
     }
 
     public function dataUlasanProyek(Request $request)
     {
-        $ulasan = Review::where('proyek_id', $request->id)->first();
-
-        return $ulasan;
+        return Review::where('proyek_id', $request->id)->first();
     }
 }

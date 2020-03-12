@@ -74,6 +74,11 @@
         .lg-sub-html p {
             color: #bbb;
         }
+
+        .note-editor.note-airframe .note-editing-area .note-editable, .note-editor.note-frame .note-editing-area .note-editable,
+        .note-editor.note-airframe .note-placeholder, .note-editor.note-frame .note-placeholder {
+            padding: 20px 30px;
+        }
     </style>
 @endpush
 @section('content')

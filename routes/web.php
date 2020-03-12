@@ -144,6 +144,26 @@ Route::group(['prefix' => 'akun'], function () {
                     'as' => 'dashboard.klien.layanan'
                 ]);
 
+                Route::get('pesanan/{id}/batalkan', [
+                    'uses' => 'LayananController@batalkanPesanan',
+                    'as' => 'klien.batalkan.pesanan'
+                ]);
+
+                Route::put('pembayaran/{id}/update', [
+                    'uses' => 'LayananController@updatePembayaran',
+                    'as' => 'klien.update-pengerjaan.layanan'
+                ]);
+
+                Route::post('pengerjaan/{id}/ulas', [
+                    'uses' => 'LayananController@ulasPengerjaanLayanan',
+                    'as' => 'klien.ulas-pengerjaan.layanan'
+                ]);
+
+                Route::get('pengerjaan/{id}/ulas/data', [
+                    'uses' => 'LayananController@dataUlasanLayanan',
+                    'as' => 'klien.data-ulasan.layanan'
+                ]);
+
             });
 
         });

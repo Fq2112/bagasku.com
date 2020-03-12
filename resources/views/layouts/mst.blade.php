@@ -106,7 +106,7 @@
             position: relative;
             display: block;
             min-height: 1.5rem;
-            padding-left: 1.5rem;
+            /*padding-left: 1.5rem;*/
         }
 
         .custom-control-inline {
@@ -151,10 +151,10 @@
         .custom-control-label::before {
             position: absolute;
             top: 0.25rem;
-            left: -1.5rem;
+            left: -2rem;
             display: block;
-            width: 1rem;
-            height: 1rem;
+            width: 1.5rem;
+            height: 1.5rem;
             pointer-events: none;
             content: "";
             -webkit-user-select: none;
@@ -167,10 +167,10 @@
         .custom-control-label::after {
             position: absolute;
             top: 0.25rem;
-            left: -1.5rem;
+            left: -2rem;
             display: block;
-            width: 1rem;
-            height: 1rem;
+            width: 1.5rem;
+            height: 1.5rem;
             content: "";
             background-repeat: no-repeat;
             background-position: center center;
