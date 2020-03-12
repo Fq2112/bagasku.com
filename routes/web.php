@@ -151,7 +151,12 @@ Route::group(['prefix' => 'akun'], function () {
 
                 Route::put('pembayaran/{id}/update', [
                     'uses' => 'LayananController@updatePembayaran',
-                    'as' => 'klien.update-pengerjaan.layanan'
+                    'as' => 'klien.update-pembayaran.pesanan'
+                ]);
+
+                Route::get('pembayaran/{id}/data', [
+                    'uses' => 'LayananController@dataPembayaran',
+                    'as' => 'klien.data-pembayaran.pesanan'
                 ]);
 
                 Route::post('pengerjaan/{id}/ulas', [

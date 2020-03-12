@@ -2,6 +2,7 @@
 @section('title', 'Dashboard Klien: Layanan – '.$user->name.' | '.env('APP_TITLE'))
 @push('styles')
     <link rel="stylesheet" href="{{asset('css/card.css')}}">
+    <link rel="stylesheet" href="{{asset('css/file-uploader.css')}}">
     <link rel="stylesheet" href="{{asset('admins/modules/datatables/datatables.min.css')}}">
     <link rel="stylesheet"
           href="{{asset('admins/modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap.min.css')}}">
@@ -33,6 +34,50 @@
 
         .btn-link {
             border: 1px solid #ccc;
+        }
+
+        .pm-selector input {
+            margin: 0;
+            padding: 0;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .pm-selector-2 input {
+            position: absolute;
+            z-index: 999;
+        }
+
+        .pm-selector-2 input:active + .pm-label, .pm-selector input:active + .pm-label {
+            opacity: .9;
+        }
+
+        .pm-selector-2 input:checked + .pm-label, .pm-selector input:checked + .pm-label {
+            -webkit-filter: none;
+            -moz-filter: none;
+            filter: none;
+        }
+
+        .pm-label {
+            cursor: pointer;
+            background-size: contain;
+            background-repeat: no-repeat;
+            display: inline-block;
+            width: 150px;
+            height: 50px;
+            -webkit-transition: all 100ms ease-in;
+            -moz-transition: all 100ms ease-in;
+            transition: all 100ms ease-in;
+            -webkit-filter: brightness(1.8) grayscale(1) opacity(.7);
+            -moz-filter: brightness(1.8) grayscale(1) opacity(.7);
+            filter: brightness(1.8) grayscale(1) opacity(.7);
+        }
+
+        .pm-label:hover {
+            -webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
+            -moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
+            filter: brightness(1.2) grayscale(.5) opacity(.9);
         }
 
         .content-area {
@@ -210,13 +255,6 @@
                             <tbody>
                             @php $no = 1; @endphp
                             @foreach($pesanan as $row)
-                                @php
-                                    if(!is_null($row->get_pembayaran)) {
-                                        $attr = 'disabled';
-                                    } else {
-                                        $attr = '';
-                                    }
-                                @endphp
                                 <tr>
                                     <td style="vertical-align: middle" align="center">{{$no++}}</td>
                                     <td style="vertical-align: middle">
@@ -243,8 +281,7 @@
                                                         @if($row->file_hasil != "")
                                                             <div class="row use-lightgallery">
                                                                 @foreach($row->file_hasil as $file)
-                                                                    <div data-aos="fade-down"
-                                                                         class="col-md-3 item"
+                                                                    <div class="col-md-3 item"
                                                                          data-src="{{asset('storage/layanan/hasil/'.$file)}}"
                                                                          data-sub-html="<h4>{{$row->get_service->judul}}</h4><p>{{$file}}</p>">
                                                                         <div class="content-area">
@@ -323,11 +360,11 @@
                                         {{number_format($row->get_service->harga,2,',','.')}}</td>
                                     <td style="vertical-align: middle" align="center">
                                         @if(!is_null($row->get_pembayaran))
-                                            @if($row->get_pembayaran->dp == true)
+                                            @if($row->get_pembayaran->jumlah_pembayaran == $row->get_service->harga)
+                                                <span class="label label-success">LUNAS</span>
+                                            @else
                                                 <span class="label label-default">DP {{round($row->get_pembayaran
                                                 ->jumlah_pembayaran / $row->get_service->harga * 100,1)}}%</span>
-                                            @else
-                                                <span class="label label-success">LUNAS</span>
                                             @endif
                                             <hr style="margin: .5em 0">
                                             <span
@@ -338,39 +375,229 @@
                                         @endif
                                     </td>
                                     <td style="vertical-align: middle" align="center">
-                                        <a class="btn btn-link btn-sm btn-block" title="Lihat Layanan"
-                                           data-toggle="tooltip" href="{{route('detail.layanan',
-                                           ['username' => $row->get_service->get_user->username,
-                                           'judul' => $row->get_service->get_judul_uri()])}}">
-                                            <i class="fa fa-info-circle" style="margin-right: 0"></i></a>
-                                        <hr style="margin: .5em 0">
                                         <div class="input-group">
                                             <span class="input-group-btn">
-                                                <button class="btn btn-link btn-sm" type="button" data-toggle="tooltip"
-                                                        title="Batalkan Pesanan" {{$attr}}
+                                                <a class="btn btn-link btn-sm" title="Lihat Layanan"
+                                                   data-toggle="tooltip" href="{{route('detail.layanan',
+                                                   ['username' => $row->get_service->get_user->username,
+                                                   'judul' => $row->get_service->get_judul_uri()])}}">
+                                                    <i class="fa fa-info-circle" style="margin-right: 0"></i></a>
+                                                <button class="btn btn-link btn-sm" type="button"
+                                                        data-toggle="tooltip" title="Batalkan Pesanan"
+                                                        {{!is_null($row->get_pembayaran) ? 'disabled' : ''}}
                                                         onclick="batalkanPesanan('{{route("klien.batalkan.pesanan",
                                                         ["id" => $row->id])}}','{{$row->get_service->judul}}')">
                                                     <i class="fa fa-trash-alt" style="margin-right: 0"></i>
                                                 </button>
-                                                <button class="btn btn-link btn-sm" type="button" data-toggle="tooltip"
-                                                        title="Bukti Pembayaran" onclick="unggahBukti()">
-                                                    <i class="fa fa-upload" style="margin-right: 0"></i>
-                                                </button>
-                                                <button class="btn btn-link btn-sm" data-toggle="tooltip"
-                                                        title="Ulas Hasil" onclick="ulasHasil('{{$row->id}}',
-                                                    '{{route('klien.ulas-pengerjaan.layanan', ['id' => $row->id])}}',
-                                                    '{{route('klien.data-ulasan.layanan', ['id' => $row->id])}}',
-                                                    '{{$row->get_service->judul}}','{{$row->selesai}}')"
-                                                    {{$row->selesai == true ? 'disabled' : ''}}>
-                                                    <i class="fa fa-edit" style="margin-right: 0"></i>
-                                                </button>
                                             </span>
                                         </div>
+                                        <hr style="margin: .5em 0">
+                                        @if(!is_null($row->get_pembayaran))
+                                            <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-link btn-sm" type="button"
+                                                            data-toggle="tooltip" title="Bayar Sekarang" disabled>
+                                                        <i class="fa fa-wallet" style="margin-right: 0"></i>
+                                                    </button>
+                                                    <button class="btn btn-link btn-sm" type="button"
+                                                            data-toggle="tooltip" title="Bukti Pembayaran"
+                                                            onclick="buktiPembayaran('{{$row->id}}','#INV/{{\Carbon\Carbon::parse($row->get_pembayaran->created_at)->format('Ymd').'/'.$row->get_pembayaran->id}}',
+                                                                '{{route('klien.update-pembayaran.pesanan',['id' => $row->id])}}',
+                                                                '{{route('klien.data-pembayaran.pesanan',['id' => $row->get_pembayaran->id])}}',
+                                                                '{{$row->get_service->harga}}')">
+                                                        <i class="fa fa-upload" style="margin-right: 0"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        @else
+                                            <button class="btn btn-link btn-sm btn-block" type="button"
+                                                    data-toggle="tooltip" title="Bayar Sekarang"
+                                                    onclick="bayarSekarang('{{$row->id}}','{{$row->get_service->judul}}',
+                                                        '{{route('klien.update-pembayaran.pesanan',['id' => $row->id])}}',
+                                                        '{{$row->get_service->harga}}')">
+                                                <i class="fa fa-wallet" style="margin-right: 0"></i>
+                                            </button>
+                                        @endif
+                                        <hr style="margin: .5em 0">
+                                        <button class="btn btn-link btn-sm btn-block" data-toggle="tooltip"
+                                                title="Ulas Hasil" onclick="ulasHasil('{{$row->id}}',
+                                            '{{route('klien.ulas-pengerjaan.layanan', ['id' => $row->id])}}',
+                                            '{{route('klien.data-ulasan.layanan', ['id' => $row->id])}}',
+                                            '{{$row->get_service->judul}}','{{$row->selesai}}')"
+                                            {{is_null($row->get_pembayaran) || (!is_null($row->get_pembayaran) &&
+                                            $row->get_pembayaran->jumlah_pembayaran != $row->get_service->harga) ||
+                                            $row->selesai == true ? 'disabled' : ''}}>
+                                            <i class="fa fa-edit" style="margin-right: 0"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
                             </tbody>
                         </table>
+                    </div>
+
+                    <div id="bayar-sekarang" style="display: none">
+                        <div class="card">
+                            <form id="pay-form" class="form-horizontal" role="form" method="POST">
+                                @csrf
+                                {{method_field('put')}}
+                                <input type="hidden" name="rekening">
+                                <div class="card-content">
+                                    <div class="card-title">
+                                        <small id="judul-bayar"></small>
+                                        <hr class="mt-0">
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <label for="dp" class="control-label">
+                                                    Jenis Pembayaran <span class="required">*</span></label>
+                                                <div class="custom-control custom-radio custom-control-inline" id="dp"
+                                                     style="padding-left: 3rem">
+                                                    <input type="radio" class="custom-control-input" id="jp-1"
+                                                           name="dp" value="1" onchange="jenisPembayaran('dp')"
+                                                           required>
+                                                    <label class="custom-control-label" for="jp-1">
+                                                        DP (minimal <b>30%</b>)</label>
+                                                </div>
+                                                <div class="custom-control custom-radio custom-control-inline"
+                                                     style="padding-left: 1.5rem">
+                                                    <input type="radio" class="custom-control-input" id="jp-2"
+                                                           name="dp" value="0" onchange="jenisPembayaran('fp')"
+                                                           required>
+                                                    <label class="custom-control-label" for="jp-2">LUNAS</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-5">
+                                                <label for="harga" class="form-control-label">Harga Layanan</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><b>Rp</b></span>
+                                                    <input id="harga" class="form-control rupiah" type="text" readonly>
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-money-bill-wave-alt"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <label class="form-control-label" for="jumlah_pembayaran">
+                                                    Jumlah Pembayaran <span class="required">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><b>Rp</b></span>
+                                                    <input id="jumlah_pembayaran" class="form-control rupiah" readonly
+                                                           name="jumlah_pembayaran" type="text" placeholder="0">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-money-bill-wave-alt"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label for="payment_methods" class="control-label">
+                                                    Metode Pembayaran <span class="required">*</span></label>
+                                                <div class="pm-selector">
+                                                    <input class="pm-radioButton" id="pm-bca" type="radio"
+                                                           name="metode_pembayaran" value="bca">
+                                                    <label class="pm-label" for="pm-bca"
+                                                           onclick="paymentMethod('{{\Faker\Factory::create()->bankAccountNumber}}')"
+                                                           style="background-image: url({{asset('images/payment/bca.png')}});"></label>
+
+                                                    <input class="pm-radioButton" id="pm-bni" type="radio"
+                                                           name="metode_pembayaran" value="bni">
+                                                    <label class="pm-label" for="pm-bni"
+                                                           onclick="paymentMethod('{{\Faker\Factory::create()->bankAccountNumber}}')"
+                                                           style="background-image: url({{asset('images/payment/bni.png')}});"></label>
+
+                                                    <input class="pm-radioButton" id="pm-bri" type="radio"
+                                                           name="metode_pembayaran" value="bri">
+                                                    <label class="pm-label" for="pm-bri"
+                                                           onclick="paymentMethod('{{\Faker\Factory::create()->bankAccountNumber}}')"
+                                                           style="background-image: url({{asset('images/payment/bri.png')}});"></label>
+
+                                                    <input class="pm-radioButton" id="pm-btn" type="radio"
+                                                           name="metode_pembayaran" value="btn">
+                                                    <label class="pm-label" for="pm-btn"
+                                                           onclick="paymentMethod('{{\Faker\Factory::create()->bankAccountNumber}}')"
+                                                           style="background-image: url({{asset('images/payment/btn.png')}});"></label>
+
+                                                    <input class="pm-radioButton" id="pm-mandiri" type="radio"
+                                                           name="metode_pembayaran" value="mandiri">
+                                                    <label class="pm-label" for="pm-mandiri"
+                                                           onclick="paymentMethod('{{\Faker\Factory::create()->bankAccountNumber}}')"
+                                                           style="background-image: url({{asset('images/payment/mandiri.png')}});"></label>
+                                                </div>
+                                                <div id="pm-details" class="alert alert-warning text-justify"
+                                                     style="font-size: 14px;text-transform:none;display:none"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-lg-12">
+                                                <button type="reset" class="btn btn-link btn-sm"
+                                                        style="border: 1px solid #ccc">
+                                                    <i class="fa fa-undo mr-2"></i>BATAL
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-read-more">
+                                    <button class="btn btn-link btn-block">
+                                        <i class="fa fa-wallet"></i>&nbsp;BAYAR SEKARANG
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div id="bukti-pembayaran" style="display: none">
+                        <div class="card">
+                            <form id="upload-form" class="form-horizontal" role="form" method="POST"
+                                  enctype="multipart/form-data">
+                                @csrf
+                                {{method_field('put')}}
+                                <div class="card-content">
+                                    <div class="card-title">
+                                        <small id="invoice"></small>
+                                        <hr class="mt-0">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="uploader">
+                                                    <input id="file-upload" type="file" name="bukti_pembayaran"
+                                                           accept="image/*">
+                                                    <label for="file-upload" id="file-drag">
+                                                        <img id="file-image" src="#" alt="Bukti Pembayaran"
+                                                             class="hidden img-responsive">
+                                                        <div id="start"><i class="fa fa-download"
+                                                                           aria-hidden="true"></i>
+                                                            <div>Pilih file bukti pembayaran Anda atau seret filenya
+                                                                kesini
+                                                            </div>
+                                                            <div id="notimage" class="hidden">Mohon untuk memilih file
+                                                                gambar
+                                                            </div>
+                                                            <span id="file-upload-btn" class="btn btn-link btn-sm">Pilih File</span>
+                                                        </div>
+                                                        <div id="response" class="hidden">
+                                                            <div id="messages"></div>
+                                                        </div>
+                                                        <div id="progress-upload">
+                                                            <div
+                                                                class="progress-bar progress-bar-info progress-bar-striped progress-bar-animated active"
+                                                                role="progressbar" aria-valuenow="0"
+                                                                aria-valuemin="0" aria-valuemax="100">
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-read-more">
+                                    <button type="reset" class="btn btn-link btn-block">
+                                        <i class="fa fa-undo mr-2"></i>BATAL
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
 
                     <div id="ulas-hasil" style="display: none">
@@ -562,11 +789,12 @@
                 ]
             });
 
-            @if(session('pengerjaan'))
-            swal('Sukses!', '{{ session('pengerjaan') }}', 'success');
+            @if(!is_null($req_id) && !is_null($req_invoice) && !is_null($req_url) && !is_null($req_data_url) && !is_null($req_harga))
+            buktiPembayaran('{{$req_id}}', '{{$req_invoice}}', '{{$req_url}}', '{{$req_data_url}}', '{{$req_harga}}');
             @endif
         });
 
+        <!-- batalkan pesanan -->
         function batalkanPesanan(url, judul) {
             swal({
                 title: 'Batalkan Pesanan',
@@ -585,6 +813,271 @@
             });
         }
 
+        <!-- pembayaran -->
+        var amount = 0, amountToPay = 0, amount_30 = 0;
+
+        function bayarSekarang(id, judul, url, harga) {
+            $("#judul-bayar").text(judul);
+            $("#dt-pesanan").toggle(300);
+            $("#bayar-sekarang").toggle(300);
+            $("#harga").val(harga);
+
+            amount = harga;
+            amountToPay = harga;
+            $("#bayar-sekarang form").attr('action', url);
+        }
+
+        $("#bayar-sekarang button[type=reset]").on('click', function () {
+            $("#judul-bayar").text(null);
+            $("#dt-pesanan").toggle(300);
+            $("#bayar-sekarang").toggle(300);
+            $("#harga").val(null);
+            amount = 0;
+            amountToPay = 0;
+            $("#bayar-sekarang form").removeAttr('action');
+
+            $('html,body').animate({scrollTop: $(".none-margin").offset().top}, 500);
+        });
+
+        function jenisPembayaran(jenis) {
+            var x = parseInt(amountToPay), input = $("#jumlah_pembayaran");
+
+            if (jenis == 'dp') {
+                amountToPay = Math.ceil(x * .3);
+                input.val(amountToPay).attr('required', 'required').removeAttr('readonly');
+            } else {
+                amountToPay = amount;
+                input.val(amountToPay).removeAttr('required', 'required').attr('readonly', 'readonly');
+            }
+
+            input.on('change', function () {
+                var val = parseInt($(this).val().split('.').join(''));
+
+                if (val >= amount) {
+                    $("#jp-2").prop('checked', true).trigger('change');
+                }
+
+                if (val < amountToPay) {
+                    input.val(amountToPay);
+                }
+            });
+
+            $(".pm-radioButton").prop("checked", false).trigger('change');
+            $("#pm-details").hide();
+        }
+
+        function paymentMethod(rekening) {
+            if ($("input[name=dp]").is(":checked")) {
+                $("#pay-form input[name=rekening]").val(rekening);
+                $("#pm-details").show().html(
+                    'Jumlah yang harus Anda transfer ke nomor rekening <u>' + rekening + '</u> ' +
+                    '(a/n <u>{{env('APP_NAME')}}</u>) adalah sebesar ' +
+                    '<u>Rp' + thousandSeparator(parseInt($("#jumlah_pembayaran").val().split('.').join(''))) + ',00</u>.');
+            } else {
+                $(".pm-radioButton").prop("checked", false).trigger('change');
+                $("#pm-details").hide();
+                $("#pay-form button[type=submit]").click();
+            }
+        }
+
+        $("#pay-form").on('submit', function (e) {
+            e.preventDefault();
+            if ($(".pm-radioButton").is(":checked")) {
+                swal({
+                    title: 'Apakah anda yakin?',
+                    text: 'Kami akan mengirimkan rincian tagihan pembayaran melalui email ' +
+                        'sesaat setelah Anda menekan tombol "Ya" berikut!',
+                    icon: 'warning',
+                    dangerMode: true,
+                    closeOnEsc: false,
+                    closeOnClickOutside: false,
+                    buttons: {
+                        cancel: "Tidak",
+                        confirm: {
+                            text: "Ya",
+                            closeModal: false,
+                        }
+                    }
+                }).then((confirm) => {
+                    if (confirm) {
+                        $(this)[0].submit();
+                    }
+                });
+
+            } else {
+                swal('PERHATIAN!', 'Anda belum memilih metode pembayaran!', 'warning');
+            }
+        });
+
+        <!-- bukti pembayaran -->
+        function buktiPembayaran(id, invoice, url, data_url, harga) {
+            $.get(data_url, function (data) {
+                $("#invoice").html('Bukti Pembayaran: <b>' + invoice + '</b>');
+                $("#dt-pesanan").toggle(300);
+                $("#bukti-pembayaran").toggle(300);
+
+                if (data.bukti_pembayaran == null || data.bukti_pembayaran == "") {
+                    $("#messages").html('');
+                    $('#start').removeClass("hidden");
+                    $('#response').addClass("hidden");
+                    $('#notimage').removeClass("hidden");
+                    $('#file-image').addClass("hidden").attr('src', '#');
+                } else {
+                    setImage(data.bukti_pembayaran);
+                }
+                ekUpload(id, url, data.jumlah_pembayaran, harga);
+            });
+        }
+
+        $("#bukti-pembayaran button[type=reset]").on('click', function () {
+            $("#invoice").empty().html();
+            $("#dt-pesanan").toggle(300);
+            $("#bukti-pembayaran").toggle(300);
+
+            setImage(null);
+
+            $('html,body').animate({scrollTop: $(".none-margin").offset().top}, 500);
+        });
+
+        function ekUpload(id, url, jumlah, harga) {
+            function Init() {
+                var fileSelect = document.getElementById('file-upload'),
+                    fileDrag = document.getElementById('file-drag');
+
+                fileSelect.addEventListener('change', fileSelectHandler, false);
+
+                var xhr = new XMLHttpRequest();
+                if (xhr.upload) {
+                    fileDrag.addEventListener('dragover', fileDragHover, false);
+                    fileDrag.addEventListener('dragleave', fileDragHover, false);
+                    fileDrag.addEventListener('drop', fileSelectHandler, false);
+                }
+            }
+
+            function fileDragHover(e) {
+                var fileDrag = document.getElementById('file-drag');
+
+                e.stopPropagation();
+                e.preventDefault();
+
+                fileDrag.className = (e.type === 'dragover' ? 'hover' : 'modal-body file-upload');
+            }
+
+            function fileSelectHandler(e) {
+                var files = e.target.files || e.dataTransfer.files;
+                $("#file-upload").prop("files", files);
+
+                fileDragHover(e);
+
+                for (var i = 0, f; f = files[i]; i++) {
+                    uploadPaymentProof(f);
+                }
+            }
+
+            function uploadPaymentProof(file) {
+                var files_size = file.size, max_file_size = 2000000, file_name = file.name,
+                    allowed_file_types = (/\.(?=gif|jpg|png|jpeg)/gi).test(file_name);
+
+                if (parseInt(jumlah) == parseInt(harga)) {
+                    swal('PERHATIAN!', "Pesanan Anda telah lunas! Mohon untuk tidak mengubah bukti pembayarannya, terimakasih.", 'warning');
+
+                } else {
+                    if (!window.File && window.FileReader && window.FileList && window.Blob) {
+                        swal('PERHATIAN!', "Browser yang Anda gunakan tidak support! Silahkan perbarui atau gunakan browser yang lainnya.", 'warning');
+
+                    } else {
+                        if (files_size > max_file_size) {
+                            swal('ERROR!', "Ukuran total " + file_name + " adalah " + humanFileSize(files_size) +
+                                ", ukuran file yang diperbolehkan adalah " + humanFileSize(max_file_size) +
+                                ", coba unggah file yang ukurannya lebih kecil!", 'error');
+
+                            $("#messages-" + id).html('Silahkan unggah file dengan ukuran yang lebih kecil (< ' + humanFileSize(max_file_size) + ').');
+                            document.getElementById('file-image').classList.add("hidden");
+                            document.getElementById('start').classList.remove("hidden");
+                            document.getElementById("upload-form").reset();
+
+                        } else {
+                            if (!allowed_file_types) {
+                                swal('ERROR!', "Tipe file " + file_name + " tidak support!", 'error');
+
+                                document.getElementById('file-image').classList.add("hidden");
+                                document.getElementById('notimage').classList.remove("hidden");
+                                document.getElementById('start').classList.remove("hidden");
+                                document.getElementById('response').classList.add("hidden");
+                                document.getElementById("upload-form").reset();
+
+                            } else {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: url,
+                                    data: new FormData($("#upload-form")[0]),
+                                    contentType: false,
+                                    processData: false,
+                                    mimeType: "multipart/form-data",
+                                    xhr: function () {
+                                        var xhr = $.ajaxSettings.xhr(),
+                                            progress_bar_id = $("#progress-upload .progress-bar");
+                                        if (xhr.upload) {
+                                            xhr.upload.addEventListener('progress', function (event) {
+                                                var percent = 0;
+                                                var position = event.loaded || event.position;
+                                                var total = event.total;
+                                                if (event.lengthComputable) {
+                                                    percent = Math.ceil(position / total * 100);
+                                                }
+                                                progress_bar_id.css("display", "block");
+                                                progress_bar_id.css("width", +percent + "%");
+                                                progress_bar_id.text(percent + "%");
+                                                if (percent == 100) {
+                                                    progress_bar_id.removeClass("progress-bar-info");
+                                                    progress_bar_id.addClass("progress-bar");
+                                                } else {
+                                                    progress_bar_id.removeClass("progress-bar");
+                                                    progress_bar_id.addClass("progress-bar-info");
+                                                }
+                                            }, true);
+                                        }
+                                        return xhr;
+                                    },
+                                    success: function (data) {
+                                        swal('Sukses!', 'Bukti pembayaran berhasil diunggah!', 'success');
+                                        setImage(data);
+                                        $("#progress-upload").css("display", "none");
+                                    },
+                                    error: function () {
+                                        swal('Oops...', 'Terjadi suatu kesalahan!', 'error')
+                                    }
+                                });
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (window.File && window.FileList && window.FileReader) {
+                Init();
+            } else {
+                document.getElementById('file-drag').style.display = 'none';
+            }
+        }
+
+        function setImage(image) {
+            if (image != "") {
+                $("#messages").html('<strong>' + image + '</strong>');
+                $('#start').addClass("hidden");
+                $('#response').removeClass("hidden");
+                $('#notimage').addClass("hidden");
+                $('#file-image').removeClass("hidden").attr('src', '{{asset('storage/users/pembayaran')}}/' + image);
+            }
+        }
+
+        function humanFileSize(size) {
+            var i = Math.floor(Math.log(size) / Math.log(1024));
+            return (size / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
+        }
+
+        <!-- ulasan -->
         function ulasHasil(id, action, data_url, judul, selesai) {
             $.get(data_url, function (data) {
                 $("#judul").text(judul);

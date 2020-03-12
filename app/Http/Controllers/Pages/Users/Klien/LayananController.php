@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Pages\Users\Klien;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Users\PembayaranLayananMail;
+use App\Model\PembayaranLayanan;
 use App\Model\PengerjaanLayanan;
 use App\Model\UlasanService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class LayananController extends Controller
@@ -16,12 +19,18 @@ class LayananController extends Controller
         $this->middleware('user.bio')->except('dashboard');
     }
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $user = Auth::user();
         $pesanan = PengerjaanLayanan::where('user_id', $user->id)->get();
+        $req_id = $request->id;
+        $req_invoice = $request->invoice;
+        $req_url = $request->url;
+        $req_data_url = $request->data_url;
+        $req_harga = $request->harga;
 
-        return view('pages.main.users.klien.layanan', compact('user', 'pesanan'));
+        return view('pages.main.users.klien.layanan', compact('user', 'pesanan',
+            'req_id', 'req_invoice', 'req_url', 'req_data_url', 'req_harga'));
     }
 
     public function batalkanPesanan($id)
@@ -36,14 +45,32 @@ class LayananController extends Controller
     {
         $pesanan = PengerjaanLayanan::find($request->id);
 
-        $name = $request->file('bukti_pembayaran')->getClientOriginalName();
-        if ($pesanan->get_pembayaran->bukti_pembayaran != '') {
-            Storage::delete('public/users/pembayaran/' . $pesanan->get_pembayaran->bukti_pembayaran);
-        }
-        $request->bukti_pembayaran->storeAs('public/users/pembayaran', $name);
-        $pesanan->get_pembayaran->update(['bukti_pembayaran' => $name]);
+        if ($request->hasFile('bukti_pembayaran')) {
+            $name = $request->file('bukti_pembayaran')->getClientOriginalName();
+            if ($pesanan->get_pembayaran->bukti_pembayaran != '') {
+                Storage::delete('public/users/pembayaran/' . $pesanan->get_pembayaran->bukti_pembayaran);
+            }
+            $request->bukti_pembayaran->storeAs('public/users/pembayaran', $name);
+            $pesanan->get_pembayaran->update(['bukti_pembayaran' => $name]);
 
-        return $name;
+            return $name;
+        } else {
+            $pembayaran = PembayaranLayanan::create([
+                'pengerjaan_layanan_id' => $pesanan->id,
+                'dp' => $request->dp,
+                'jumlah_pembayaran' => str_replace('.', '', $request->jumlah_pembayaran),
+            ]);
+
+            Mail::to($pembayaran->get_pengerjaan_layanan->get_user->email)
+                ->send(new PembayaranLayananMail($pembayaran, $request->metode_pembayaran, $request->rekening));
+
+            return back()->with('create', 'Silahkan cek email Anda dan selesaikan pembayaran Anda sebelum batas waktu yang ditentukan! Terimakasih :)');
+        }
+    }
+
+    public function dataPembayaran(Request $request)
+    {
+        return PembayaranLayanan::find($request->id);
     }
 
     public function ulasPengerjaanLayanan(Request $request)
@@ -63,7 +90,7 @@ class LayananController extends Controller
             $message = 'Pesanan layanan [' . $pengerjaan->get_service->judul . '] Anda sedang direvisi!';
         }
 
-        return back()->with('pengerjaan', $message);
+        return back()->with('create', $message);
     }
 
     public function dataUlasanLayanan(Request $request)

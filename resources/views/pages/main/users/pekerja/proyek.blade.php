@@ -403,12 +403,12 @@
                                                                      asset('storage/proyek/thumbnail/'.$row->get_project->thumbnail)
                                                                      : asset('images/slider/beranda-proyek.jpg')}}">
                                                                 @if(!is_null($row->get_project->get_pembayaran))
-                                                                    @if($row->get_project->get_pembayaran->dp == true)
+                                                                    @if($row->get_project->get_pembayaran->jumlah_pembayaran == $row->get_project->harga)
+                                                                        <span class="label label-success">LUNAS</span>
+                                                                    @else
                                                                         <span class="label label-default">DP {{round($row
                                                                         ->get_project->get_pembayaran->jumlah_pembayaran / $row
                                                                         ->get_project->harga * 100,1)}}%</span>
-                                                                    @else
-                                                                        <span class="label label-success">LUNAS</span>
                                                                     @endif |
                                                                     <span class="label label-{{$row->selesai == false ?
                                                                     'warning' : 'success'}}">{{$row->selesai == false ?
@@ -433,8 +433,7 @@
                                                                     @if($row->file_hasil != "")
                                                                         <div class="row use-lightgallery">
                                                                             @foreach($row->file_hasil as $file)
-                                                                                <div data-aos="fade-down"
-                                                                                     class="col-md-3 item"
+                                                                                <div class="col-md-3 item"
                                                                                      data-src="{{asset('storage/proyek/hasil/'.$file)}}"
                                                                                      data-sub-html="<h4>{{$row->get_project->judul}}</h4><p>{{$file}}</p>">
                                                                                     <div class="content-area">
