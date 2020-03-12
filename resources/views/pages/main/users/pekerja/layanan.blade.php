@@ -407,16 +407,21 @@
                                                                      asset('storage/layanan/thumbnail/'.$row->get_service->thumbnail)
                                                                      : asset('images/slider/beranda-pekerja.jpg')}}">
                                                                 @if(!is_null($row->get_pembayaran))
-                                                                    @if($row->get_pembayaran->jumlah_pembayaran == $row->get_service->harga)
-                                                                        <span class="label label-success">LUNAS</span>
+                                                                    @if(!is_null($row->get_pembayaran->bukti_pembayaran))
+                                                                        @if($row->get_pembayaran->jumlah_pembayaran == $row->get_service->harga)
+                                                                            <span
+                                                                                class="label label-success">LUNAS</span>
+                                                                        @else
+                                                                            <span class="label label-default">DP {{round($row
+                                                                            ->get_pembayaran->jumlah_pembayaran / $row
+                                                                            ->get_service->harga * 100,1)}}%</span>
+                                                                        @endif |
+                                                                        <span class="label label-{{$row->selesai == false ?
+                                                                        'warning' : 'success'}}">{{$row->selesai == false ?
+                                                                        'PROSES PENGERJAAN' : 'SELESAI'}}</span>
                                                                     @else
-                                                                        <span class="label label-default">DP {{round($row
-                                                                        ->get_pembayaran->jumlah_pembayaran / $row
-                                                                        ->get_service->harga * 100,1)}}%</span>
-                                                                    @endif |
-                                                                    <span class="label label-{{$row->selesai == false ?
-                                                                    'warning' : 'success'}}">{{$row->selesai == false ?
-                                                                    'PROSES PENGERJAAN' : 'SELESAI'}}</span>
+                                                                        <span class="label label-default">MENUNGGU KONFIRMASI</span>
+                                                                    @endif
                                                                 @else
                                                                     <span
                                                                         class="label label-danger">MENUNGGU PEMBAYARAN</span>
@@ -525,7 +530,8 @@
                                                                     onclick="updateHasil('{{$row->id}}',
                                                                         '{{$row->tautan}}','{{route('pekerja.update-pengerjaan.layanan', ['id' => $row->id])}}',
                                                                         '{{$row->get_service->judul}}')"
-                                                                {{is_null($row->get_pembayaran) ||
+                                                                {{is_null($row->get_pembayaran) || (!is_null($row->get_pembayaran) &&
+                                                                is_null($row->get_pembayaran->bukti_pembayaran)) ||
                                                                 $row->selesai == true ? 'disabled' : ''}}>
                                                                 <i class="fa fa-upload" style="margin-right: 0"></i>
                                                             </button>

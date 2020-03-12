@@ -360,16 +360,20 @@
                                         {{number_format($row->get_service->harga,2,',','.')}}</td>
                                     <td style="vertical-align: middle" align="center">
                                         @if(!is_null($row->get_pembayaran))
-                                            @if($row->get_pembayaran->jumlah_pembayaran == $row->get_service->harga)
-                                                <span class="label label-success">LUNAS</span>
-                                            @else
-                                                <span class="label label-default">DP {{round($row->get_pembayaran
+                                            @if(!is_null($row->get_pembayaran->bukti_pembayaran))
+                                                @if($row->get_pembayaran->jumlah_pembayaran == $row->get_service->harga)
+                                                    <span class="label label-success">LUNAS</span>
+                                                @else
+                                                    <span class="label label-default">DP {{round($row->get_pembayaran
                                                 ->jumlah_pembayaran / $row->get_service->harga * 100,1)}}%</span>
-                                            @endif
-                                            <hr style="margin: .5em 0">
-                                            <span
-                                                class="label label-{{$row->selesai == false ? 'warning' : 'success'}}">
+                                                @endif
+                                                <hr style="margin: .5em 0">
+                                                <span
+                                                    class="label label-{{$row->selesai == false ? 'warning' : 'success'}}">
                                             {{$row->selesai == false ? 'PROSES PENGERJAAN' : 'SELESAI'}}</span>
+                                            @else
+                                                <span class="label label-default">MENUNGGU KONFIRMASI</span>
+                                            @endif
                                         @else
                                             <span class="label label-danger">MENUNGGU PEMBAYARAN</span>
                                         @endif
