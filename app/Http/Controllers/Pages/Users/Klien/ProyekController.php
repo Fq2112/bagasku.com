@@ -27,14 +27,14 @@ class ProyekController extends Controller
         $user = Auth::user();
         $kategori = Kategori::orderBy('nama')->get();
         $proyek = Project::where('user_id', $user->id)->get();
+        $pengerjaan = Pengerjaan::whereIn('proyek_id', $proyek->pluck('id'))->get();
         $req_id = $request->id;
         $req_invoice = $request->invoice;
         $req_url = $request->url;
         $req_data_url = $request->data_url;
         $req_harga = $request->harga;
-        dd($proyek);
 
-        return view('pages.main.users.klien.proyek', compact('user', 'kategori', 'proyek',
+        return view('pages.main.users.klien.proyek', compact('user', 'kategori', 'proyek', 'pengerjaan',
             'req_id', 'req_invoice', 'req_url', 'req_data_url', 'req_harga'));
     }
 
@@ -153,11 +153,27 @@ class ProyekController extends Controller
         return back()->with('delete', 'Tugas/Proyek [' . $proyek->judul . '] Anda berhasil dihapus!');
     }
 
+    public function lampiranProyek(Request $request)
+    {
+        $proyek = Project::find($request->id);
+        return $proyek->lampiran;
+    }
+
+    public function dataBidProyek(Request $request)
+    {
+        return Bid::where('proyek_id', $request->id)->get();
+    }
+
     public function terimaBid($id)
     {
         $bid = Bid::find($id);
         $bid->update(['tolak' => false]);
         Bid::where('id', '!=', $id)->where('proyek_id', $bid->proyek_id)->update(['tolak', true]);
+        Pengerjaan::create([
+            'user_id' => $bid->user_id,
+            'proyek_id' => $bid->proyek_id,
+            'selesai' => false
+        ]);
 
         return back()->with('bid', 'Bidder [' . $bid->get_user->name . '] untuk tugas/proyek [' . $bid->get_project->judul . '] berhasil diterima!');
     }

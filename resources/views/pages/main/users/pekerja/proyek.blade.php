@@ -139,6 +139,7 @@
         .note-editor.note-airframe .note-editing-area .note-editable, .note-editor.note-frame .note-editing-area .note-editable,
         .note-editor.note-airframe .note-placeholder, .note-editor.note-frame .note-placeholder {
             padding: 20px 30px;
+            text-transform: none;
         }
     </style>
 @endpush
@@ -562,6 +563,18 @@
                                                                data-toggle="tooltip" title="Lihat Proyek">
                                                                 <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>
+                                                            <button class="btn btn-link btn-sm"
+                                                                    data-toggle="tooltip" title="Lihat Lampiran"
+                                                                    onclick="lihatLampiran('{{$row->id}}','{{$row->get_project->judul}}',
+                                                                        '{{route('klien.lampiran.proyek', ['id' => $row->proyek_id])}}')"
+                                                                {{is_null($row->get_project->lampiran) ?'disabled':''}}>
+                                                                <i class="fa fa-archive" style="margin-right: 0"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                    <hr style="margin: .5em 0">
+                                                    <div class="input-group">
+                                                        <span class="input-group-btn">
                                                             <button class="btn btn-link btn-sm" data-toggle="tooltip"
                                                                     title="Update Hasil"
                                                                     onclick="updateHasil('{{$row->id}}',
@@ -969,6 +982,12 @@
             $("#pengerjaan-tab").click();
             @endif
         });
+
+        function lihatLampiran(id, judul, url) {
+            $.get(url, function (data) {
+                console.log(data);
+            });
+        }
 
         function batalkanBid(url, judul) {
             swal({
