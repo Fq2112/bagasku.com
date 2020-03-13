@@ -155,7 +155,7 @@ Route::group(['prefix' => 'akun'], function () {
                     'as' => 'klien.hapus.proyek'
                 ]);
 
-                Route::get('lampiran/{id}', [
+                Route::get('lampiran/{judul}', [
                     'uses' => 'ProyekController@lampiranProyek',
                     'as' => 'klien.lampiran.proyek'
                 ]);
@@ -250,6 +250,11 @@ Route::group(['prefix' => 'akun'], function () {
                 Route::get('undangan/{id}/tolak', [
                     'uses' => 'ProyekController@tolakUndangan',
                     'as' => 'pekerja.tolak.undangan'
+                ]);
+
+                Route::get('lampiran/{id}', [
+                    'uses' => 'ProyekController@lampiranProyek',
+                    'as' => 'pekerja.lampiran.proyek'
                 ]);
 
                 Route::put('pengerjaan/{id}/update', [

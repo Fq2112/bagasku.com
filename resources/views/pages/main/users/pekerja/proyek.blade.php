@@ -390,6 +390,13 @@
                                         <tbody>
                                         @php $no = 1; @endphp
                                         @foreach($pengerjaan as $row)
+                                            @php
+                                                $klien = $row->get_project->get_user;
+                                                $ulasan_klien = \App\Model\Review::whereHas('get_project', function ($q) use ($klien) {
+                                                    $q->where('user_id', $klien->id);
+                                                })->get();
+                                                $rating_klien = count($ulasan_klien) > 0 ? $klien->get_bio->total_bintang_klien / count($ulasan_klien) : 0;
+                                            @endphp
                                             <tr>
                                                 <td style="vertical-align: middle" align="center">{{$no++}}</td>
                                                 <td style="vertical-align: middle">
@@ -429,6 +436,38 @@
                                                                 Tugas/Proyek {{$row->get_project->pribadi == false ? 'PUBLIK' : 'PRIVAT'}}
                                                                 :
                                                                 Rp{{number_format($row->get_project->harga,2,',','.')}}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-1" style="border-bottom: 1px solid #eee">
+                                                        <div class="col-lg-12">
+                                                            <b>KLIEN</b><br>
+                                                            <div class="media">
+                                                                <div class="media-left media-middle">
+                                                                    <a href="{{route('profil.user', ['username' => $klien->username])}}">
+                                                                        <img width="48" alt=""
+                                                                             class="media-object img-thumbnail"
+                                                                             src="{{$klien->get_bio->foto == "" ?
+                                                                 asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg') :
+                                                                 asset('storage/users/foto/'.$klien->get_bio->foto)}}"
+                                                                             style="border-radius: 100%">
+                                                                    </a>
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <p class="media-heading">
+                                                                        <i class="fa fa-hard-hat mr-2"
+                                                                           style="color: #4d4d4d"></i>
+                                                                        <a href="{{route('profil.user', ['username' => $klien->username])}}">
+                                                                            {{$klien->name}}</a>
+                                                                        <i class="fa fa-star"
+                                                                           style="color: #ffc100;margin: 0 0 0 .5rem"></i>
+                                                                        <b>{{round($rating_klien * 2) / 2}}</b>
+                                                                    </p>
+                                                                    <blockquote>
+                                                                        {!! !is_null($klien->get_bio->summary) ? $klien->get_bio->summary :
+                                                                        $klien->name.' belum menuliskan apapun di profilnya.' !!}
+                                                                    </blockquote>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="row mb-1" style="border-bottom: 1px solid #eee">
@@ -474,25 +513,25 @@
                                                     <div class="row mb-1" style="border-bottom: 1px solid #eee">
                                                         <div class="col-lg-12">
                                                             <b>ULASAN KLIEN</b><br>
-                                                            @if(!is_null($row->get_ulasan_pekerja))
-                                                                <div class="media">
-                                                                    <div class="media-left media-middle">
-                                                                        <a href="{{route('profil.user', ['username' => $row->get_project->get_user->username])}}">
-                                                                            <img width="48" alt="avatar" src="{{$row
+                                                            <div class="media">
+                                                                <div class="media-left media-middle">
+                                                                    <a href="{{route('profil.user', ['username' => $row->get_project->get_user->username])}}">
+                                                                        <img width="48" alt="avatar" src="{{$row
                                                                         ->get_project->get_user->get_bio->foto == "" ?
                                                                         asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg') :
                                                                         asset('storage/users/foto/'.$row->get_project
                                                                         ->get_user->get_bio->foto)}}"
-                                                                                 class="media-object img-thumbnail"
-                                                                                 style="border-radius: 100%">
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="media-body">
-                                                                        <p class="media-heading">
-                                                                            <i class="fa fa-user-tie mr-2"
-                                                                               style="color: #4d4d4d"></i>
-                                                                            <a href="{{route('profil.user', ['username' => $row->get_project->get_user->username])}}">
-                                                                                {{$row->get_project->get_user->name}}</a>
+                                                                             class="media-object img-thumbnail"
+                                                                             style="border-radius: 100%">
+                                                                    </a>
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <p class="media-heading">
+                                                                        <i class="fa fa-user-tie mr-2"
+                                                                           style="color: #4d4d4d"></i>
+                                                                        <a href="{{route('profil.user', ['username' => $row->get_project->get_user->username])}}">
+                                                                            {{$row->get_project->get_user->name}}</a>
+                                                                        @if(!is_null($row->get_ulasan_pekerja))
                                                                             <i class="fa fa-star"
                                                                                style="color: #ffc100;margin: 0 0 0 .5rem"></i>
                                                                             <b>{{round($row->get_ulasan_pekerja->bintang * 2) / 2}}</b>
@@ -502,15 +541,13 @@
                                                                                    style="color: #aaa;margin: 0"></i>
                                                                                 {{$row->get_ulasan_pekerja->created_at->diffForHumans()}}
                                                                             </span>
-                                                                        </p>
-                                                                        <blockquote>
-                                                                            {!! $row->get_ulasan_pekerja->deskripsi !!}
-                                                                        </blockquote>
-                                                                    </div>
+                                                                        @endif
+                                                                    </p>
+                                                                    <blockquote>
+                                                                        {!! !is_null($row->get_ulasan_pekerja) ? $row->get_ulasan_pekerja->deskripsi : '(kosong)' !!}
+                                                                    </blockquote>
                                                                 </div>
-                                                            @else
-                                                                (kosong)
-                                                            @endif
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -566,7 +603,7 @@
                                                             <button class="btn btn-link btn-sm"
                                                                     data-toggle="tooltip" title="Lihat Lampiran"
                                                                     onclick="lihatLampiran('{{$row->id}}','{{$row->get_project->judul}}',
-                                                                        '{{route('klien.lampiran.proyek', ['id' => $row->proyek_id])}}')"
+                                                                        '{{route('pekerja.lampiran.proyek', ['id' => $row->id])}}')"
                                                                 {{is_null($row->get_project->lampiran) ?'disabled':''}}>
                                                                 <i class="fa fa-archive" style="margin-right: 0"></i>
                                                             </button>
@@ -603,6 +640,23 @@
                                         @endforeach
                                         </tbody>
                                     </table>
+                                </div>
+
+                                <div id="daftar-lampiran" style="display: none">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <div class="card-title">
+                                                <small></small>
+                                                <hr class="mt-0">
+                                                <div id="lampiran"></div>
+                                            </div>
+                                        </div>
+                                        <div class="card-read-more">
+                                            <button class="btn btn-link btn-block">
+                                                <i class="fa fa-undo"></i>&nbsp;KEMBALI
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div id="update-hasil" style="display: none">
@@ -985,9 +1039,38 @@
 
         function lihatLampiran(id, judul, url) {
             $.get(url, function (data) {
-                console.log(data);
+                var content = '';
+
+                $.each(data, function (i, val) {
+                    var src = '';
+                    if (val.ext == "jpg" || val.ext == "jpeg" || val.ext == "png" || val.ext == "gif") {
+                        src = '{{asset('storage/proyek/lampiran')}}/' + val.file;
+                    } else {
+                        src = '{{asset('images/files.png')}}';
+                    }
+                    content +=
+                        '<div class="media">' +
+                        '<div class="media-left media-middle">' +
+                        '<a href="' + src + '" target="_blank">' +
+                        '<img width="100" alt="lampiran" src="' + src + '" class="media-object img-thumbnail"></a></div>' +
+                        '<div class="media-body">' +
+                        '<blockquote style="text-transform: none">' +
+                        '<a href="' + src + '" target="_blank">' + val.file + '</a></blockquote></div></div>';
+                });
+
+                $("#lampiran").html(content);
+                $("#daftar-lampiran .card-title small").text('Daftar Lampiran: ' + judul);
+                $("#dt-pengerjaan").toggle(300);
+                $("#daftar-lampiran").toggle(300);
             });
         }
+
+        $("#daftar-lampiran button").on('click', function () {
+            $("#lampiran").html(null);
+            $("#daftar-lampiran .card-title small").text(null);
+            $("#dt-pengerjaan").toggle(300);
+            $("#daftar-lampiran").toggle(300);
+        });
 
         function batalkanBid(url, judul) {
             swal({

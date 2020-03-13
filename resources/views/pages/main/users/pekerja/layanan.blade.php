@@ -394,6 +394,13 @@
                                         <tbody>
                                         @php $no = 1; @endphp
                                         @foreach($pengerjaan as $row)
+                                            @php
+                                                $klien = $row->get_user;
+                                                $ulasan_klien = \App\Model\Review::whereHas('get_project', function ($q) use ($klien) {
+                                                    $q->where('user_id', $klien->id);
+                                                })->get();
+                                                $rating_klien = count($ulasan_klien) > 0 ? $klien->get_bio->total_bintang_klien / count($ulasan_klien) : 0;
+                                            @endphp
                                             <tr>
                                                 <td style="vertical-align: middle" align="center">{{$no++}}</td>
                                                 <td style="vertical-align: middle">
@@ -431,6 +438,38 @@
                                                             </a>
                                                             <p>
                                                                 Rp{{number_format($row->get_service->harga,2,',','.')}}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-1" style="border-bottom: 1px solid #eee">
+                                                        <div class="col-lg-12">
+                                                            <b>KLIEN</b><br>
+                                                            <div class="media">
+                                                                <div class="media-left media-middle">
+                                                                    <a href="{{route('profil.user', ['username' => $klien->username])}}">
+                                                                        <img width="48" alt=""
+                                                                             class="media-object img-thumbnail"
+                                                                             src="{{$klien->get_bio->foto == "" ?
+                                                                 asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg') :
+                                                                 asset('storage/users/foto/'.$klien->get_bio->foto)}}"
+                                                                             style="border-radius: 100%">
+                                                                    </a>
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <p class="media-heading">
+                                                                        <i class="fa fa-hard-hat mr-2"
+                                                                           style="color: #4d4d4d"></i>
+                                                                        <a href="{{route('profil.user', ['username' => $klien->username])}}">
+                                                                            {{$klien->name}}</a>
+                                                                        <i class="fa fa-star"
+                                                                           style="color: #ffc100;margin: 0 0 0 .5rem"></i>
+                                                                        <b>{{round($rating_klien * 2) / 2}}</b>
+                                                                    </p>
+                                                                    <blockquote>
+                                                                        {!! !is_null($klien->get_bio->summary) ? $klien->get_bio->summary :
+                                                                        $klien->name.' belum menuliskan apapun di profilnya.' !!}
+                                                                    </blockquote>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="row mb-1" style="border-bottom: 1px solid #eee">
@@ -479,23 +518,23 @@
                                                             <div class="media">
                                                                 <div class="media-left media-middle">
                                                                     <a href="{{route('profil.user', ['username' =>
-                                                                        $row->get_user->username])}}">
+                                                                        $klien->username])}}">
                                                                         <img width="48" alt="avatar" src="{{$row
                                                                         ->get_user->get_bio->foto == "" ?
                                                                         asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg') :
-                                                                        asset('storage/users/foto/'.$row->get_user->get_bio->foto)}}"
+                                                                        asset('storage/users/foto/'.$klien->get_bio->foto)}}"
                                                                              class="media-object img-thumbnail"
                                                                              style="border-radius: 100%">
                                                                     </a>
                                                                 </div>
                                                                 <div class="media-body">
-                                                                    @if(!is_null($row->get_ulasan))
-                                                                        <p class="media-heading">
-                                                                            <i class="fa fa-user-tie mr-2"
-                                                                               style="color: #4d4d4d"></i>
-                                                                            <a href="{{route('profil.user',
-                                                                            ['username'=> $row->get_user->username])}}">
-                                                                                {{$row->get_user->name}}</a>
+                                                                    <p class="media-heading">
+                                                                        <i class="fa fa-user-tie mr-2"
+                                                                           style="color: #4d4d4d"></i>
+                                                                        <a href="{{route('profil.user',
+                                                                            ['username'=> $klien->username])}}">
+                                                                            {{$klien->name}}</a>
+                                                                        @if(!is_null($row->get_ulasan))
                                                                             <i class="fa fa-star"
                                                                                style="color: #ffc100;margin: 0 0 0 .5rem"></i>
                                                                             <b>{{round($row->get_ulasan->bintang * 2) / 2}}</b>
@@ -505,13 +544,11 @@
                                                                                    style="color: #aaa;margin: 0"></i>
                                                                                 {{$row->get_ulasan->created_at->diffForHumans()}}
                                                                             </span>
-                                                                        </p>
-                                                                        <blockquote>
-                                                                            {!! $row->get_ulasan->deskripsi !!}
-                                                                        </blockquote>
-                                                                    @else
-                                                                        (kosong)
-                                                                    @endif
+                                                                        @endif
+                                                                    </p>
+                                                                    <blockquote>
+                                                                        {!! !is_null($row->get_ulasan) ? $row->get_ulasan->deskripsi : '(kosong)' !!}
+                                                                    </blockquote>
                                                                 </div>
                                                             </div>
                                                         </div>

@@ -256,6 +256,17 @@
                             <tbody>
                             @php $no = 1; @endphp
                             @foreach($pesanan as $row)
+                                @php
+                                    $pekerja = $row->get_service->get_user;
+                                    $ulasan_pekerja = \App\Model\ReviewWorker::whereHas('get_pengerjaan', function ($q) use ($pekerja) {
+                                        $q->where('user_id', $pekerja->id);
+                                    })->get();
+                                    $ulasan_layanan = \App\Model\UlasanService::whereHas('get_pengerjaan', function ($q) use ($pekerja) {
+                                        $q->where('user_id', $pekerja->id);
+                                    })->count();
+                                    $rating_pekerja = count($ulasan_pekerja) + $ulasan_layanan > 0 ?
+                                        $pekerja->get_bio->total_bintang_pekerja / count($ulasan_pekerja) + $ulasan_layanan : 0;
+                                @endphp
                                 <tr>
                                     <td style="vertical-align: middle" align="center">{{$no++}}</td>
                                     <td style="vertical-align: middle">
@@ -272,6 +283,37 @@
                                                     <br><b>{{$row->get_service->judul}}</b>
                                                 </a>
                                                 {!! $row->get_service->deskripsi !!}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-1" style="border-bottom: 1px solid #eee">
+                                            <div class="col-lg-12">
+                                                <b>PEKERJA</b><br>
+                                                <div class="media">
+                                                    <div class="media-left media-middle">
+                                                        <a href="{{route('profil.user', ['username' => $pekerja->username])}}">
+                                                            <img width="48" alt="" class="media-object img-thumbnail"
+                                                                 src="{{$pekerja->get_bio->foto == "" ?
+                                                                 asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg') :
+                                                                 asset('storage/users/foto/'.$pekerja->get_bio->foto)}}"
+                                                                 style="border-radius: 100%">
+                                                        </a>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <p class="media-heading">
+                                                            <i class="fa fa-hard-hat mr-2"
+                                                               style="color: #4d4d4d"></i>
+                                                            <a href="{{route('profil.user', ['username' => $pekerja->username])}}">
+                                                                {{$pekerja->name}}</a>
+                                                            <i class="fa fa-star"
+                                                               style="color: #ffc100;margin: 0 0 0 .5rem"></i>
+                                                            <b>{{round($rating_pekerja * 2) / 2}}</b>
+                                                        </p>
+                                                        <blockquote>
+                                                            {!! !is_null($pekerja->get_bio->summary) ? $pekerja->get_bio->summary :
+                                                            $pekerja->name.' belum menuliskan apapun di profilnya.' !!}
+                                                        </blockquote>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row mb-1" style="border-bottom: 1px solid #eee">
@@ -384,7 +426,7 @@
                                             <span class="input-group-btn">
                                                 <a class="btn btn-link btn-sm" title="Lihat Layanan"
                                                    data-toggle="tooltip" href="{{route('detail.layanan',
-                                                   ['username' => $row->get_service->get_user->username,
+                                                   ['username' => $pekerja->username,
                                                    'judul' => $row->get_service->get_judul_uri()])}}">
                                                     <i class="fa fa-info-circle" style="margin-right: 0"></i></a>
                                                 <button class="btn btn-link btn-sm" type="button"
@@ -442,6 +484,7 @@
                                             '{{$row->get_service->judul}}','{{$row->selesai}}')"
                                             {{is_null($row->get_pembayaran) || (!is_null($row->get_pembayaran) &&
                                             $row->get_pembayaran->jumlah_pembayaran != $row->get_service->harga) ||
+                                            (is_null($row->file_hasil) && is_null($row->tautan)) ||
                                             $row->selesai == true ? 'disabled' : ''}}>
                                             <i class="fa fa-edit" style="margin-right: 0"></i>
                                         </button>
@@ -841,16 +884,12 @@
 
             amount = harga;
             amountToPay = harga;
+            $("#pay-form input[name=id]").val(id);
             $("#bayar-sekarang form").attr('action', url);
 
             if (parseInt(jumlah_pembayaran) > 0) {
-                $("#pay-form input[name=id]").val(id);
                 sisa_pembayaran = parseInt(harga) - parseInt(jumlah_pembayaran);
                 $("#jp-2").prop('checked', true).trigger('change');
-            } else {
-                $("#pay-form input[name=id]").val(null);
-                sisa_pembayaran = 0;
-                $("#jp-2").prop('checked', false).trigger('change');
             }
         }
 
@@ -861,6 +900,8 @@
             $("#harga").val(null);
             amount = 0;
             amountToPay = 0;
+            amount_30 = 0;
+            sisa_pembayaran = 0;
             $("#bayar-sekarang form").removeAttr('action');
 
             $('html,body').animate({scrollTop: $(".none-margin").offset().top}, 500);

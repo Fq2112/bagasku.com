@@ -107,23 +107,6 @@ class ProyekController extends Controller
                 $thumbnail = $proyek->thumbnail;
             }
 
-            if ($request->hasFile('lampiran')) {
-                $this->validate($request, [
-                    'lampiran' => 'required|array',
-                    'lampiran.*' => 'mimes:jpg,jpeg,gif,png,pdf,doc,docx,xls,xlsx,odt,ppt,pptx|max:5120'
-                ]);
-
-                $lampiran = [];
-                $i = 0;
-                foreach ($request->file('lampiran') as $file) {
-                    $file->storeAs('public/proyek/lampiran', $file->getClientOriginalName());
-                    $lampiran[$i] = $file->getClientOriginalName();
-                    $i = 1 + $i;
-                }
-            } else {
-                $lampiran = $proyek->lampiran;
-            }
-
             $proyek->update([
                 'user_id' => Auth::id(),
                 'subkategori_id' => $request->subkategori_id,
@@ -132,9 +115,9 @@ class ProyekController extends Controller
                 'waktu_pengerjaan' => $request->waktu_pengerjaan,
                 'harga' => str_replace('.', '', $request->harga),
                 'thumbnail' => $thumbnail,
-                'lampiran' => $lampiran,
                 'pribadi' => false,
             ]);
+
         } else {
             return back()->with('gagal', 'Tugas/Proyek [' . $request->judul . '] Anda telah tersedia! Silahkan ubah tugas/proyek Anda dengan judul yang berbeda, terimakasih.');
         }
@@ -148,6 +131,12 @@ class ProyekController extends Controller
         if ($proyek->thumbnail != "") {
             Storage::delete('public/proyek/thumbnail/' . $proyek->thumbnail);
         }
+
+        if ($proyek->lampiran != "") {
+            foreach ($proyek->lampiran as $item) {
+                Storage::delete('public/proyek/lampiran/' . $item);
+            }
+        }
         $proyek->delete();
 
         return back()->with('delete', 'Tugas/Proyek [' . $proyek->judul . '] Anda berhasil dihapus!');
@@ -155,8 +144,11 @@ class ProyekController extends Controller
 
     public function lampiranProyek(Request $request)
     {
-        $proyek = Project::find($request->id);
-        return $proyek->lampiran;
+        $user = Auth::user();
+        $proyek = Project::where('judul', str_replace('-', ' ', $request->judul))->first();
+        dd($proyek);
+
+        return view('pages.main.users.klien.lampiran-proyek', compact('user', 'proyek'));
     }
 
     public function dataBidProyek(Request $request)
@@ -180,31 +172,31 @@ class ProyekController extends Controller
 
     public function updatePembayaran(Request $request)
     {
-        $proyek = Project::find($request->id);
+        $pengerjaan = Pengerjaan::find($request->id);
 
         if ($request->hasFile('bukti_pembayaran')) {
             $name = $request->file('bukti_pembayaran')->getClientOriginalName();
-            if ($proyek->get_pembayaran->bukti_pembayaran != '') {
-                Storage::delete('public/users/pembayaran/proyek/' . $proyek->get_pembayaran->bukti_pembayaran);
+            if ($pengerjaan->get_project->get_pembayaran->bukti_pembayaran != '') {
+                Storage::delete('public/users/pembayaran/proyek/' . $pengerjaan->get_project->get_pembayaran->bukti_pembayaran);
             }
             $request->bukti_pembayaran->storeAs('public/users/pembayaran/proyek', $name);
-            $proyek->get_pembayaran->update(['bukti_pembayaran' => $name]);
+            $pengerjaan->get_project->get_pembayaran->update(['bukti_pembayaran' => $name]);
 
             return $name;
         } else {
-            if (is_null($proyek)) {
+            if (is_null($pengerjaan->get_project->get_pembayaran)) {
                 $sisa_pembayaran = 0;
                 $pembayaran = Pembayaran::create([
-                    'proyek_id' => $proyek->id,
+                    'proyek_id' => $pengerjaan->proyek_id,
                     'dp' => $request->dp,
                     'jumlah_pembayaran' => str_replace('.', '', $request->jumlah_pembayaran),
                 ]);
             } else {
-                $pembayaran = Pembayaran::where('proyek_id', $proyek->id)->first();
+                $pembayaran = Pembayaran::where('proyek_id', $pengerjaan->proyek_id)->first();
                 $sisa_pembayaran = str_replace('.', '', $request->jumlah_pembayaran);
                 $pembayaran->update([
                     'dp' => $request->dp,
-                    'jumlah_pembayaran' => $proyek->get_pembayaran->jumlah_pembayaran + $sisa_pembayaran,
+                    'jumlah_pembayaran' => $pengerjaan->get_project->get_pembayaran->jumlah_pembayaran + $sisa_pembayaran,
                     'bukti_pembayaran' => null,
                 ]);
             }
@@ -212,7 +204,7 @@ class ProyekController extends Controller
             Mail::to($pembayaran->get_project->get_user->email)
                 ->send(new PembayaranProyekMail($pembayaran, $sisa_pembayaran, $request->metode_pembayaran, $request->rekening));
 
-            return back()->with('update', 'Silahkan cek email Anda dan selesaikan pembayaran Anda sebelum batas waktu yang ditentukan! Terimakasih :)');
+            return back()->with('pengerjaan', 'Silahkan cek email Anda dan selesaikan pembayaran Anda sebelum batas waktu yang ditentukan! Terimakasih :)');
         }
     }
 
@@ -227,7 +219,7 @@ class ProyekController extends Controller
         $pengerjaan->update(['selesai' => $request->has('selesai') ? $request->selesai : false]);
         ReviewWorker::create([
             'user_id' => Auth::id(),
-            'pengerjaan_id' => $pengerjaan->proyek_id,
+            'pengerjaan_id' => $pengerjaan->id,
             'deskripsi' => $request->deskripsi,
             'bintang' => $request->rating,
         ]);

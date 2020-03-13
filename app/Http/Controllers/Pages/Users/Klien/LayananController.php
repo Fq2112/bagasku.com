@@ -56,7 +56,7 @@ class LayananController extends Controller
             return $name;
 
         } else {
-            if (is_null($pesanan)) {
+            if (is_null($pesanan->get_pembayaran)) {
                 $sisa_pembayaran = 0;
                 $pembayaran = PembayaranLayanan::create([
                     'pengerjaan_layanan_id' => $pesanan->id,

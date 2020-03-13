@@ -321,13 +321,11 @@
                                                                data-toggle="tooltip" title="Lihat Proyek">
                                                                 <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>
-                                                            <button class="btn btn-link btn-sm"
-                                                                    data-toggle="tooltip" title="Lihat Lampiran"
-                                                                    onclick="lihatLampiran('{{$row->id}}','{{$row->judul}}',
-                                                                        '{{route('klien.lampiran.proyek', ['id' => $row->id])}}')"
-                                                                {{is_null($row->lampiran) ?'disabled':''}}>
+                                                            <a class="btn btn-link btn-sm"
+                                                               href="{{route('klien.lampiran.proyek', ['judul' => $row->get_judul_uri()])}}"
+                                                               data-toggle="tooltip" title="Lihat Lampiran">
                                                                 <i class="fa fa-archive" style="margin-right: 0"></i>
-                                                            </button>
+                                                            </a>
                                                         </span>
                                                     </div>
                                                     <hr style="margin: .5em 0">
@@ -523,6 +521,17 @@
                                         <tbody>
                                         @php $no = 1; @endphp
                                         @foreach($pengerjaan as $row)
+                                            @php
+                                                $pekerja = $row->get_user;
+                                                $ulasan_pekerja = \App\Model\ReviewWorker::whereHas('get_pengerjaan', function ($q) use ($pekerja) {
+                                                    $q->where('user_id', $pekerja->id);
+                                                })->get();
+                                                $ulasan_layanan = \App\Model\UlasanService::whereHas('get_pengerjaan', function ($q) use ($pekerja) {
+                                                    $q->where('user_id', $pekerja->id);
+                                                })->count();
+                                                $rating_pekerja = count($ulasan_pekerja) + $ulasan_layanan > 0 ?
+                                                    $pekerja->get_bio->total_bintang_pekerja / count($ulasan_pekerja) + $ulasan_layanan : 0;
+                                            @endphp
                                             <tr>
                                                 <td style="vertical-align: middle" align="center">{{$no++}}</td>
                                                 <td style="vertical-align: middle">
@@ -535,9 +544,9 @@
                                                                      src="{{$row->get_project->thumbnail != "" ?
                                                                      asset('storage/proyek/thumbnail/'.$row->get_project->thumbnail)
                                                                      : asset('images/slider/beranda-proyek.jpg')}}">
-                                                                @if(!is_null($row->get_pembayaran))
-                                                                    @if(!is_null($row->get_pembayaran->bukti_pembayaran))
-                                                                        @if($row->get_pembayaran->jumlah_pembayaran == $row->get_project->harga)
+                                                                @if(!is_null($row->get_project->get_pembayaran))
+                                                                    @if(!is_null($row->get_project->get_pembayaran->bukti_pembayaran))
+                                                                        @if($row->get_project->get_pembayaran->jumlah_pembayaran == $row->get_project->harga)
                                                                             <span
                                                                                 class="label label-success">LUNAS</span>
                                                                         @else
@@ -559,6 +568,38 @@
                                                             </a>
                                                             <p>Rp{{number_format($row->get_project->harga,2,',','.')}}
                                                             </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-1" style="border-bottom: 1px solid #eee">
+                                                        <div class="col-lg-12">
+                                                            <b>PEKERJA</b><br>
+                                                            <div class="media">
+                                                                <div class="media-left media-middle">
+                                                                    <a href="{{route('profil.user', ['username' => $pekerja->username])}}">
+                                                                        <img width="48" alt=""
+                                                                             class="media-object img-thumbnail"
+                                                                             src="{{$pekerja->get_bio->foto == "" ?
+                                                                 asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg') :
+                                                                 asset('storage/users/foto/'.$pekerja->get_bio->foto)}}"
+                                                                             style="border-radius: 100%">
+                                                                    </a>
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <p class="media-heading">
+                                                                        <i class="fa fa-hard-hat mr-2"
+                                                                           style="color: #4d4d4d"></i>
+                                                                        <a href="{{route('profil.user', ['username' => $pekerja->username])}}">
+                                                                            {{$pekerja->name}}</a>
+                                                                        <i class="fa fa-star"
+                                                                           style="color: #ffc100;margin: 0 0 0 .5rem"></i>
+                                                                        <b>{{round($rating_pekerja * 2) / 2}}</b>
+                                                                    </p>
+                                                                    <blockquote>
+                                                                        {!! !is_null($pekerja->get_bio->summary) ? $pekerja->get_bio->summary :
+                                                                        $pekerja->name.' belum menuliskan apapun di profilnya.' !!}
+                                                                    </blockquote>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="row mb-1" style="border-bottom: 1px solid #eee">
@@ -644,23 +685,23 @@
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <b>ULASAN PEKERJA</b><br>
-                                                            @if(!is_null($row->get_project->get_ulasan))
-                                                                <div class="media">
-                                                                    <div class="media-left media-middle">
-                                                                        <a href="{{route('profil.user', ['username' => $row->get_user->username])}}">
-                                                                            <img width="48" alt="avatar" src="{{$row->get_user->get_bio->foto == "" ?
+                                                            <div class="media">
+                                                                <div class="media-left media-middle">
+                                                                    <a href="{{route('profil.user', ['username' => $row->get_user->username])}}">
+                                                                        <img width="48" alt="avatar" src="{{$row->get_user->get_bio->foto == "" ?
                                                                             asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg') :
                                                                             asset('storage/users/foto/'.$row->get_user->get_bio->foto)}}"
-                                                                                 class="media-object img-thumbnail"
-                                                                                 style="border-radius: 100%">
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="media-body">
-                                                                        <p class="media-heading">
-                                                                            <i class="fa fa-hard-hat mr-2"
-                                                                               style="color: #4d4d4d"></i>
-                                                                            <a href="{{route('profil.user', ['username' => $row->get_user->username])}}">
-                                                                                {{$row->get_user->name}}</a>
+                                                                             class="media-object img-thumbnail"
+                                                                             style="border-radius: 100%">
+                                                                    </a>
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <p class="media-heading">
+                                                                        <i class="fa fa-hard-hat mr-2"
+                                                                           style="color: #4d4d4d"></i>
+                                                                        <a href="{{route('profil.user', ['username' => $row->get_user->username])}}">
+                                                                            {{$row->get_user->name}}</a>
+                                                                        @if(!is_null($row->get_project->get_ulasan))
                                                                             <i class="fa fa-star"
                                                                                style="color: #ffc100;margin: 0 0 0 .5rem"></i>
                                                                             <b>{{round($row->get_project->get_ulasan->bintang * 2) / 2}}</b>
@@ -670,15 +711,13 @@
                                                                                    style="color: #aaa;margin: 0"></i>
                                                                                 {{$row->get_project->get_ulasan->created_at->diffForHumans()}}
                                                                             </span>
-                                                                        </p>
-                                                                        <blockquote>
-                                                                            {!! $row->get_project->get_ulasan->deskripsi !!}
-                                                                        </blockquote>
-                                                                    </div>
+                                                                        @endif
+                                                                    </p>
+                                                                    <blockquote>
+                                                                        {!! !is_null($row->get_project->get_ulasan) ? $row->get_project->get_ulasan->deskripsi : '(kosong)' !!}
+                                                                    </blockquote>
                                                                 </div>
-                                                            @else
-                                                                (kosong)
-                                                            @endif
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -689,10 +728,10 @@
                                                                'judul' => $row->get_project->get_judul_uri()])}}">
                                                         <i class="fa fa-info-circle" style="margin-right: 0"></i></a>
                                                     <hr style="margin: .5em 0">
-                                                    @if(!is_null($row->get_pembayaran))
+                                                    @if(!is_null($row->get_project->get_pembayaran))
                                                         <div class="input-group">
                                                             <span class="input-group-btn">
-                                                                @if($row->get_pembayaran->dp == false)
+                                                                @if($row->get_project->get_pembayaran->dp == false)
                                                                     <button class="btn btn-link btn-sm" type="button"
                                                                             data-toggle="tooltip" title="Bayar Sekarang"
                                                                             disabled>
@@ -705,16 +744,16 @@
                                                                             onclick="bayarSekarang('{{$row->id}}','{{$row->get_project->judul}}',
                                                                                 '{{route('klien.update-pembayaran.proyek',['id' => $row->id])}}',
                                                                                 '{{$row->get_project->harga}}',
-                                                                                '{{$row->get_pembayaran->jumlah_pembayaran}}')">
+                                                                                '{{$row->get_project->get_pembayaran->jumlah_pembayaran}}')">
                                                                         <i class="fa fa-wallet"
                                                                            style="margin-right: 0"></i>
                                                                     </button>
                                                                 @endif
                                                                 <button class="btn btn-link btn-sm" type="button"
                                                                         data-toggle="tooltip" title="Bukti Pembayaran"
-                                                                        onclick="buktiPembayaran('{{$row->id}}','#INV/{{\Carbon\Carbon::parse($row->get_pembayaran->created_at)->format('Ymd').'/'.$row->get_pembayaran->id}}',
+                                                                        onclick="buktiPembayaran('{{$row->id}}','#INV/{{\Carbon\Carbon::parse($row->get_project->get_pembayaran->created_at)->format('Ymd').'/'.$row->get_project->get_pembayaran->id}}',
                                                                             '{{route('klien.update-pembayaran.proyek',['id' => $row->id])}}',
-                                                                            '{{route('klien.data-pembayaran.proyek',['id' => $row->get_pembayaran->id])}}',
+                                                                            '{{route('klien.data-pembayaran.proyek',['id' => $row->get_project->get_pembayaran->id])}}',
                                                                             '{{$row->get_project->harga}}',0)">
                                                                     <i class="fa fa-upload" style="margin-right: 0"></i>
                                                                 </button>
@@ -735,9 +774,9 @@
                                                         '{{route('klien.ulas-pengerjaan.proyek', ['id' => $row->id])}}',
                                                         '{{route('klien.data-ulasan.proyek', ['id' => $row->id])}}',
                                                         '{{$row->get_project->judul}}','{{$row->selesai}}')"
-                                                        {{is_null($row->get_pembayaran) || (!is_null($row->get_pembayaran) &&
-                                                        $row->get_pembayaran->jumlah_pembayaran != $row->get_project->harga) ||
-                                                        $row->selesai == true ? 'disabled' : ''}}>
+                                                        {{is_null($row->get_project->get_pembayaran) || (!is_null($row->get_project->get_pembayaran) &&
+                                                        $row->get_project->get_pembayaran->jumlah_pembayaran != $row->get_project->harga) ||
+                                                        (is_null($row->file_hasil) && is_null($row->tautan)) || $row->selesai == true ? 'disabled' : ''}}>
                                                         <i class="fa fa-edit" style="margin-right: 0"></i>
                                                     </button>
                                                 </td>
@@ -1008,7 +1047,7 @@
                                                     </div>
                                                     <div class="row form-group">
                                                         <div class="col-md-12">
-                                                            <textarea id="deskripsi" name="deskripsi"
+                                                            <textarea id="deskripsi2" name="deskripsi"
                                                                       class="form-control"></textarea>
                                                         </div>
                                                     </div>
@@ -1200,6 +1239,21 @@
                 ]
             });
 
+            $("#deskripsi2").summernote({
+                placeholder: 'Tulis ulasan Anda disini...',
+                tabsize: 2,
+                height: 150,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+
             @if(session('pengerjaan'))
             swal('Sukses!', '{{ session('pengerjaan') }}', 'success');
             $("#pengerjaan-tab").click();
@@ -1209,12 +1263,6 @@
             buktiPembayaran('{{$req_id}}', '{{$req_invoice}}', '{{$req_url}}', '{{$req_data_url}}', '{{$req_harga}}');
             @endif
         });
-
-        function lihatLampiran(id, judul, url) {
-            $.get(url, function (data) {
-                console.log(data);
-            });
-        }
 
         function lihatBidder(id, judul, url) {
             $.get(url, function (data) {
@@ -1308,32 +1356,30 @@
 
         function bayarSekarang(id, judul, url, harga, jumlah_pembayaran) {
             $("#judul-bayar").text(judul);
-            $("#dt-pesanan").toggle(300);
+            $("#dt-pengerjaan").toggle(300);
             $("#bayar-sekarang").toggle(300);
-            $("#harga").val(harga);
+            $("#harga2").val(harga);
 
             amount = harga;
             amountToPay = harga;
+            $("#pay-form input[name=id]").val(id);
             $("#bayar-sekarang form").attr('action', url);
 
             if (parseInt(jumlah_pembayaran) > 0) {
-                $("#pay-form input[name=id]").val(id);
                 sisa_pembayaran = parseInt(harga) - parseInt(jumlah_pembayaran);
                 $("#jp-2").prop('checked', true).trigger('change');
-            } else {
-                $("#pay-form input[name=id]").val(null);
-                sisa_pembayaran = 0;
-                $("#jp-2").prop('checked', false).trigger('change');
             }
         }
 
         $("#bayar-sekarang button[type=reset]").on('click', function () {
             $("#judul-bayar").text(null);
-            $("#dt-pesanan").toggle(300);
+            $("#dt-pengerjaan").toggle(300);
             $("#bayar-sekarang").toggle(300);
-            $("#harga").val(null);
+            $("#harga2").val(null);
             amount = 0;
             amountToPay = 0;
+            amount_30 = 0;
+            sisa_pembayaran = 0;
             $("#bayar-sekarang form").removeAttr('action');
 
             $('html,body').animate({scrollTop: $(".none-margin").offset().top}, 500);
@@ -1426,7 +1472,7 @@
             var bisa_upload = false;
             $.get(data_url, function (data) {
                 $("#invoice").html('Bukti Pembayaran: <b>' + invoice + '</b>');
-                $("#dt-pesanan").toggle(300);
+                $("#dt-pengerjaan").toggle(300);
                 $("#bukti-pembayaran").toggle(300);
 
                 if (data.bukti_pembayaran == null || data.bukti_pembayaran == "") {
@@ -1454,7 +1500,7 @@
 
         $("#bukti-pembayaran button[type=reset]").on('click', function () {
             $("#invoice").empty().html();
-            $("#dt-pesanan").toggle(300);
+            $("#dt-pengerjaan").toggle(300);
             $("#bukti-pembayaran").toggle(300);
 
             setImage(null);
@@ -1610,8 +1656,8 @@
                     $("#cb-selesai").prop('checked', false);
                 }
                 $("#rating input[type=radio]").filter('[value="' + data.bintang + '"]').attr('checked', 'checked');
-                $("#deskripsi").summernote('code', data.deskripsi);
-                $("#dt-pesanan").toggle(300);
+                $("#deskripsi2").summernote('code', data.deskripsi);
+                $("#dt-pengerjaan").toggle(300);
                 $("#ulas-hasil").toggle(300);
                 $("#ulas-hasil form").attr('action', action);
             });
@@ -1620,8 +1666,8 @@
         $("#ulas-hasil button[type=reset]").on('click', function () {
             $("#judul").text(null);
             $("#rating input[type=radio]").removeAttr('checked');
-            $("#deskripsi").summernote('code', null);
-            $("#dt-pesanan").toggle(300);
+            $("#deskripsi2").summernote('code', null);
+            $("#dt-pengerjaan").toggle(300);
             $("#ulas-hasil").toggle(300);
             $("#ulas-hasil form").removeAttr('action');
 
@@ -1630,7 +1676,7 @@
 
         $("#ulas-hasil form").on('submit', function (e) {
             e.preventDefault();
-            if ($('#deskripsi').summernote('isEmpty')) {
+            if ($('#deskripsi2').summernote('isEmpty')) {
                 swal('PERHATIAN!', 'Deskripsi ulasan Anda tidak boleh kosong!', 'warning');
             } else {
                 $(this)[0].submit();
