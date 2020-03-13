@@ -399,16 +399,27 @@
                                         @if(!is_null($row->get_pembayaran))
                                             <div class="input-group">
                                                 <span class="input-group-btn">
-                                                    <button class="btn btn-link btn-sm" type="button"
-                                                            data-toggle="tooltip" title="Bayar Sekarang" disabled>
-                                                        <i class="fa fa-wallet" style="margin-right: 0"></i>
-                                                    </button>
+                                                    @if($row->get_pembayaran->dp == false)
+                                                        <button class="btn btn-link btn-sm" type="button"
+                                                                data-toggle="tooltip" title="Bayar Sekarang" disabled>
+                                                            <i class="fa fa-wallet" style="margin-right: 0"></i>
+                                                        </button>
+                                                    @else
+                                                        <button class="btn btn-link btn-sm" type="button"
+                                                                data-toggle="tooltip" title="Bayar Sekarang"
+                                                                onclick="bayarSekarang('{{$row->id}}','{{$row->get_service->judul}}',
+                                                                    '{{route('klien.update-pembayaran.pesanan',['id' => $row->id])}}',
+                                                                    '{{$row->get_service->harga}}',
+                                                                    '{{$row->get_pembayaran->jumlah_pembayaran}}')">
+                                                            <i class="fa fa-wallet" style="margin-right: 0"></i>
+                                                        </button>
+                                                    @endif
                                                     <button class="btn btn-link btn-sm" type="button"
                                                             data-toggle="tooltip" title="Bukti Pembayaran"
                                                             onclick="buktiPembayaran('{{$row->id}}','#INV/{{\Carbon\Carbon::parse($row->get_pembayaran->created_at)->format('Ymd').'/'.$row->get_pembayaran->id}}',
                                                                 '{{route('klien.update-pembayaran.pesanan',['id' => $row->id])}}',
                                                                 '{{route('klien.data-pembayaran.pesanan',['id' => $row->get_pembayaran->id])}}',
-                                                                '{{$row->get_service->harga}}')">
+                                                                '{{$row->get_service->harga}}',0)">
                                                         <i class="fa fa-upload" style="margin-right: 0"></i>
                                                     </button>
                                                 </span>
@@ -445,6 +456,7 @@
                             <form id="pay-form" class="form-horizontal" role="form" method="POST">
                                 @csrf
                                 {{method_field('put')}}
+                                <input type="hidden" name="id">
                                 <input type="hidden" name="rekening">
                                 <div class="card-content">
                                     <div class="card-title">
@@ -818,9 +830,9 @@
         }
 
         <!-- pembayaran -->
-        var amount = 0, amountToPay = 0, amount_30 = 0;
+        var amount = 0, amountToPay = 0, amount_30 = 0, sisa_pembayaran = 0;
 
-        function bayarSekarang(id, judul, url, harga) {
+        function bayarSekarang(id, judul, url, harga, jumlah_pembayaran) {
             $("#judul-bayar").text(judul);
             $("#dt-pesanan").toggle(300);
             $("#bayar-sekarang").toggle(300);
@@ -829,6 +841,16 @@
             amount = harga;
             amountToPay = harga;
             $("#bayar-sekarang form").attr('action', url);
+
+            if (parseInt(jumlah_pembayaran) > 0) {
+                $("#pay-form input[name=id]").val(id);
+                sisa_pembayaran = parseInt(harga) - parseInt(jumlah_pembayaran);
+                $("#jp-2").prop('checked', true).trigger('change');
+            } else {
+                $("#pay-form input[name=id]").val(null);
+                sisa_pembayaran = 0;
+                $("#jp-2").prop('checked', false).trigger('change');
+            }
         }
 
         $("#bayar-sekarang button[type=reset]").on('click', function () {
@@ -850,19 +872,31 @@
                 amountToPay = Math.ceil(x * .3);
                 input.val(amountToPay).attr('required', 'required').removeAttr('readonly');
             } else {
-                amountToPay = amount;
-                input.val(amountToPay).removeAttr('required', 'required').attr('readonly', 'readonly');
+                if (parseInt(sisa_pembayaran) > 0) {
+                    $("#jp-1").attr('disabled', 'disabled').removeAttr('required');
+                    $("label[for=jumlah_pembayaran]").html('Sisa Pembayaran <span class="required">*</span>');
+                    input.val(sisa_pembayaran).removeAttr('required', 'required').attr('readonly', 'readonly');
+                } else {
+                    $("#jp-1").removeAttr('disabled').attr('required', 'required');
+                    $("label[for=jumlah_pembayaran]").html('Jumlah Pembayaran <span class="required">*</span>');
+                    amountToPay = amount;
+                    input.val(amountToPay).removeAttr('required', 'required').attr('readonly', 'readonly');
+                }
             }
 
             input.on('change', function () {
                 var val = parseInt($(this).val().split('.').join(''));
 
-                if (val >= amount) {
-                    $("#jp-2").prop('checked', true).trigger('change');
-                }
+                if (parseInt(sisa_pembayaran) > 0) {
+                    input.val(sisa_pembayaran);
+                } else {
+                    if (val >= amount) {
+                        $("#jp-2").prop('checked', true).trigger('change');
+                    }
 
-                if (val < amountToPay) {
-                    input.val(amountToPay);
+                    if (val < amountToPay) {
+                        input.val(amountToPay);
+                    }
                 }
             });
 
@@ -915,6 +949,7 @@
 
         <!-- bukti pembayaran -->
         function buktiPembayaran(id, invoice, url, data_url, harga) {
+            var bisa_upload = false;
             $.get(data_url, function (data) {
                 $("#invoice").html('Bukti Pembayaran: <b>' + invoice + '</b>');
                 $("#dt-pesanan").toggle(300);
@@ -926,10 +961,20 @@
                     $('#response').addClass("hidden");
                     $('#notimage').removeClass("hidden");
                     $('#file-image').addClass("hidden").attr('src', '#');
+
+                    bisa_upload = true;
+
                 } else {
                     setImage(data.bukti_pembayaran);
+
+                    if (parseInt(data.jumlah_pembayaran) == parseInt(harga)) {
+                        bisa_upload = false;
+                    } else {
+                        bisa_upload = true;
+                    }
                 }
-                ekUpload(id, url, data.jumlah_pembayaran, harga);
+
+                ekUpload(id, url, bisa_upload);
             });
         }
 
@@ -943,7 +988,7 @@
             $('html,body').animate({scrollTop: $(".none-margin").offset().top}, 500);
         });
 
-        function ekUpload(id, url, jumlah, harga) {
+        function ekUpload(id, url, bisa_upload) {
             function Init() {
                 var fileSelect = document.getElementById('file-upload'),
                     fileDrag = document.getElementById('file-drag');
@@ -982,7 +1027,7 @@
                 var files_size = file.size, max_file_size = 2000000, file_name = file.name,
                     allowed_file_types = (/\.(?=gif|jpg|png|jpeg)/gi).test(file_name);
 
-                if (parseInt(jumlah) == parseInt(harga)) {
+                if (bisa_upload == false) {
                     swal('PERHATIAN!', "Pesanan Anda telah lunas! Mohon untuk tidak mengubah bukti pembayarannya, terimakasih.", 'warning');
 
                 } else {

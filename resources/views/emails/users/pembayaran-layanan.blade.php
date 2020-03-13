@@ -442,17 +442,36 @@
                                                                         (<b>{{$data->dp == true ? 'DP' : 'LUNAS'}}</b>)
                                                                     </td>
                                                                     <td colspan="4" align="right">
-                                                                        <b>{{round($data->jumlah_pembayaran / $data->get_pengerjaan_layanan->get_service->harga * 100,1)}}
+                                                                        <b>{{round($data->jumlah_pembayaran /
+                                                                        $data->get_pengerjaan_layanan->get_service->harga * 100,1)}}
                                                                             %</b>
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td><b style="color: #122752">Jumlah yang Harus
-                                                                            Dibayar</b></td>
-                                                                    <td colspan="4" align="right">
-                                                                        <b style="font-size: 18px;color: #122752">Rp{{$data->jumlah_pembayaran}}</b>
-                                                                    </td>
-                                                                </tr>
+                                                                @if($sisa > 0)
+                                                                    <tr style="border-top: 1px solid #eee">
+                                                                        <td><b>Jumlah yang Telah Dibayar</b></td>
+                                                                        <td colspan="4" align="right">
+                                                                            <b>Rp{{number_format($data->get_pengerjaan_layanan
+                                                                            ->get_service->harga - $sisa,2,',','.')}}</b>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b style="color: #122752">Jumlah yang Harus
+                                                                                Dibayar</b></td>
+                                                                        <td colspan="4" align="right">
+                                                                            <b style="font-size: 18px;color: #122752">
+                                                                                Rp{{number_format($sisa,2,',','.')}}</b>
+                                                                        </td>
+                                                                    </tr>
+                                                                @else
+                                                                    <tr>
+                                                                        <td><b style="color: #122752">Jumlah yang Harus
+                                                                                Dibayar</b></td>
+                                                                        <td colspan="4" align="right">
+                                                                            <b style="font-size: 18px;color: #122752">Rp{{number_format($data->jumlah_pembayaran,2,',','.')}}</b>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endif
                                                             </table>
                                                         </td>
                                                     </tr>

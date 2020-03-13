@@ -55,16 +55,27 @@ class LayananController extends Controller
 
             return $name;
         } else {
-            $pembayaran = PembayaranLayanan::create([
-                'pengerjaan_layanan_id' => $pesanan->id,
-                'dp' => $request->dp,
-                'jumlah_pembayaran' => str_replace('.', '', $request->jumlah_pembayaran),
-            ]);
+            if (is_null($pesanan)) {
+                $sisa_pembayaran = 0;
+                $pembayaran = PembayaranLayanan::create([
+                    'pengerjaan_layanan_id' => $pesanan->id,
+                    'dp' => $request->dp,
+                    'jumlah_pembayaran' => str_replace('.', '', $request->jumlah_pembayaran),
+                ]);
+            } else {
+                $pembayaran = PembayaranLayanan::where('pengerjaan_layanan_id', $pesanan->id)->first();
+                $sisa_pembayaran = str_replace('.', '', $request->jumlah_pembayaran);
+                $pembayaran->update([
+                    'dp' => $request->dp,
+                    'jumlah_pembayaran' => $pesanan->get_pembayaran->jumlah_pembayaran + $sisa_pembayaran,
+                    'bukti_pembayaran' => null,
+                ]);
+            }
 
             Mail::to($pembayaran->get_pengerjaan_layanan->get_user->email)
-                ->send(new PembayaranLayananMail($pembayaran, $request->metode_pembayaran, $request->rekening));
+                ->send(new PembayaranLayananMail($pembayaran, $sisa_pembayaran, $request->metode_pembayaran, $request->rekening));
 
-            return back()->with('create', 'Silahkan cek email Anda dan selesaikan pembayaran Anda sebelum batas waktu yang ditentukan! Terimakasih :)');
+            return back()->with('update', 'Silahkan cek email Anda dan selesaikan pembayaran Anda sebelum batas waktu yang ditentukan! Terimakasih :)');
         }
     }
 
