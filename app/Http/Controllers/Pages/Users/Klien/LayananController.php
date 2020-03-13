@@ -48,12 +48,13 @@ class LayananController extends Controller
         if ($request->hasFile('bukti_pembayaran')) {
             $name = $request->file('bukti_pembayaran')->getClientOriginalName();
             if ($pesanan->get_pembayaran->bukti_pembayaran != '') {
-                Storage::delete('public/users/pembayaran/' . $pesanan->get_pembayaran->bukti_pembayaran);
+                Storage::delete('public/users/pembayaran/layanan/' . $pesanan->get_pembayaran->bukti_pembayaran);
             }
-            $request->bukti_pembayaran->storeAs('public/users/pembayaran', $name);
+            $request->bukti_pembayaran->storeAs('public/users/pembayaran/layanan', $name);
             $pesanan->get_pembayaran->update(['bukti_pembayaran' => $name]);
 
             return $name;
+
         } else {
             if (is_null($pesanan)) {
                 $sisa_pembayaran = 0;

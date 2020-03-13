@@ -29,23 +29,28 @@ class LayananController extends Controller
 
     public function tambahLayanan(Request $request)
     {
-        if ($request->hasFile('thumbnail')) {
-            $this->validate($request, ['thumbnail' => 'image|mimes:jpg,jpeg,gif,png|max:2048']);
-            $thumbnail = $request->file('thumbnail')->getClientOriginalName();
-            $request->file('thumbnail')->storeAs('public/layanan/thumbnail', $thumbnail);
-        } else {
-            $thumbnail = null;
-        }
+        $cek = Services::where('judul', $request->judul)->where('user_id', Auth::id())->first();
+        if (!$cek) {
+            if ($request->hasFile('thumbnail')) {
+                $this->validate($request, ['thumbnail' => 'image|mimes:jpg,jpeg,gif,png|max:2048']);
+                $thumbnail = $request->file('thumbnail')->getClientOriginalName();
+                $request->file('thumbnail')->storeAs('public/layanan/thumbnail', $thumbnail);
+            } else {
+                $thumbnail = null;
+            }
 
-        Services::create([
-            'user_id' => Auth::id(),
-            'subkategori_id' => $request->subkategori_id,
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'hari_pengerjaan' => $request->hari_pengerjaan,
-            'harga' => str_replace('.', '', $request->harga),
-            'thumbnail' => $thumbnail,
-        ]);
+            Services::create([
+                'user_id' => Auth::id(),
+                'subkategori_id' => $request->subkategori_id,
+                'judul' => $request->judul,
+                'deskripsi' => $request->deskripsi,
+                'hari_pengerjaan' => $request->hari_pengerjaan,
+                'harga' => str_replace('.', '', $request->harga),
+                'thumbnail' => $thumbnail,
+            ]);
+        } else {
+            return back()->with('gagal', 'Layanan [' . $request->judul . '] Anda telah tersedia! Silahkan buat layanan Anda dengan judul yang berbeda, terimakasih.');
+        }
 
         return back()->with('create', 'Layanan [' . $request->judul . '] Anda berhasil ditambahkan!');
     }
@@ -59,26 +64,31 @@ class LayananController extends Controller
     {
         $layanan = Services::find($request->id);
 
-        if ($request->hasFile('thumbnail')) {
-            $this->validate($request, ['thumbnail' => 'image|mimes:jpg,jpeg,gif,png|max:2048']);
-            $thumbnail = $request->file('thumbnail')->getClientOriginalName();
-            if ($layanan->thumbnail != "") {
-                Storage::delete('public/layanan/thumbnail/' . $layanan->thumbnail);
+        $cek = Services::where('judul', $request->judul)->where('user_id', Auth::id())->where('id', '!=', $request->id)->first();
+        if (!$cek) {
+            if ($request->hasFile('thumbnail')) {
+                $this->validate($request, ['thumbnail' => 'image|mimes:jpg,jpeg,gif,png|max:2048']);
+                $thumbnail = $request->file('thumbnail')->getClientOriginalName();
+                if ($layanan->thumbnail != "") {
+                    Storage::delete('public/layanan/thumbnail/' . $layanan->thumbnail);
+                }
+                $request->file('thumbnail')->storeAs('public/layanan/thumbnail', $thumbnail);
+            } else {
+                $thumbnail = $layanan->thumbnail;
             }
-            $request->file('thumbnail')->storeAs('public/layanan/thumbnail', $thumbnail);
-        } else {
-            $thumbnail = $layanan->thumbnail;
-        }
 
-        $layanan->update([
-            'user_id' => Auth::id(),
-            'subkategori_id' => $request->subkategori_id,
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'hari_pengerjaan' => $request->hari_pengerjaan,
-            'harga' => str_replace('.', '', $request->harga),
-            'thumbnail' => $thumbnail,
-        ]);
+            $layanan->update([
+                'user_id' => Auth::id(),
+                'subkategori_id' => $request->subkategori_id,
+                'judul' => $request->judul,
+                'deskripsi' => $request->deskripsi,
+                'hari_pengerjaan' => $request->hari_pengerjaan,
+                'harga' => str_replace('.', '', $request->harga),
+                'thumbnail' => $thumbnail,
+            ]);
+        } else {
+            return back()->with('gagal', 'Layanan [' . $request->judul . '] Anda telah tersedia! Silahkan ubah layanan Anda dengan judul yang berbeda, terimakasih.');
+        }
 
         return back()->with('update', 'Layanan [' . $layanan->judul . '] Anda berhasil diperbarui!');
     }

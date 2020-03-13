@@ -1117,7 +1117,7 @@
                 $('#start').addClass("hidden");
                 $('#response').removeClass("hidden");
                 $('#notimage').addClass("hidden");
-                $('#file-image').removeClass("hidden").attr('src', '{{asset('storage/users/pembayaran')}}/' + image);
+                $('#file-image').removeClass("hidden").attr('src', '{{asset('storage/users/pembayaran/layanan')}}/' + image);
             }
         }
 

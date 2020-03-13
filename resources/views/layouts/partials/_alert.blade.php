@@ -37,6 +37,9 @@
     @elseif(session('warning'))
     swal('PERHATIAN!', '{{ session('warning') }}', 'warning');
 
+    @elseif(session('gagal'))
+    swal('ERROR!', '{{ session('gagal') }}', 'error');
+
     @elseif(session('success'))
     swal('Sukses!', '{{ session('success') }}', 'success');
 
