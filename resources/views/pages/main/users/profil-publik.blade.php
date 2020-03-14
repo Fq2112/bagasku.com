@@ -592,7 +592,7 @@
                                                 @foreach($proyek as $row)
                                                     <div class="list-item">
                                                         <a href="{{route('detail.proyek', ['username' =>
-                                                            $user->username, 'judul' => $row->get_judul_uri()])}}">
+                                                            $user->username, 'judul' => $row->permalink])}}">
                                                             <div class="icon">
                                                                 <img alt="Thumbnail" src="{{$row->thumbnail != "" ?
                                                                 asset('storage/proyek/thumbnail/'.$row->thumbnail) :
@@ -632,7 +632,7 @@
                                                 @foreach($layanan as $row)
                                                     <div class="list-item">
                                                         <a href="{{route('detail.layanan', ['username' =>
-                                                            $user->username, 'judul' => $row->get_judul_uri()])}}">
+                                                            $user->username, 'judul' => $row->permalink])}}">
                                                             <div class="icon">
                                                                 <img alt="Thumbnail" src="{{$row->thumbnail != "" ?
                                                                     asset('storage/layanan/thumbnail/'.$row->thumbnail) :

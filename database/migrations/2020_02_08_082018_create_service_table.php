@@ -22,6 +22,7 @@ class CreateServiceTable extends Migration
             $table->foreign('subkategori_id')->references('id')->on('subkategori')
                 ->onUpdate('CASCADE')->onDelete('CASCADE');
             $table->string('judul');
+            $table->text('permalink')->unique();
             $table->text('deskripsi');
             $table->string('thumbnail')->nullable();
             $table->integer('hari_pengerjaan');

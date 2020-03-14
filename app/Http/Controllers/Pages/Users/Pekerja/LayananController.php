@@ -29,7 +29,7 @@ class LayananController extends Controller
 
     public function tambahLayanan(Request $request)
     {
-        $cek = Services::where('judul', $request->judul)->where('user_id', Auth::id())->first();
+        $cek = Services::where('user_id', Auth::id())->where('permalink', $request->judul)->first();
         if (!$cek) {
             if ($request->hasFile('thumbnail')) {
                 $this->validate($request, ['thumbnail' => 'image|mimes:jpg,jpeg,gif,png|max:2048']);
@@ -43,6 +43,7 @@ class LayananController extends Controller
                 'user_id' => Auth::id(),
                 'subkategori_id' => $request->subkategori_id,
                 'judul' => $request->judul,
+                'permalink' => preg_replace("![^a-z0-9]+!i", "-", strtolower($request->judul)),
                 'deskripsi' => $request->deskripsi,
                 'hari_pengerjaan' => $request->hari_pengerjaan,
                 'harga' => str_replace('.', '', $request->harga),
@@ -64,7 +65,7 @@ class LayananController extends Controller
     {
         $layanan = Services::find($request->id);
 
-        $cek = Services::where('judul', $request->judul)->where('user_id', Auth::id())->where('id', '!=', $request->id)->first();
+        $cek = Services::where('user_id', Auth::id())->where('id', '!=', $request->id)->where('permalink', $request->judul)->first();
         if (!$cek) {
             if ($request->hasFile('thumbnail')) {
                 $this->validate($request, ['thumbnail' => 'image|mimes:jpg,jpeg,gif,png|max:2048']);
@@ -81,6 +82,7 @@ class LayananController extends Controller
                 'user_id' => Auth::id(),
                 'subkategori_id' => $request->subkategori_id,
                 'judul' => $request->judul,
+                'permalink' => preg_replace("![^a-z0-9]+!i", "-", strtolower($request->judul)),
                 'deskripsi' => $request->deskripsi,
                 'hari_pengerjaan' => $request->hari_pengerjaan,
                 'harga' => str_replace('.', '', $request->harga),

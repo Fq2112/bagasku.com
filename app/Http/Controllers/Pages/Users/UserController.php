@@ -43,7 +43,7 @@ class UserController extends Controller
             $q->where('user_id', $user->id);
         })->count();
         $rating_pekerja = count($ulasan_pekerja) + $ulasan_layanan > 0 ?
-            $user->get_bio->total_bintang_pekerja / count($ulasan_pekerja) + $ulasan_layanan : 0;
+            $user->get_bio->total_bintang_pekerja / (count($ulasan_pekerja) + $ulasan_layanan) : 0;
 
         $kategori = Kategori::orderBy('nama')->get();
         $auth_proyek = Project::where('user_id', Auth::id())->where('pribadi', false)->doesntHave('get_pengerjaan')->get();
@@ -84,6 +84,7 @@ class UserController extends Controller
             'user_id' => Auth::id(),
             'subkategori_id' => $request->subkategori_id,
             'judul' => $request->judul,
+            'permalink' => preg_replace("![^a-z0-9]+!i", "-", strtolower($request->judul)),
             'deskripsi' => $request->deskripsi,
             'waktu_pengerjaan' => $request->waktu_pengerjaan,
             'harga' => str_replace('.', '', $request->harga),

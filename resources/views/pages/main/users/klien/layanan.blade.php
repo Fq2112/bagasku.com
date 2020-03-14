@@ -265,7 +265,7 @@
                                         $q->where('user_id', $pekerja->id);
                                     })->count();
                                     $rating_pekerja = count($ulasan_pekerja) + $ulasan_layanan > 0 ?
-                                        $pekerja->get_bio->total_bintang_pekerja / count($ulasan_pekerja) + $ulasan_layanan : 0;
+                                        $pekerja->get_bio->total_bintang_pekerja / (count($ulasan_pekerja) + $ulasan_layanan) : 0;
                                 @endphp
                                 <tr>
                                     <td style="vertical-align: middle" align="center">{{$no++}}</td>
@@ -273,7 +273,7 @@
                                         <div class="row mb-1" style="border-bottom: 1px solid #eee;">
                                             <div class="col-lg-12">
                                                 <a href="{{route('detail.layanan', ['username' => $row->get_service
-                                                ->get_user->username, 'judul' =>$row->get_service->get_judul_uri()])}}">
+                                                ->get_user->username, 'judul' =>$row->get_service->permalink])}}">
                                                     <img class="img-responsive float-left mr-2" width="80"
                                                          alt="Thumbnail" src="{{$row->get_service->thumbnail != "" ?
                                                          asset('storage/layanan/thumbnail/'.$row->get_service->thumbnail)
@@ -427,7 +427,7 @@
                                                 <a class="btn btn-link btn-sm" title="Lihat Layanan"
                                                    data-toggle="tooltip" href="{{route('detail.layanan',
                                                    ['username' => $pekerja->username,
-                                                   'judul' => $row->get_service->get_judul_uri()])}}">
+                                                   'judul' => $row->get_service->permalink])}}">
                                                     <i class="fa fa-info-circle" style="margin-right: 0"></i></a>
                                                 <button class="btn btn-link btn-sm" type="button"
                                                         data-toggle="tooltip" title="Batalkan Pesanan"

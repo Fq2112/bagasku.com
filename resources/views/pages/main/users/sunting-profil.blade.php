@@ -743,7 +743,7 @@
                                             <i class="fa fa-edit"></i>&nbsp;SUNTING</span>
                                             </small>
                                             <hr class="mt-0">
-                                            <blockquote id="stats_summary" data-scrollbar>
+                                            <blockquote id="stats_summary" style="text-transform: none" data-scrollbar>
                                                 {!!$user->get_bio->summary != "" ? $user->get_bio->summary :
                                                 '<p align="justify">Sebuah <em>summary</em> atau ringkasan resume adalah '.
                                                 'pengantar singkat dan tajam yang meng-<em>highlight</em> skill Anda. '.

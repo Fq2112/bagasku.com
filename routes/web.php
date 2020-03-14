@@ -160,12 +160,12 @@ Route::group(['prefix' => 'akun'], function () {
                     'as' => 'klien.lampiran.proyek'
                 ]);
 
-                Route::get('bid/{id}/data', [
-                    'uses' => 'ProyekController@dataBidProyek',
-                    'as' => 'klien.data-bid.proyek'
+                Route::get('bid/{judul}', [
+                    'uses' => 'ProyekController@bidProyek',
+                    'as' => 'klien.bid.proyek'
                 ]);
 
-                Route::get('bid/{id}/terima', [
+                Route::get('bid/{judul}/terima/{id}', [
                     'uses' => 'ProyekController@terimaBid',
                     'as' => 'klien.terima.bid'
                 ]);

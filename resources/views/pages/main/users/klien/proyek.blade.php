@@ -194,16 +194,16 @@
         <div class="breadcrumbs-overlay"></div>
         <div class="page-title">
             <h2>Dashboard Klien: Tugas/Proyek</h2>
-            <p>Halaman ini menampilkan daftar tugas/proyek yang Anda tawarkan beserta daftar biddernya, dan juga daftar
-                pembayaran dan pengerjaannya.</p>
+            <p>Halaman ini menampilkan daftar tugas/proyek yang Anda tawarkan beserta status bid, pembayaran, dan
+                pengerjaannya.</p>
         </div>
         <ul class="crumb">
             <li><a href="{{route('beranda')}}"><i class="fa fa-home"></i></a></li>
             <li><i class="fa fa-angle-double-right"></i> <a href="#">Dashboard Klien</a></li>
             <li><i class="fa fa-angle-double-right"></i> <a href="{{route('dashboard.klien.proyek')}}">Tugas/Proyek</a>
             </li>
-            <li><a href="#" onclick="goToAnchor()">
-                    <i class="fa fa-angle-double-right"></i> Daftar Tugas/Proyek, Bidder, & Pengerjaan</a></li>
+            <li><a href="#" onclick="goToAnchor()"><i class="fa fa-angle-double-right"></i> Daftar Tugas/Proyek &
+                    Pengerjaan</a></li>
         </ul>
     </div>
 
@@ -281,12 +281,10 @@
                                         @foreach($proyek as $row)
                                             @php
                                                 if(count($row->get_bid) > 0) {
-                                                    $class = 'success';
-                                                    $status = count($row->get_bid).' bid';
+                                                    $bid = count($row->get_bid).' bid';
                                                     $attr = 'disabled';
                                                 } else {
-                                                    $class = 'default';
-                                                    $status = '0 bid';
+                                                    $bid = '0 bid';
                                                     $attr = '';
                                                 }
                                             @endphp
@@ -294,13 +292,13 @@
                                                 <td style="vertical-align: middle" align="center">{{$no++}}</td>
                                                 <td style="vertical-align: middle">
                                                     <a href="{{route('detail.proyek', ['username' =>
-                                                            $row->get_user->username, 'judul' => $row->get_judul_uri()])}}">
+                                                            $row->get_user->username, 'judul' => $row->permalink])}}">
                                                         <img class="img-responsive float-left mr-2" width="80"
                                                              alt="Thumbnail" src="{{$row->thumbnail != "" ?
                                                                      asset('storage/proyek/thumbnail/'.$row->thumbnail)
                                                                      : asset('images/slider/beranda-proyek.jpg')}}">
-                                                        <span class="label label-info">Proyek {{$row->pribadi == false ?
-                                                       'PUBLIK':'PRIVAT'}}: {{$row->get_sub->get_kategori->nama}}</span>
+                                                        <span
+                                                            class="label label-info">{{$row->get_sub->get_kategori->nama}}</span>
                                                         <br><b>{{$row->judul}}</b>
                                                     </a>
                                                     {!! $row->deskripsi !!}
@@ -311,18 +309,20 @@
                                                 <td style="vertical-align: middle"
                                                     align="right">{{number_format($row->harga,2,',','.')}}</td>
                                                 <td style="vertical-align: middle" align="center">
-                                                    <span class="label label-{{$class}}">{{$status}}</span>
+                                                    <span
+                                                        class="label label-{{$row->pribadi == false ? 'info' : 'primary'}}">
+                                                        {{$row->pribadi == false ? 'PUBLIK' : 'PRIVAT'}}</span>
                                                 </td>
                                                 <td style="vertical-align: middle" align="center">
                                                     <div class="input-group">
                                                         <span class="input-group-btn">
                                                             <a class="btn btn-link btn-sm" href="{{route('detail.proyek',
-                                                            ['username' => $row->get_user->username, 'judul' => $row->get_judul_uri()])}}"
+                                                            ['username' => $row->get_user->username, 'judul' => $row->permalink])}}"
                                                                data-toggle="tooltip" title="Lihat Proyek">
                                                                 <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>
                                                             <a class="btn btn-link btn-sm"
-                                                               href="{{route('klien.lampiran.proyek', ['judul' => $row->get_judul_uri()])}}"
+                                                               href="{{route('klien.lampiran.proyek', ['judul' => $row->permalink])}}"
                                                                data-toggle="tooltip" title="Lihat Lampiran">
                                                                 <i class="fa fa-archive" style="margin-right: 0"></i>
                                                             </a>
@@ -345,13 +345,12 @@
                                                         </span>
                                                     </div>
                                                     <hr style="margin: .5em 0">
-                                                    <button class="btn btn-link btn-sm btn-block" data-toggle="tooltip"
-                                                            title="Lihat Bidder" type="button"
-                                                            onclick="lihatBidder('{{$row->id}}','{{$row->judul}}',
-                                                                '{{route('klien.data-bid.proyek',['id' => $row->id])}}')"
-                                                        {{count($row->get_bid) > 0 ? '' : 'disabled'}}>
-                                                        <i class="fa fa-paper-plane" style="margin-right:0"></i>
-                                                    </button>
+                                                    <a class="btn btn-link btn-sm btn-block" data-toggle="tooltip"
+                                                       title="Lihat Bidder" href="{{route('klien.bid.proyek',['judul' =>
+                                                       $row->permalink])}}">
+                                                        <i class="fa fa-paper-plane"
+                                                           style="margin-right:0"></i> {{$bid}}
+                                                    </a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -530,7 +529,7 @@
                                                     $q->where('user_id', $pekerja->id);
                                                 })->count();
                                                 $rating_pekerja = count($ulasan_pekerja) + $ulasan_layanan > 0 ?
-                                                    $pekerja->get_bio->total_bintang_pekerja / count($ulasan_pekerja) + $ulasan_layanan : 0;
+                                                    $pekerja->get_bio->total_bintang_pekerja / (count($ulasan_pekerja) + $ulasan_layanan) : 0;
                                             @endphp
                                             <tr>
                                                 <td style="vertical-align: middle" align="center">{{$no++}}</td>
@@ -538,7 +537,7 @@
                                                     <div class="row mb-1" style="border-bottom: 1px solid #eee;">
                                                         <div class="col-lg-12">
                                                             <a href="{{route('detail.proyek', ['username' => $user->username,
-                                                            'judul' => $row->get_project->get_judul_uri()])}}">
+                                                            'judul' => $row->get_project->permalink])}}">
                                                                 <img class="img-responsive float-left mr-2"
                                                                      alt="Thumbnail" width="80"
                                                                      src="{{$row->get_project->thumbnail != "" ?
@@ -725,7 +724,7 @@
                                                     <a class="btn btn-link btn-sm btn-block" title="Lihat Proyek"
                                                        data-toggle="tooltip" href="{{route('detail.proyek',
                                                                ['username' => $user->username,
-                                                               'judul' => $row->get_project->get_judul_uri()])}}">
+                                                               'judul' => $row->get_project->permalink])}}">
                                                         <i class="fa fa-info-circle" style="margin-right: 0"></i></a>
                                                     <hr style="margin: .5em 0">
                                                     @if(!is_null($row->get_project->get_pembayaran))
@@ -1257,18 +1256,17 @@
             @if(session('pengerjaan'))
             swal('Sukses!', '{{ session('pengerjaan') }}', 'success');
             $("#pengerjaan-tab").click();
+            @elseif(session('bid'))
+            swal('Sukses!', '{{ session('bid') }}', 'success');
+            $("#pengerjaan-tab").click();
+            bayarSekarang('{{$req_id}}', '{{$req_judul}}',
+                '{{route('klien.update-pembayaran.proyek',['id' => $req_id])}}', '{{$req_harga}}');
             @endif
 
             @if(!is_null($req_id) && !is_null($req_invoice) && !is_null($req_url) && !is_null($req_data_url) && !is_null($req_harga))
             buktiPembayaran('{{$req_id}}', '{{$req_invoice}}', '{{$req_url}}', '{{$req_data_url}}', '{{$req_harga}}');
             @endif
         });
-
-        function lihatBidder(id, judul, url) {
-            $.get(url, function (data) {
-                console.log(data);
-            });
-        }
 
         function suntingProyek(data_url) {
             $.get(data_url, function (data) {

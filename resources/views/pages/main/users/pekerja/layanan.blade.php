@@ -212,7 +212,7 @@
                                                 <td style="vertical-align: middle" align="center">{{$no++}}</td>
                                                 <td style="vertical-align: middle">
                                                     <a href="{{route('detail.layanan', ['username' =>
-                                                    $row->get_user->username, 'judul' => $row->get_judul_uri()])}}">
+                                                    $row->get_user->username, 'judul' => $row->permalink])}}">
                                                         <img class="img-responsive float-left mr-2" width="80"
                                                              alt="Thumbnail" src="{{$row->thumbnail != "" ?
                                                              asset('storage/layanan/thumbnail/'.$row->thumbnail)
@@ -235,7 +235,7 @@
                                                     <div class="input-group">
                                                         <span class="input-group-btn">
                                                             <a class="btn btn-link btn-sm" href="{{route('detail.layanan',
-                                                            ['username' => $row->get_user->username, 'judul' => $row->get_judul_uri()])}}"
+                                                            ['username' => $row->get_user->username, 'judul' => $row->permalink])}}"
                                                                data-toggle="tooltip" title="Lihat Layanan">
                                                                 <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>
@@ -408,7 +408,7 @@
                                                         <div class="col-lg-12">
                                                             <a href="{{route('detail.layanan', ['username' =>
                                                             $row->get_service->get_user->username, 'judul' =>
-                                                            $row->get_service->get_judul_uri()])}}">
+                                                            $row->get_service->permalink])}}">
                                                                 <img class="img-responsive float-left mr-2"
                                                                      alt="Thumbnail" width="80"
                                                                      src="{{$row->get_service->thumbnail != "" ?
@@ -559,7 +559,7 @@
                                                         <span class="input-group-btn">
                                                             <a class="btn btn-link btn-sm" href="{{route('detail.layanan',
                                                                ['username' => $row->get_service->get_user->username,
-                                                               'judul' => $row->get_service->get_judul_uri()])}}"
+                                                               'judul' => $row->get_service->permalink])}}"
                                                                data-toggle="tooltip" title="Lihat Layanan">
                                                                 <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>

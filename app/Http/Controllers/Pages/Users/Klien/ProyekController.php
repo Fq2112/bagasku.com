@@ -10,6 +10,8 @@ use App\Model\Pembayaran;
 use App\Model\Pengerjaan;
 use App\Model\Project;
 use App\Model\ReviewWorker;
+use App\Support\Role;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -33,14 +35,15 @@ class ProyekController extends Controller
         $req_url = $request->url;
         $req_data_url = $request->data_url;
         $req_harga = $request->harga;
+        $req_judul = $request->judul;
 
         return view('pages.main.users.klien.proyek', compact('user', 'kategori', 'proyek', 'pengerjaan',
-            'req_id', 'req_invoice', 'req_url', 'req_data_url', 'req_harga'));
+            'req_id', 'req_invoice', 'req_url', 'req_data_url', 'req_harga', 'req_judul'));
     }
 
     public function tambahProyek(Request $request)
     {
-        $cek = Project::where('judul', $request->judul)->where('user_id', Auth::id())->first();
+        $cek = Project::where('user_id', Auth::id())->where('permalink', $request->judul)->first();
         if (!$cek) {
             if ($request->hasFile('thumbnail')) {
                 $this->validate($request, ['thumbnail' => 'image|mimes:jpg,jpeg,gif,png|max:2048']);
@@ -71,6 +74,7 @@ class ProyekController extends Controller
                 'user_id' => Auth::id(),
                 'subkategori_id' => $request->subkategori_id,
                 'judul' => $request->judul,
+                'permalink' => preg_replace("![^a-z0-9]+!i", "-", strtolower($request->judul)),
                 'deskripsi' => $request->deskripsi,
                 'waktu_pengerjaan' => $request->waktu_pengerjaan,
                 'harga' => str_replace('.', '', $request->harga),
@@ -94,7 +98,7 @@ class ProyekController extends Controller
     {
         $proyek = Project::find($request->id);
 
-        $cek = Project::where('judul', $request->judul)->where('user_id', Auth::id())->where('id', '!=', $request->id)->first();
+        $cek = Project::where('user_id', Auth::id())->where('id', '!=', $request->id)->where('permalink', $request->judul)->first();
         if (!$cek) {
             if ($request->hasFile('thumbnail')) {
                 $this->validate($request, ['thumbnail' => 'image|mimes:jpg,jpeg,gif,png|max:2048']);
@@ -111,6 +115,7 @@ class ProyekController extends Controller
                 'user_id' => Auth::id(),
                 'subkategori_id' => $request->subkategori_id,
                 'judul' => $request->judul,
+                'permalink' => preg_replace("![^a-z0-9]+!i", "-", strtolower($request->judul)),
                 'deskripsi' => $request->deskripsi,
                 'waktu_pengerjaan' => $request->waktu_pengerjaan,
                 'harga' => str_replace('.', '', $request->harga),
@@ -145,29 +150,36 @@ class ProyekController extends Controller
     public function lampiranProyek(Request $request)
     {
         $user = Auth::user();
-        $proyek = Project::where('judul', str_replace('-', ' ', $request->judul))->first();
-        dd($proyek);
+        $proyek = Project::where('permalink', $request->judul)->first();
 
         return view('pages.main.users.klien.lampiran-proyek', compact('user', 'proyek'));
     }
 
-    public function dataBidProyek(Request $request)
+    public function bidProyek(Request $request)
     {
-        return Bid::where('proyek_id', $request->id)->get();
+        $user = Auth::user();
+        $total_user = User::where('role', Role::OTHER)->count();
+        $proyek = Project::where('permalink', $request->judul)->first();
+        $bid = $proyek->get_bid;
+
+        return view('pages.main.users.klien.bid-proyek', compact('user', 'total_user', 'proyek', 'bid'));
     }
 
-    public function terimaBid($id)
+    public function terimaBid(Request $request)
     {
-        $bid = Bid::find($id);
+        $bid = Bid::find($request->id);
         $bid->update(['tolak' => false]);
-        Bid::where('id', '!=', $id)->where('proyek_id', $bid->proyek_id)->update(['tolak', true]);
-        Pengerjaan::create([
+        Bid::where('id', '!=', $request->id)->where('proyek_id', $bid->proyek_id)->update(['tolak' => true]);
+        $pengerjaan = Pengerjaan::create([
             'user_id' => $bid->user_id,
             'proyek_id' => $bid->proyek_id,
             'selesai' => false
         ]);
 
-        return back()->with('bid', 'Bidder [' . $bid->get_user->name . '] untuk tugas/proyek [' . $bid->get_project->judul . '] berhasil diterima!');
+        return redirect()->route('dashboard.klien.proyek', ['id' => $pengerjaan->id,
+            'judul' => $bid->get_project->judul, 'harga' => $bid->get_project->harga])
+            ->with('bid', 'Bidder [' . $bid->get_user->name . '] untuk tugas/proyek [' . $bid->get_project->judul .
+                '] berhasil diterima! Mohon untuk segera melakukan pembayaran (minimal DP 30%), terimakasih.');
     }
 
     public function updatePembayaran(Request $request)

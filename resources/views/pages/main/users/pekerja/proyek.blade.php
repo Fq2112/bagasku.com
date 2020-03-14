@@ -262,7 +262,7 @@
                                             <tr>
                                                 <td style="vertical-align: middle" align="center">{{$no++}}</td>
                                                 <td style="vertical-align: middle"><a href="{{route('detail.proyek', ['username' =>
-                                                $row->get_project->get_user->username, 'judul' => $row->get_project->get_judul_uri()])}}">
+                                                $row->get_project->get_user->username, 'judul' => $row->get_project->permalink])}}">
                                                         {{$row->get_project->judul}}</a></td>
                                                 <td style="vertical-align: middle" align="center">
                                                     {{$row->get_project->waktu_pengerjaan}} hari
@@ -277,7 +277,7 @@
                                                         <span class="input-group-btn">
                                                             <a class="btn btn-link btn-sm" href="{{route('detail.proyek',
                                                                ['username' => $row->get_project->get_user->username,
-                                                               'judul' => $row->get_project->get_judul_uri()])}}"
+                                                               'judul' => $row->get_project->permalink])}}"
                                                                data-toggle="tooltip" title="Lihat Proyek">
                                                                 <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>
@@ -334,7 +334,7 @@
                                             <tr>
                                                 <td style="vertical-align: middle" align="center">{{$no++}}</td>
                                                 <td style="vertical-align: middle"><a href="{{route('detail.proyek', ['username' =>
-                                                $row->get_project->get_user->username, 'judul' => $row->get_project->get_judul_uri()])}}">
+                                                $row->get_project->get_user->username, 'judul' => $row->get_project->permalink])}}">
                                                         {{$row->get_project->judul}}</a></td>
                                                 <td style="vertical-align: middle" align="center">
                                                     <span class="label label-{{$row->get_project->pribadi == false ?
@@ -354,7 +354,7 @@
                                                         <span class="input-group-btn">
                                                             <a class="btn btn-link btn-sm" href="{{route('detail.proyek',
                                                                ['username' => $row->get_project->get_user->username,
-                                                               'judul' => $row->get_project->get_judul_uri()])}}"
+                                                               'judul' => $row->get_project->permalink])}}"
                                                                data-toggle="tooltip" title="Lihat Proyek">
                                                                 <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>
@@ -404,7 +404,7 @@
                                                         <div class="col-lg-12">
                                                             <a href="{{route('detail.proyek', ['username' =>
                                                             $row->get_project->get_user->username, 'judul' =>
-                                                            $row->get_project->get_judul_uri()])}}">
+                                                            $row->get_project->permalink])}}">
                                                                 <img class="img-responsive float-left mr-2"
                                                                      alt="Thumbnail" width="80"
                                                                      src="{{$row->get_project->thumbnail != "" ?
@@ -596,7 +596,7 @@
                                                         <span class="input-group-btn">
                                                             <a class="btn btn-link btn-sm" href="{{route('detail.proyek',
                                                                ['username' => $row->get_project->get_user->username,
-                                                               'judul' => $row->get_project->get_judul_uri()])}}"
+                                                               'judul' => $row->get_project->permalink])}}"
                                                                data-toggle="tooltip" title="Lihat Proyek">
                                                                 <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>
