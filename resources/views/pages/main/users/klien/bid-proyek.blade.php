@@ -43,7 +43,7 @@
     asset('storage/users/latar_belakang/'.$user->get_bio->latar_belakang) : asset('images/slider/beranda-proyek.jpg')}}')">
         <div class="breadcrumbs-overlay"></div>
         <div class="page-title">
-            <h2>Bid Tugas/Proyek<br>{{$proyek->judul}}</h2>
+            <h2>Bid Tugas/Proyek:<br>{{$proyek->judul}}</h2>
             <p>Halaman ini menampilkan daftar bid yang Anda terima untuk tugas/proyek tersebut.</p>
         </div>
         <ul class="crumb">

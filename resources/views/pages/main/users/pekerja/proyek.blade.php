@@ -1042,7 +1042,7 @@
                 var content = '';
 
                 $.each(data, function (i, val) {
-                    var src = '';
+                    var src = '', src2 = '{{asset('storage/proyek/lampiran')}}/' + val.file;
                     if (val.ext == "jpg" || val.ext == "jpeg" || val.ext == "png" || val.ext == "gif") {
                         src = '{{asset('storage/proyek/lampiran')}}/' + val.file;
                     } else {
@@ -1051,11 +1051,11 @@
                     content +=
                         '<div class="media">' +
                         '<div class="media-left media-middle">' +
-                        '<a href="' + src + '" target="_blank">' +
+                        '<a href="' + src2 + '" target="_blank">' +
                         '<img width="100" alt="lampiran" src="' + src + '" class="media-object img-thumbnail"></a></div>' +
                         '<div class="media-body">' +
                         '<blockquote style="text-transform: none">' +
-                        '<a href="' + src + '" target="_blank">' + val.file + '</a></blockquote></div></div>';
+                        '<a href="' + src2 + '" target="_blank">' + val.file + '</a></blockquote></div></div>';
                 });
 
                 $("#lampiran").html(content);

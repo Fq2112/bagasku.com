@@ -151,8 +151,72 @@ class ProyekController extends Controller
     {
         $user = Auth::user();
         $proyek = Project::where('permalink', $request->judul)->first();
+        $lampiran = $proyek->lampiran;
 
-        return view('pages.main.users.klien.lampiran-proyek', compact('user', 'proyek'));
+        return view('pages.main.users.klien.lampiran-proyek', compact('user', 'proyek', 'lampiran'));
+    }
+
+    public function tambahLampiran(Request $request)
+    {
+        $proyek = Project::where('permalink', $request->judul)->first();
+
+        $this->validate($request, [
+            'lampiran' => 'required|array',
+            'lampiran.*' => 'mimes:jpg,jpeg,gif,png,pdf,doc,docx,xls,xlsx,odt,ppt,pptx|max:5120'
+        ]);
+
+        $lampiran = [];
+        $i = 0;
+        foreach ($request->file('lampiran') as $file) {
+            $file->storeAs('public/proyek/lampiran', $file->getClientOriginalName());
+            $lampiran[$i] = $file->getClientOriginalName();
+            $i = 1 + $i;
+        }
+
+        if (!is_null($proyek->lampiran)) {
+            $arr = array_merge($proyek->lampiran, $lampiran);
+        } else {
+            $arr = $lampiran;
+        }
+
+        $proyek->update(['lampiran' => $arr]);
+
+        return back()->with('create', count($lampiran) . ' file berhasil ditambahkan ke dalam daftar lampiran tugas/proyek [' . $proyek->judul . '] Anda!');
+    }
+
+    public function hapusLampiran(Request $request)
+    {
+        $proyek = Project::where('permalink', $request->judul)->first();
+        $lampiran = $proyek->lampiran;
+        if (!is_null($lampiran)) {
+            $arr = array_search($request->file, $lampiran, true);
+            if ($arr !== false) {
+                unset($lampiran[$arr]);
+                Storage::delete('public/proyek/lampiran/' . $request->file);
+            }
+        }
+        $proyek->update(['lampiran' => $lampiran]);
+
+        return back()->with('create', 'File [' . $request->file . '] berhasil dihapus dari daftar lampiran tugas/proyek [' . $proyek->judul . '] Anda!');
+    }
+
+    public function hapusMassalLampiran(Request $request)
+    {
+        $proyek = Project::where('permalink', $request->judul)->first();
+        $lampiran = $proyek->lampiran;
+        $input = explode(',', $request->lampiran);
+        if (!is_null($lampiran)) {
+            foreach ($input as $file) {
+                $arr = array_search($file, $lampiran, true);
+                if ($arr !== false) {
+                    unset($lampiran[$arr]);
+                    Storage::delete('public/proyek/lampiran/' . $file);
+                }
+            }
+        }
+        $proyek->update(['lampiran' => $lampiran]);
+
+        return back()->with('create', count($input) . ' file berhasil dihapus dari daftar lampiran tugas/proyek [' . $proyek->judul . '] Anda!');
     }
 
     public function bidProyek(Request $request)

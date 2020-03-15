@@ -455,7 +455,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
-                                                    <div class="col-md-5 has-feedback">
+                                                    <div id="div-thumbnail" class="col-md-5 has-feedback">
                                                         <label for="txt_thumbnail"
                                                                class="form-control-label">Thumbnail</label>
                                                         <input type="file" name="thumbnail" accept="image/*"
@@ -477,7 +477,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-7">
+                                                    <div id="div-lampiran" class="col-md-7">
                                                         <label for="txt_lampiran"
                                                                class="form-control-label">Lampiran</label>
                                                         <input type="file" name="lampiran[]" id="attach-lampiran"
@@ -498,7 +498,7 @@
                                                                     <i class="fa fa-search"></i></button>
                                                             </span>
                                                         </div>
-                                                        <span class="help-block">
+                                                        <span class="help-block" style="text-transform: none;">
                                                         <sub id="count_lampiran"></sub>
                                                     </span>
                                                     </div>
@@ -1161,8 +1161,11 @@
                         $("#form-proyek .card-title small").text('Tambah Tugas/Proyek Baru');
                         $("#subkategori_id").val(null).trigger('change');
                         $("#form-proyek input[name=_method], #form-proyek input[name=id], #judul2, #attach-thumbnail, #txt_thumbnail, #waktu_pengerjaan, #harga").val(null);
-                        $("#txt_thumbnail[data-toggle=tooltip]").attr('data-original-title', 'Ekstensi yang diizinkan: jpg, jpeg, gif, png. Ukuran yang diizinkan: < 2 MB');
                         $("#deskripsi").summernote('code', null);
+                        $("#txt_thumbnail[data-toggle=tooltip]").attr('data-original-title', 'Ekstensi yang diizinkan: jpg, jpeg, gif, png. Ukuran yang diizinkan: < 2 MB');
+
+                        $("#div-thumbnail").removeClass('col-md-12').addClass('col-md-5');
+                        $("#div-lampiran").show();
                         $("#dt-proyek").hide();
                         $("#form-proyek").show().attr('action', '{{route('klien.tambah.proyek')}}');
                     });
@@ -1294,6 +1297,9 @@
                 $("#waktu_pengerjaan").val(data.waktu_pengerjaan);
                 $("#harga").val(data.harga);
                 $("#deskripsi").summernote('code', data.deskripsi);
+
+                $("#div-thumbnail").addClass('col-md-12').removeClass('col-md-5');
+                $("#div-lampiran").hide();
                 $("#dt-proyek").toggle(300);
                 $("#form-proyek").toggle(300).attr('action', '{{route('klien.update.proyek')}}');
 

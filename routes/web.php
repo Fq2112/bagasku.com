@@ -155,10 +155,29 @@ Route::group(['prefix' => 'akun'], function () {
                     'as' => 'klien.hapus.proyek'
                 ]);
 
-                Route::get('lampiran/{judul}', [
-                    'uses' => 'ProyekController@lampiranProyek',
-                    'as' => 'klien.lampiran.proyek'
-                ]);
+                Route::group(['prefix' => 'lampiran/{judul}'], function () {
+
+                    Route::get('/', [
+                        'uses' => 'ProyekController@lampiranProyek',
+                        'as' => 'klien.lampiran.proyek'
+                    ]);
+
+                    Route::post('tambah', [
+                        'uses' => 'ProyekController@tambahLampiran',
+                        'as' => 'klien.tambah.lampiran'
+                    ]);
+
+                    Route::get('hapus/{file}', [
+                        'uses' => 'ProyekController@hapusLampiran',
+                        'as' => 'klien.hapus.lampiran'
+                    ]);
+
+                    Route::post('hapus-massal', [
+                        'uses' => 'ProyekController@hapusMassalLampiran',
+                        'as' => 'klien.hapus-massal.lampiran'
+                    ]);
+
+                });
 
                 Route::get('bid/{judul}', [
                     'uses' => 'ProyekController@bidProyek',
