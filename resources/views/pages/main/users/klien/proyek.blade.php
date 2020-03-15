@@ -280,12 +280,20 @@
                                         @php $no = 1; @endphp
                                         @foreach($proyek as $row)
                                             @php
-                                                if(count($row->get_bid) > 0) {
-                                                    $bid = count($row->get_bid).' bid';
-                                                    $attr = 'disabled';
+                                                if($row->pribadi == false) {
+                                                    if(count($row->get_bid) > 0) {
+                                                        $bid = count($row->get_bid).' bid';
+                                                        $attr = 'disabled';
+                                                    } else {
+                                                        $bid = '0 bid';
+                                                        $attr = '';
+                                                    }
                                                 } else {
-                                                    $bid = '0 bid';
-                                                    $attr = '';
+                                                    if(!is_null($row->get_pengerjaan)) {
+                                                        $attr = 'disabled';
+                                                    } else {
+                                                        $attr = '';
+                                                    }
                                                 }
                                             @endphp
                                             <tr>
@@ -345,12 +353,19 @@
                                                         </span>
                                                     </div>
                                                     <hr style="margin: .5em 0">
-                                                    <a class="btn btn-link btn-sm btn-block" data-toggle="tooltip"
-                                                       title="Lihat Bidder" href="{{route('klien.bid.proyek',['judul' =>
-                                                       $row->permalink])}}">
-                                                        <i class="fa fa-paper-plane"
-                                                           style="margin-right:0"></i> {{$bid}}
-                                                    </a>
+                                                    @if($row->pribadi == false)
+                                                        <a class="btn btn-link btn-sm btn-block" data-toggle="tooltip"
+                                                           title="Lihat Bidder" style="text-transform: none"
+                                                           href="{{route('klien.bid.proyek',['judul' => $row->permalink])}}">
+                                                            <i class="fa fa-paper-plane"></i> {{$bid}}
+                                                        </a>
+                                                    @else
+                                                        <a class="btn btn-link btn-sm btn-block" data-toggle="tooltip"
+                                                           title="Lihat Pekerja" style="text-transform: none"
+                                                           href="{{route('profil.user', ['username' => $row->get_undangan->get_user->username])}}">
+                                                            <i class="fa fa-hard-hat"></i> {{$row->get_undangan->get_user->username}}
+                                                        </a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach

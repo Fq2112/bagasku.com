@@ -26,6 +26,11 @@ class Project extends Model
         return $this->hasMany(Bid::class, 'proyek_id');
     }
 
+    public function get_undangan()
+    {
+        return $this->hasOne(Undangan::class, 'proyek_id');
+    }
+
     public function get_pembayaran()
     {
         return $this->hasOne(Pembayaran::class, 'proyek_id');
