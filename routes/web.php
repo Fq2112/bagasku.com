@@ -19,6 +19,11 @@ Route::group(['prefix' => '/', 'namespace' => 'Pages'], function () {
             'as' => 'get.cari.data'
         ]);
 
+        Route::get('judul/data', [
+            'uses' => 'CariController@getCariJudulData',
+            'as' => 'get.cari-judul.data'
+        ]);
+
     });
 
     Route::group(['namespace' => 'Users', 'prefix' => 'profil/{username}'], function () {

@@ -802,7 +802,7 @@
 
         keyword.autocomplete({
             source: function (request, response) {
-                $.getJSON('/cari/data?filter=' + $("#form-pencarian input[name='filter']").val() + '&keyword=' + keyword.val(), {
+                $.getJSON('/cari/judul/data?filter=' + $("#form-pencarian input[name='filter']").val() + '&keyword=' + keyword.val(), {
                     name: request.term,
                 }, function (data) {
                     response(data);
