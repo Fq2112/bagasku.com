@@ -11,6 +11,16 @@ class SubKategori extends Model
 
     public function get_kategori()
     {
-        return $this->belongsTo(Kategori::class,'kategori_id');
+        return $this->belongsTo(Kategori::class, 'kategori_id');
+    }
+
+    public function get_project()
+    {
+        return $this->hasMany(Project::class, 'subkategori_id');
+    }
+
+    public function get_service()
+    {
+        return $this->hasMany(Services::class, 'subkategori_id');
     }
 }

@@ -802,7 +802,7 @@
 
         keyword.autocomplete({
             source: function (request, response) {
-                $.getJSON('/cari/judul/data?filter=' + $("#form-pencarian input[name='filter']").val() + '&keyword=' + keyword.val(), {
+                $.getJSON('/cari/judul/data?filter=' + $("#form-pencarian input[name='filter']").val() + '&q=' + keyword.val(), {
                     name: request.term,
                 }, function (data) {
                     response(data);
@@ -813,7 +813,7 @@
             },
             select: function (event, ui) {
                 event.preventDefault();
-                keyword.val(ui.item.keyword);
+                keyword.val(ui.item.q);
             }
         });
 

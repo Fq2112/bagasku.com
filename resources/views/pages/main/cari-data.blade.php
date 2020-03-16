@@ -22,6 +22,12 @@
             opacity: 1
         }
 
+        .has-feedback .form-control-feedback {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+        }
+
         ul.ui-autocomplete {
             color: #122752;
             border-radius: 0 0 1rem 1rem;
@@ -93,12 +99,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <form data-aos="fade-down" id="form-load">
-                        <input type="hidden" name="filter" id="filter">
+                    <form id="form-load">
+                        <input type="hidden" name="sub_kat" id="sub_kat" value="{{$sub_kat}}">
+                        <input type="hidden" name="filter" id="filter" value="{{$filter}}">
                         <div class="form-group has-feedback">
                             <input id="keyword" type="text" name="q" class="form-control" autocomplete="off"
                                    value="{{$keyword}}" placeholder="Cari&hellip;"
                                    style="border-radius: 1rem;margin: 1em auto">
+                            <span class="glyphicon glyphicon-remove form-control-feedback"
+                                  style="right: 2.5rem;pointer-events: all;cursor: pointer;"></span>
                             <span class="glyphicon glyphicon-search form-control-feedback"></span>
                         </div>
                     </form>
@@ -106,26 +115,29 @@
                         <ul id="myTab" class="nav nav-tabs nav-tabs-responsive" role="tablist">
                             <li role="presentation" class="active">
                                 <a class="nav-item nav-link" href="#proyek" id="proyek-tab" role="tab"
-                                   data-toggle="tab" aria-controls="proyek" aria-expanded="true">
+                                   data-toggle="tab" aria-controls="proyek" aria-expanded="true"
+                                   onclick="filterData('proyek')">
                                     <i class="fa fa-business-time mr-2"></i>TUGAS/PROYEK <span
                                         class="badge badge-secondary">
                                         {{count($proyek) > 999 ? '999+' : count($proyek)}}</span></a>
                             </li>
                             <li role="presentation" class="next">
                                 <a class="nav-item nav-link" href="#layanan" id="layanan-tab" role="tab"
-                                   data-toggle="tab" aria-controls="layanan" aria-expanded="true">
+                                   data-toggle="tab" aria-controls="layanan" aria-expanded="true"
+                                   onclick="filterData('layanan')">
                                     <i class="fa fa-tools mr-2"></i>LAYANAN <span class="badge badge-secondary">
                                         {{count($layanan) > 999 ? '999+' : count($layanan)}}</span></a>
                             </li>
                             <li role="presentation" class="next">
                                 <a class="nav-item nav-link" href="#pekerja" id="pekerja-tab" role="tab"
-                                   data-toggle="tab" aria-controls="pekerja" aria-expanded="true">
+                                   data-toggle="tab" aria-controls="pekerja" aria-expanded="true"
+                                   onclick="filterData('pekerja')">
                                     <i class="fa fa-hard-hat mr-2"></i>PEKERJA <span class="badge badge-secondary">
                                         {{count($pekerja) > 999 ? '999+' : count($pekerja)}}</span></a>
                             </li>
                         </ul>
                         <div id="myTabContent" class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade in" id="all" aria-labelledby="all-tab"
+                            <div role="tabpanel" class="tab-pane fade in" id="all" aria-labelledby="proyek-tab"
                                  style="border: none">
                                 <div class="ajax-loader">
                                     <div class="preloader4"></div>
@@ -133,7 +145,7 @@
                                 <div class="row" id="data"></div>
                                 <div class="row text-right">
                                     <div class="col-12 myPagination">
-                                        <ul class="pagination justify-content-end" data-aos="fade-down"></ul>
+                                        <ul class="pagination justify-content-end"></ul>
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +159,7 @@
 @push('scripts')
     <script src="{{asset('vendor/jquery-ui/jquery-ui.min.js')}}"></script>
     <script>
-        var last_page, $keyword = $("#keyword");
+        var last_page, $keyword = $("#keyword"), $filter = $("#filter"), $sub_kat = $("#sub_kat");
 
         $(function () {
             $('.ajax-loader').hide();
@@ -165,7 +177,7 @@
 
         $keyword.autocomplete({
             source: function (request, response) {
-                $.getJSON('/cari/judul/data?filter=' + $("#filter").val() + '&keyword=' + keyword.val(), {
+                $.getJSON('/cari/judul/data?filter=' + $filter.val() + '&q=' + $keyword.val(), {
                     name: request.term,
                 }, function (data) {
                     response(data);
@@ -176,21 +188,22 @@
             },
             select: function (event, ui) {
                 event.preventDefault();
-                $keyword.val(ui.item.title);
-                $("#" + ui.item.filter + "-tab").click();
+                $keyword.val(ui.item.q);
+                loadData();
             }
         });
 
         $keyword.on('keyup', function () {
             if (!$keyword.val()) {
-                $("#all-tab").click();
-                loadBlog();
+                $("#proyek-tab").click();
+                loadData();
             }
+            $(".glyphicon-remove").show();
         });
 
-        $("#form-loadBlog").on('submit', function (e) {
+        $("#form-load").on('submit', function (e) {
             e.preventDefault();
-            loadBlog();
+            loadData();
         });
 
         function decodeHtml(html) {
@@ -199,23 +212,35 @@
             return txt.value;
         }
 
-        function filterBlog(id) {
+        function filterData(filter) {
             $("#nav-tab a").removeClass('show active');
             $("#myTabContent .tab-pane").addClass('show active');
-
-            $("#" + id + "-tab").addClass('show active');
-
-            $("#filter").val(id);
-            loadBlog();
+            $("#" + filter + "-tab").addClass('show active');
+            $filter.val(filter);
+            loadData();
         }
 
-        function loadBlog() {
+        $(".sub_kat").on('click', function () {
+            $sub_kat.val($(this).data('id'));
+            $("#" + $(this).data('filter') + "-tab").click();
+            $(".glyphicon-remove").show();
+            loadData();
+            return false;
+        });
+
+        $(".glyphicon-remove").on("click", function () {
+            $(this).hide();
+            $("#proyek-tab").click();
+            $("#sub_kat, #sub_kat, #keyword").val(null);
+        });
+
+        function loadData() {
             clearTimeout(this.delay);
             this.delay = setTimeout(function () {
                 $.ajax({
-                    url: "{{route('get.data.blog')}}",
+                    url: "{{route('get.cari.data')}}",
                     type: "GET",
-                    data: $("#form-loadBlog").serialize(),
+                    data: $("#form-load").serialize(),
                     beforeSend: function () {
                         $('.ajax-loader').show();
                         $('#data, .myPagination').hide();
@@ -228,7 +253,7 @@
                         successLoad(data);
                     },
                     error: function () {
-                        swal('Oops..', 'Something went wrong! Please refresh this page.', 'error');
+                        swal('Oops...', 'Terjadi suatu kesalahan!  Silahkan segarkan browser Anda.', 'error');
                     }
                 });
             }.bind(this), 800);
@@ -245,27 +270,27 @@
                 hellip_next = $(this).closest('.hellip_next').prev().find('a').text();
 
             if (page > 0) {
-                $url = "{{url('/blog/data')}}" + '?page=' + page;
+                $url = "{{url('/cari/data')}}" + '?page=' + page;
             }
             if ($(this).hasClass('prev')) {
-                $url = "{{url('/blog/data')}}" + '?page=' + parseInt(active - 1);
+                $url = "{{url('/cari/data')}}" + '?page=' + parseInt(active - 1);
             }
             if ($(this).hasClass('next')) {
-                $url = "{{url('/blog/data')}}" + '?page=' + parseInt(+active + +1);
+                $url = "{{url('/cari/data')}}" + '?page=' + parseInt(+active + +1);
             }
             if ($(this).hasClass('hellip_prev')) {
-                $url = "{{url('/blog/data')}}" + '?page=' + parseInt(hellip_prev - 1);
+                $url = "{{url('/cari/data')}}" + '?page=' + parseInt(hellip_prev - 1);
                 page = parseInt(hellip_prev - 1);
             }
             if ($(this).hasClass('hellip_next')) {
-                $url = "{{url('/blog/data')}}" + '?page=' + parseInt(+hellip_next + +1);
+                $url = "{{url('/cari/data')}}" + '?page=' + parseInt(+hellip_next + +1);
                 page = parseInt(+hellip_next + +1);
             }
             if ($(this).hasClass('first')) {
-                $url = "{{url('/blog/data')}}" + '?page=1';
+                $url = "{{url('/cari/data')}}" + '?page=1';
             }
             if ($(this).hasClass('last')) {
-                $url = "{{url('/blog/data')}}" + '?page=' + last_page;
+                $url = "{{url('/cari/data')}}" + '?page=' + last_page;
             }
 
             clearTimeout(this.delay);
@@ -273,7 +298,7 @@
                 $.ajax({
                     url: $url,
                     type: "GET",
-                    data: $("#form-loadBlog").serialize(),
+                    data: $("#form-load").serialize(),
                     beforeSend: function () {
                         $('.ajax-loader').show();
                         $('#data, .myPagination').hide();
@@ -286,7 +311,7 @@
                         successLoad(data, page);
                     },
                     error: function () {
-                        swal('Oops..', 'Something went wrong! Please refresh this page.', 'error');
+                        swal('Oops...', 'Terjadi suatu kesalahan!  Silahkan segarkan browser Anda.', 'error');
                     }
                 });
             }.bind(this), 800);
@@ -295,15 +320,20 @@
         });
 
         function successLoad(data, page) {
-            var $result = '', pagination = '', $page = '';
+            var $result = '', pagination = '', $page = '', sub_kat = '', bid = '';
+            bid = $filter.val() == 'proyek' ? '' : 'none';
 
             $.each(data.data, function (i, val) {
                 $result +=
-                    '<div data-aos="fade-down" class="blog-item">' +
-                    '<a href="' + val._url + '"><div class="icon"><img src="' + val._thumbnail + '" alt="Thumbnail"></div>' +
-                    '<div class="blog-content"><p class="blog-filter">' + val.filter + '<span class="blog-date">' +
-                    '<i class="fa fa-calendar-alt"></i>' + val.date + '</span><br><sub class="blog-author">by <span>' + val.author + '</span></sub></p>' +
-                    '<div class="title">' + val.title + '</div><div class="rounded"></div>' + val._content + '</div>' +
+                    '<div class="list-item">' +
+                    '<a href="' + val.url + '">' +
+                    '<div class="icon"><img alt="Thumbnail" src="' + val._thumbnail + '"></div>' +
+                    '<div class="list-content">' +
+                    '<p class="list-price">' +
+                    '<sub class="list-category" style="display:' + bid + '">Total bid: <span>' + val.bid + ' bid</span></sub><br>' +
+                    'Rp' + val._harga + '<span class="list-date"><i class="fa fa-calendar-week"></i>' + val.deadline + ' hari</span>' +
+                    '<br><sub class="list-category">Kategori ' + val.kategori + ': <span>' + val.subkategori + '</span></sub></p>' +
+                    '<div class="title">' + val.judul + '</div><div class="rounded"></div>' + val._deskripsi + '</div>' +
                     '<div class="item-arrow"><i class="fa fa-long-arrow-alt-right" aria-hidden="true"></i></div></a></div>';
             });
             $("#data").empty().append($result);
@@ -362,10 +392,14 @@
             }
             $('.myPagination ul').html(pagination);
 
-            if (page != "" && page != undefined) {
-                $page = '&page=' + page;
+            if ($filter.val() != 'pekerja' && $sub_kat.val()) {
+                sub_kat = '&sub_kat=' + $sub_kat.val();
             }
-            window.history.replaceState("", "", '{{url('/blog')}}?q=' + $keyword.val() + '&filter=' + $("#filter").val() + $page);
+            if (page != "" && page != undefined) {
+                $page = '&hal=' + page;
+            }
+            window.history.replaceState("", "", '{{url('/cari')}}?q=' + $keyword.val() + '&filter=' + $filter.val() +
+                sub_kat + $page);
             return false;
         }
 
