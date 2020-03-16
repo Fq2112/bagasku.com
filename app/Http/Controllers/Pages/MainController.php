@@ -7,6 +7,7 @@ use App\Model\Project;
 use App\Model\Services;
 use App\Model\Testimoni;
 use App\Support\Role;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -30,6 +31,22 @@ class MainController extends Controller
         }
 
         return view('pages.main.beranda', compact('proyek', 'layanan', 'pekerja', 'testimoni', 'cek'));
+    }
+
+    public function detailProyek(Request $request)
+    {
+        $user = User::where('username', $request->username)->first();
+        $proyek = Project::where('user_id', $user->id)->where('permalink', $request->judul)->first();
+
+        return view('pages.main.detail-proyek', compact('user', 'proyek'));
+    }
+
+    public function detailLayanan(Request $request)
+    {
+        $user = User::where('username', $request->username)->first();
+        $layanan = Services::where('user_id', $user->id)->where('permalink', $request->judul)->first();
+
+        return view('pages.main.detail-layanan', compact('user', 'layanan'));
     }
 
     public function tentang()

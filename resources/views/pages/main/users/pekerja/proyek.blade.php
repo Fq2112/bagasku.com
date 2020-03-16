@@ -155,9 +155,7 @@
         <ul class="crumb">
             <li><a href="{{route('beranda')}}"><i class="fa fa-home"></i></a></li>
             <li><i class="fa fa-angle-double-right"></i> <a href="#">Dashboard Pekerja</a></li>
-            <li><i class="fa fa-angle-double-right"></i> <a
-                    href="{{route('dashboard.pekerja.proyek')}}">Tugas/Proyek</a>
-            </li>
+            <li><i class="fa fa-angle-double-right"></i> <a href="{{url()->current()}}">Tugas/Proyek</a></li>
             <li><a href="#" onclick="goToAnchor()"><i class="fa fa-angle-double-right"></i> Daftar Bid, Undangan, &
                     Pengerjaan</a>
             </li>

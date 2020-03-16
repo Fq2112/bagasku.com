@@ -99,7 +99,16 @@
     </style>
 @endpush
 @section('content')
-    <section class="none-padding">
+    <div class="breadcrumbs" style="background-image: url('{{asset('images/slider/beranda-proyek.jpg')}}')">
+        <div class="breadcrumbs-overlay"></div>
+        <div class="page-title">
+            <h2>Tugas/Proyek, Layanan, dan Pekerja</h2>
+            <p>Halaman ini merupakan fitur pencarian tugas/proyek dan layanan dari berbagai kategori pekerjaan, dan juga
+                para penyedia layanan, pekerja {{env('APP_NAME')}}, yang mampu memenuhi kebutuhan Anda.</p>
+        </div>
+    </div>
+
+    <section class="none-margin" style="padding: 40px 0 40px 0">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -163,7 +172,18 @@
 @push('scripts')
     <script src="{{asset('vendor/jquery-ui/jquery-ui.min.js')}}"></script>
     <script>
-        var last_page, $keyword = $("#keyword"), $filter = $("#filter"), $sub_kat = $("#sub_kat");
+        var last_page, $keyword = $("#keyword"), $filter = $("#filter"), $sub_kat = $("#sub_kat"),
+
+            $img = $(".breadcrumbs"),
+            images = ['beranda-pekerja.jpg', 'beranda-proyek.jpg'],
+            index = 0, maxImages = images.length - 1, timer = setInterval(function () {
+                var currentImage = images[index];
+                index = (index == maxImages) ? 0 : ++index;
+                $img.fadeOut("slow", function () {
+                    $img.css("background-image", 'url({{asset('images/slider')}}/' + currentImage + ')');
+                    $img.fadeIn("slow");
+                });
+            }, 5000);
 
         $(function () {
             $('.ajax-loader').hide();
@@ -255,6 +275,7 @@
                     },
                     success: function (data) {
                         successLoad(data);
+                        $('html,body').animate({scrollTop: $(".none-margin").offset().top}, 500);
                     },
                     error: function () {
                         swal('Oops...', 'Terjadi suatu kesalahan!  Silahkan segarkan browser Anda.', 'error');

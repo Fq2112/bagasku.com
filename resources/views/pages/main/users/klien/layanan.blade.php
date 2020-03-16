@@ -198,7 +198,7 @@
         <ul class="crumb">
             <li><a href="{{route('beranda')}}"><i class="fa fa-home"></i></a></li>
             <li><i class="fa fa-angle-double-right"></i> <a href="#">Dashboard Klien</a></li>
-            <li><i class="fa fa-angle-double-right"></i> <a href="{{route('dashboard.klien.layanan')}}">Layanan</a></li>
+            <li><i class="fa fa-angle-double-right"></i> <a href="{{url()->current()}}">Layanan</a></li>
             <li><a href="#" onclick="goToAnchor()"><i class="fa fa-angle-double-right"></i> Daftar Pesanan</a>
             </li>
         </ul>

@@ -1,5 +1,5 @@
 @extends('layouts.mst')
-@section('title', 'Profil: '.$user->name.' | '.env('APP_TITLE'))
+@section('title', 'Detail Layanan: '.$layanan->judul.' – '.$user->name.' | '.env('APP_TITLE'))
 @push('styles')
     <link rel="stylesheet" href="{{asset('css/card.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap-tabs-responsive.css')}}">
@@ -84,32 +84,38 @@
 @endpush
 @section('content')
     <div class="breadcrumbs" style="background-image: url('{{$user->get_bio->latar_belakang != null ?
-    asset('storage/users/latar_belakang/'.$user->get_bio->latar_belakang) : asset('images/slider/beranda-proyek.jpg')}}')">
+    asset('storage/users/latar_belakang/'.$user->get_bio->latar_belakang) : asset('images/slider/beranda-pekerja.jpg')}}')">
         <div class="breadcrumbs-overlay"></div>
         <div class="page-title">
             <h2>{{$user->name}}</h2>
             <p>{{$user->get_bio->status != "" ? $user->get_bio->status : $user->username}}</p>
         </div>
+        <ul class="crumb">
+            <li><a href="{{route('beranda')}}"><i class="fa fa-home"></i></a></li>
+            <li><i class="fa fa-angle-double-right"></i>
+                <a href="{{route('profil.user',['username' => $user->username])}}">{{$user->username}}</a></li>
+            <li><i class="fa fa-angle-double-right"></i> <a href="{{url()->current()}}">Layanan</a></li>
+            <li><a href="#" onclick="goToAnchor()"><i class="fa fa-angle-double-right"></i> {{$layanan->judul}}</a></li>
+        </ul>
     </div>
 
     <section class="none-margin" style="padding: 40px 0 40px 0">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12 text-center">
-                    <!-- personal -->
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="img-card">
-                                    <img style="width: 100%" alt="Avatar" src="{{$user->get_bio->foto== "" ?
-                                    asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg') :
-                                    asset('storage/users/foto/'.$user->get_bio->foto)}}">
+                                    <img style="width: 100%" alt="Thumbnail" src="{{$row->thumbnail != "" ?
+                                    asset('storage/layanan/thumbnail/'.$row->thumbnail)
+                                    : asset('images/slider/beranda-pekerja.jpg')}}">
                                 </div>
 
                                 <div class="card-content">
                                     <div class="card-title text-center">
-                                        <a href="{{$user->id == Auth::id() ? route('user.profil') : url()->current()}}">
-                                            <h4 class="aj_name" style="color: #122752">{{$user->name}}</h4></a>
+                                        <a href="{{route('user.profil')}}">
+                                            <h4 style="color: #122752">{{$user->name}}</h4></a>
                                         <small style="text-transform: none">{{$user->get_bio->status
                                         != "" ? $user->get_bio->status : 'Status (-)'}}</small>
                                     </div>
@@ -334,7 +340,7 @@
                                     <div class="card-title">
                                         <small>Summary</small>
                                         <hr class="mt-0">
-                                        <blockquote data-scrollbar style="text-transform: none">
+                                        <blockquote data-scrollbar>
                                             {!!$user->get_bio->summary != "" ? $user->get_bio->summary :
                                             '<p>'.$user->name.' belum menuliskan <em>summary</em> atau ringkasan resumenya.</p>'!!}
                                         </blockquote>
@@ -1194,5 +1200,9 @@
                 $(this)[0].submit();
             }
         });
+
+        function goToAnchor() {
+            $('html,body').animate({scrollTop: $(".none-margin").offset().top}, 500);
+        }
     </script>
 @endpush
