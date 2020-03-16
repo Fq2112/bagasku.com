@@ -47,6 +47,10 @@
             border-radius: 0 0 1rem 1rem;
         }
 
+        .rate i {
+            margin: 0 .5em 0 0 !important;
+        }
+
         .pagination > li > a,
         .pagination > li > span {
             color: #777;
@@ -320,8 +324,8 @@
         });
 
         function successLoad(data, page) {
-            var $result = '', pagination = '', $page = '', sub_kat = '', bid = '';
-            bid = $filter.val() == 'proyek' ? '' : 'none';
+            var $result = '', pagination = '', $page = '', sub_kat = '', bid = $filter.val() == 'proyek' ? '' : 'none',
+                kat = $filter.val() == 'pekerja' ? 'none' : '', user = $filter.val() == 'pekerja' ? '' : 'none';
 
             $.each(data.data, function (i, val) {
                 $result +=
@@ -329,10 +333,16 @@
                     '<a href="' + val.url + '">' +
                     '<div class="icon"><img alt="Thumbnail" src="' + val._thumbnail + '"></div>' +
                     '<div class="list-content">' +
-                    '<p class="list-price">' +
+
+                    '<p class="list-price" style="display: ' + kat + '">' +
                     '<sub class="list-category" style="display:' + bid + '">Total bid: <span>' + val.bid + ' bid</span></sub><br>' +
                     'Rp' + val._harga + '<span class="list-date"><i class="fa fa-calendar-week"></i>' + val.deadline + ' hari</span>' +
                     '<br><sub class="list-category">Kategori ' + val.kategori + ': <span>' + val.subkategori + '</span></sub></p>' +
+
+                    '<p class="list-price" style="display: ' + user + ';margin-bottom: .5em">' +
+                    '<span class="list-date rate" style="color: #ffc100">' + val.subkategori + '</span>' + val.rate +
+                    '<br><sub class="list-category">' + val.username + ': <span>' + val.kategori + ' layanan</span></sub></p>' +
+
                     '<div class="title">' + val.judul + '</div><div class="rounded"></div>' + val._deskripsi + '</div>' +
                     '<div class="item-arrow"><i class="fa fa-long-arrow-alt-right" aria-hidden="true"></i></div></a></div>';
             });

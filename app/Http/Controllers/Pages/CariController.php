@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Pages;
 
 use App\Model\Bid;
-use App\Model\Kategori;
 use App\Model\Project;
+use App\Model\ReviewWorker;
 use App\Model\Services;
 use App\Model\SubKategori;
+use App\Model\UlasanService;
 use App\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
@@ -60,6 +60,15 @@ class CariController extends Controller
             $user = User::where('id', $filter == 'pekerja' ? $row['id'] : $row['user_id'])->first();
             $bio = $user->get_bio;
             $sub = $filter == 'pekerja' ? null : SubKategori::where('id', $row['subkategori_id'])->first();
+            $ulasan_pekerja = ReviewWorker::whereHas('get_pengerjaan', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })->get();
+            $ulasan_layanan = UlasanService::whereHas('get_pengerjaan', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            })->count();
+            $rating_pekerja = count($ulasan_pekerja) + $ulasan_layanan > 0 ?
+                $user->get_bio->total_bintang_pekerja / (count($ulasan_pekerja) + $ulasan_layanan) : 0;
+
             if ($filter == 'proyek') {
                 $url = route('detail.proyek', ['username' => $user->username, 'judul' => $row['permalink']]);
                 $thumbnail = is_null($row['thumbnail']) ? asset('images/slider/beranda-proyek.jpg') :
@@ -89,14 +98,49 @@ class CariController extends Controller
                 $total_bid = 0;
                 $deadline = 0;
                 $harga = 0;
-                $kategori = null;
-                $subkategori = null;
+                $kategori = count($user->get_service);
                 $judul = $user->name;
                 $deskripsi = is_null($bio->summary) ? $user->name . ' belum menuliskan <em>summary</em> atau ringkasan resumenya.' :
                     Str::words($bio->summary, 20, '...');
+
+                if (round($rating_pekerja * 2) / 2 == 1) {
+                    $star = '<i class="fa fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>' .
+                        '<i class="far fa-star"></i><i class="far fa-star"></i>';
+                } elseif (round($rating_pekerja * 2) / 2 == 2) {
+                    $star = '<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="far fa-star"></i>' .
+                        '<i class="far fa-star"></i><i class="far fa-star"></i>';
+                } elseif (round($rating_pekerja * 2) / 2 == 3) {
+                    $star = '<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>' .
+                        '<i class="far fa-star"></i><i class="far fa-star"></i>';
+                } elseif (round($rating_pekerja * 2) / 2 == 4) {
+                    $star = '<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>' .
+                        '<i class="fa fa-star"></i><i class="far fa-star"></i>';
+                } elseif (round($rating_pekerja * 2) / 2 == 5) {
+                    $star = '<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>' .
+                        '<i class="fr fa-star"></i><i class="fa fa-star"></i>';
+                } elseif (round($rating_pekerja * 2) / 2 == 0.5) {
+                    $star = '<i class="fa fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i>' .
+                        '<i class="far fa-star"></i><i class="far fa-star"></i>';
+                } elseif (round($rating_pekerja * 2) / 2 == 1.5) {
+                    $star = '<i class="fa fa-star"></i><i class="fa fa-star-half-alt"></i><i class="far fa-star"></i>' .
+                        '<i class="far fa-star"></i><i class="far fa-star"></i>';
+                } elseif (round($rating_pekerja * 2) / 2 == 2.5) {
+                    $star = '<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-alt"></i>' .
+                        '<i class="far fa-star"></i><i class="far fa-star"></i>';
+                } elseif (round($rating_pekerja * 2) / 2 == 3.5) {
+                    $star = '<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>' .
+                        '<i class="fa fa-star-half-alt"></i><i class="far fa-star"></i>';
+                } elseif (round($rating_pekerja * 2) / 2 == 4.5) {
+                    $star = '<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>' .
+                        '<i class="fa fa-star"></i><i class="fa fa-star-half-alt"></i>';
+                } else {
+                    $star = '<i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>' .
+                        '<i class="far fa-star"></i><i class="far fa-star"></i>';
+                }
+
+                $subkategori = $star;
             }
 
-            $date = Carbon::parse($row['created_at']);
             $arr = array(
                 'url' => $url,
                 '_thumbnail' => $thumbnail,
@@ -105,9 +149,9 @@ class CariController extends Controller
                 'deadline' => $deadline,
                 'kategori' => $kategori,
                 'subkategori' => $subkategori,
+                'rate' => '<b>' . (round($rating_pekerja * 2) / 2) . '</b> (' . count($ulasan_pekerja) . ' ulasan)',
                 'judul' => $judul,
                 '_deskripsi' => $deskripsi,
-                'date' => Carbon::parse($row['created_at'])->formatLocalized('%b %d, %Y'),
             );
 
             $data['data'][$i] = array_replace($arr, $data['data'][$i]);
