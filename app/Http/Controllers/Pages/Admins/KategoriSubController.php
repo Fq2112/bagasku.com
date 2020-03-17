@@ -105,4 +105,87 @@ class KategoriSubController extends Controller
         }
     }
 
+    /**
+     * TODO Store Data Kategori
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store_subkategori(Request $request)
+    {
+        try {
+            SubKategori::create([
+                'nama' => $request->name,
+                'kategori_id' => $request->kategori_id
+            ]);
+            return response()->json([
+                'status' => 201,
+                'message' => "Data Behasil Tambahkan"
+            ]);
+        } catch (ModelNotFoundException $exception) {
+            return response()->json([
+                'status' => 401,
+                'message' => $exception
+            ]);
+        } catch (ErrorException $error) {
+            return response()->json([
+                'status' => 401,
+                'message' => $error
+            ]);
+        }
+    }
+
+    /**
+     * TODO Update data Kategori
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update_subkategori(Request $request)
+    {
+        try {
+            $data = Kategori::find($request->id);
+            $data->update([
+                'nama' => $request->name
+            ]);
+            return response()->json([
+                'status' => 200,
+                'message' => "Data Behasil Diperbarui"
+            ]);
+        } catch (ModelNotFoundException $exception) {
+            return response()->json([
+                'status' => 401,
+                'message' => $exception
+            ]);
+        } catch (ErrorException $error) {
+            return response()->json([
+                'status' => 401,
+                'message' => $error
+            ]);
+        }
+    }
+
+    public function delete_subkategori(Request $request)
+    {
+        try {
+            $data = SubKategori::find($request->id);
+            $data->delete();
+
+            return response()->json([
+                'status' => 200,
+                'message' => "Data berhasil dihapus"
+            ], 200);
+        } catch (ModelNotFoundException $exception) {
+            return response()->json([
+                'status' => 401,
+                'message' => $exception
+            ]);
+        } catch (ErrorException $error) {
+            return response()->json([
+                'status' => 401,
+                'message' => $error
+            ]);
+        }
+    }
+
 }

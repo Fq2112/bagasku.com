@@ -169,7 +169,8 @@
                                                 <i class="fa fa-key"></i>
                                             </div>
                                         </div>
-                                        <input type="text" class="form-control disabled" placeholder="indonesia " name="id" id="key" required readonly>
+                                        <input type="text" class="form-control disabled" placeholder="indonesia "
+                                               name="id" id="key" required readonly>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -180,14 +181,16 @@
                                                 <i class="fa fa-flag"></i>
                                             </div>
                                         </div>
-                                        <input type="text" class="form-control" placeholder="indonesia " name="name" id="name" required>
+                                        <input type="text" class="form-control" placeholder="indonesia " name="name"
+                                               id="name" required>
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer bg-whitesmoke br">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="update_negara()">Save changes</button>
+                            <button type="button" class="btn btn-primary" onclick="update_negara()">Save changes
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -213,7 +216,8 @@
                                                 <i class="fa fa-key"></i>
                                             </div>
                                         </div>
-                                        <input type="text" class="form-control disabled" placeholder="indonesia " name="id" id="keyprov" required readonly>
+                                        <input type="text" class="form-control disabled" placeholder="indonesia "
+                                               name="id" id="keyprov" required readonly>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -224,14 +228,16 @@
                                                 <i class="fa fa-flag"></i>
                                             </div>
                                         </div>
-                                        <input type="text" class="form-control" placeholder="Suabaya " name="name" id="nameprov" required>
+                                        <input type="text" class="form-control" placeholder="Suabaya " name="name"
+                                               id="nameprov" required>
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer bg-whitesmoke br">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="update_provinsi()">Save changes</button>
+                            <button type="button" class="btn btn-primary" onclick="update_provinsi()">Save changes
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -247,7 +253,8 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form id="modal-edit-kategori" action="{{route('admin.show.kategori.update')}}" method="post">
+                            <form id="modal-edit-kategori" action="{{route('admin.show.kategori.update')}}"
+                                  method="post">
                                 @CSRF
                                 <div class="form-group">
                                     <label>ID</label>
@@ -257,25 +264,76 @@
                                                 <i class="fa fa-key"></i>
                                             </div>
                                         </div>
-                                        <input type="text" class="form-control disabled" placeholder="indonesia " name="id" id="key_kategori" required readonly>
+                                        <input type="text" class="form-control disabled" placeholder="indonesia "
+                                               name="id" id="key_kategori" required readonly>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Nama Negara</label>
+                                    <label>Nama Kategori</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <i class="fa fa-flag"></i>
                                             </div>
                                         </div>
-                                        <input type="text" class="form-control" placeholder="indonesia " name="name" id="name_kategori" required>
+                                        <input type="text" class="form-control" placeholder="indonesia " name="name"
+                                               id="name_kategori" required>
                                     </div>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer bg-whitesmoke br">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="update_negara()">Save changes</button>
+                            <button type="button" class="btn btn-primary" onclick="update_kategori()">Save changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" tabindex="-1" role="dialog" id="updateSubKategori" style="z-index: 99999">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Sunting Data Sub Kategori</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="modal-edit-subkategori" action="{{route('admin.show.subkategori.update')}}"
+                                  method="post">
+                                @CSRF
+                                <div class="form-group">
+                                    <label>ID</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fa fa-key"></i>
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control disabled" placeholder="indonesia "
+                                               name="id" id="key_subkategori" required readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nama Sub Kategori</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fa fa-flag"></i>
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="indonesia " name="name"
+                                               id="name_subkategori" required>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer bg-whitesmoke br">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="update_subkategori()">Save changes
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -319,6 +377,7 @@
 <script>
     @if(session('signed'))
     swal('Telah Masuk!', 'Halo {{$role->name}}! Anda telah masuk.', 'success');
+
     @endif
 
     function numberOnly(e, decimal) {

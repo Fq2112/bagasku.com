@@ -75,6 +75,24 @@ Route::group(['namespace' => 'Pages\Admins', 'prefix' => 'sys-admin', 'middlewar
         ]);
     });
 
+    Route::group(['prefix' => 'subkategori'], function () {
+
+        Route::post('store',[
+            'uses' => 'KategoriSubController@store_subkategori',
+            'as' => 'admin.show.subkategori.store'
+        ]);
+
+        Route::post('update',[
+            'uses' => 'KategoriSubController@update_subkategori',
+            'as' => 'admin.show.subkategori.update'
+        ]);
+
+        Route::post('{id}/delete', [
+            'uses' => 'KategoriSubController@delete_subkategori',
+            'as' => 'admin.show.subkategori.delete'
+        ]);
+    });
+
     Route::group(['prefix' => 'loc'], function () {
 
         Route::group(['prefix' => 'negara'], function () {

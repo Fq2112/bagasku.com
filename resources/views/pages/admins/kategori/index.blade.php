@@ -126,8 +126,8 @@
                                                         <td>{{$item->updated_at->diffForHumans()}}</td>
 
                                                         <td>
-                                                            <form id="delete-form-provinsi-{{$item->id}}"
-                                                                  action="{{ route('admin.show.provinsi.delete',['id' => $item->id])}}"
+                                                            <form id="delete-form-sub-{{$item->id}}"
+                                                                  action="{{ route('admin.show.subkategori.delete',['id' => $item->id])}}"
                                                                   method="POST"
                                                                   style="display: none;">
 
@@ -135,11 +135,11 @@
                                                             </form>
                                                             <button class="btn btn-info btn-icon"><i
                                                                     class="fa fa-edit"
-                                                                    onclick="edit_provinsi('{{$item->id}}','{{$item->nama}}')"></i>
+                                                                    onclick="edit_sub('{{$item->id}}','{{$item->nama}}','1')"></i>
                                                             </button>
                                                             <button class="btn btn-danger btn-icon"><i
                                                                     class="fa fa-trash"
-                                                                    onclick="delprov({{$item->id}})"></i></button>
+                                                                    onclick="delsub({{$item->id}})"></i></button>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -173,7 +173,7 @@
             </div>
         </form>
 
-        <form class="modal-part" id="modal-provinsi-part">
+        <form class="modal-part" id="modal-sub-part">
             @CSRF
             <div class="form-group">
                 <label>Nama Sub Kategori</label>
@@ -241,7 +241,7 @@
                 });
         }
 
-        function delprov(id) {
+        function delsub(id) {
             swal({
                 title: "Apakah Anda Yakin?",
                 text: "Data yang akan dihapus tidak akan bisa dipulihkan lagi!",
@@ -251,7 +251,7 @@
             })
                 .then((willDelete) => {
                     if (willDelete) {
-                        $('#delete-form-provinsi-' + id).ajaxSubmit({
+                        $('#delete-form-sub-' + id).ajaxSubmit({
                             success: function (data) {
                                 swal("Poof! Data Berhasil Dihapus!", {
                                     icon: "success",
@@ -271,7 +271,7 @@
                 });
         }
 
-        function update_negara() {
+        function update_kategori() {
             $('#modal-edit-kategori').ajaxSubmit({
                 success: function (data) {
                     $("#updateKategori").modal('hide');
@@ -297,11 +297,11 @@
 
         }
 
-        function edit_provinsi(id, name) {
-            $("#updateProvinsiModal").modal('show');
-            $("#keyprov").val(id);
-            $("#nameprov").val(name);
-
+        function edit_sub(id, name, ids) {
+            $("#updateSubKategori").modal('show');
+            $("#key_subkategori").val(id);
+            $("#name_subkategori").val(name);
+            $("#kategori_id").val(ids);
         }
 
         function update_provinsi() {
@@ -378,7 +378,7 @@
 
         $("#add_sub").fireModal({
             title: 'Form Tambah Data Sub Kategori',
-            body: $("#modal-provinsi-part"),
+            body: $("#modal-sub-part"),
             footerClass: 'bg-whitesmoke',
             autoFocus: false,
             onFormSubmit: function (modal, e, form) {
@@ -392,7 +392,7 @@
                     // modal.find('.modal-body').prepend('<div class="alert alert-info">Please check your browser console</div>')
                     $.ajax({
                         type: "POST",
-                        url: "{{route('admin.show.provinsi.store')}}",
+                        url: "{{route('admin.show.subkategori.store')}}",
                         data: form_data, // serializes the form's elements.
                         success: function (data) {
                             console.log(data);
