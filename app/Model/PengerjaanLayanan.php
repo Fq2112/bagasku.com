@@ -21,8 +21,13 @@ class PengerjaanLayanan extends Model
         return $this->belongsTo(Services::class, 'service_id');
     }
 
+    public function get_pembayaran()
+    {
+        return $this->hasOne(PembayaranLayanan::class, 'pengerjaan_layanan_id');
+    }
+
     public function get_ulasan()
     {
-        return $this->hasMany(UlasanService::class, 'pengerjaann_layanan_id');
+        return $this->hasOne(UlasanService::class, 'pengerjaan_layanan_id');
     }
 }

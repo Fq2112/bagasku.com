@@ -232,7 +232,7 @@
                         <div class="our-courses">
                             <div class="img-wrapper">
                                 <a href="{{route('detail.proyek',['username' => $row->get_user->username, 'judul' =>
-                                $row->get_judul_uri()])}}">
+                                $row->permalink])}}">
                                     <img src="{{$row->thumbnail!="" ? asset('storage/proyek/thumbnail/'.$row->thumbnail)
                                     : asset('images/slider/beranda-proyek.jpg')}}" alt="thumbnail">
                                 </a>
@@ -321,7 +321,7 @@
                             </div>
                             <div class="text-center middle-info">
                                 <h3><a href="{{route('detail.proyek',['username' => $row->get_user->username, 'judul' =>
-                                $row->get_judul_uri()])}}">{{$row->judul}}</a></h3>
+                                $row->permalink])}}">{{$row->judul}}</a></h3>
                                 {!! \Illuminate\Support\Str::words($row->deskripsi,10,'...') !!}
                             </div>
                             <div class="date-info">
@@ -347,13 +347,13 @@
                             $q->where('user_id', $row->user_id);
                         })->count();
                         $rate = $ulasan_pekerja + $ulasan_layanan > 0 ?
-                        $row->get_user->get_bio->total_bintang_pekerja / $ulasan_pekerja + $ulasan_layanan : 0;
+                        $row->get_user->get_bio->total_bintang_pekerja / ($ulasan_pekerja + $ulasan_layanan) : 0;
                     @endphp
                     <div class="item layanan">
                         <div class="our-courses">
                             <div class="img-wrapper">
                                 <a href="{{route('detail.layanan',['username' => $row->get_user->username, 'judul' =>
-                                $row->get_judul_uri()])}}">
+                                $row->permalink])}}">
                                     <img src="{{$row->thumbnail != "" ? asset('storage/layanan/thumbnail/'.$row->thumbnail)
                                     : asset('images/slider/beranda-pekerja.jpg')}}" alt="thumbnail">
                                 </a>
@@ -442,7 +442,7 @@
                             </div>
                             <div class="text-center middle-info">
                                 <h3><a href="{{route('detail.layanan',['username' => $row->get_user->username, 'judul' =>
-                                $row->get_judul_uri()])}}">{{$row->judul}}</a></h3>
+                                $row->permalink])}}">{{$row->judul}}</a></h3>
                                 {!! \Illuminate\Support\Str::words($row->deskripsi,10,'...') !!}
                             </div>
                             <div class="date-info">
@@ -464,7 +464,7 @@
                             $q->where('user_id', $row->user_id);
                         })->count();
                         $rate = $ulasan_pekerja + $ulasan_layanan > 0 ?
-                        $row->total_bintang_pekerja / $ulasan_pekerja + $ulasan_layanan : 0;
+                        $row->total_bintang_pekerja / ($ulasan_pekerja + $ulasan_layanan) : 0;
                     @endphp
                     <div class="item pekerja">
                         <div class="our-courses">
@@ -802,7 +802,7 @@
 
         keyword.autocomplete({
             source: function (request, response) {
-                $.getJSON('/cari/data?filter=' + $("#form-pencarian input[name='filter']").val() + '&keyword=' + keyword.val(), {
+                $.getJSON('/cari/judul/data?filter=' + $("#form-pencarian input[name='filter']").val() + '&q=' + keyword.val(), {
                     name: request.term,
                 }, function (data) {
                     response(data);
@@ -813,7 +813,7 @@
             },
             select: function (event, ui) {
                 event.preventDefault();
-                keyword.val(ui.item.keyword);
+                keyword.val(ui.item.q);
             }
         });
 

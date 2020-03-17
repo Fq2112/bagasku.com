@@ -67,6 +67,27 @@ class ProyekController extends Controller
         return back()->with('undangan', 'Undangan tugas/proyek ' . $jenis . ' [' . $undangan->get_project->judul . '] berhasil ditolak!');
     }
 
+    public function lampiranProyek(Request $request)
+    {
+        $pengerjaan = Pengerjaan::find($request->id);
+        $data = $pengerjaan->get_project->lampiran;
+
+        if (!is_null($data)) {
+            $i = 0;
+            foreach ($data as $lampiran) {
+                $arr = [
+                    'file' => $lampiran,
+                    'ext' => strtolower(pathinfo($lampiran, PATHINFO_EXTENSION)),
+                ];
+
+                $data[$i] = $arr;
+                $i = $i + 1;
+            }
+        }
+
+        return $data;
+    }
+
     public function updatePengerjaanProyek(Request $request)
     {
         $pengerjaan = Pengerjaan::find($request->id);
@@ -99,7 +120,6 @@ class ProyekController extends Controller
     public function ulasPengerjaanProyek(Request $request)
     {
         $pengerjaan = Pengerjaan::find($request->id);
-        $pengerjaan->update(['selesai' => true]);
         Review::create([
             'user_id' => $pengerjaan->user_id,
             'proyek_id' => $pengerjaan->proyek_id,
@@ -107,13 +127,11 @@ class ProyekController extends Controller
             'bintang' => $request->rating,
         ]);
 
-        return back()->with('pengerjaan', 'Tugas/proyek [' . $pengerjaan->get_project->judul . '] telah selesai!');
+        return back()->with('pengerjaan', 'Tugas/proyek [' . $pengerjaan->get_project->judul . '] telah selesai dan berhasil diulas!');
     }
 
     public function dataUlasanProyek(Request $request)
     {
-        $ulasan = Review::where('proyek_id', $request->id)->first();
-
-        return $ulasan;
+        return Review::where('proyek_id', $request->id)->first();
     }
 }

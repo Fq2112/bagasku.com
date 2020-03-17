@@ -17,9 +17,11 @@ class ProyekLayananSeeder extends Seeder
         $klien_ids = [];
         $client = \App\User::where('role', \App\Support\Role::OTHER)->take(10)->get();
         foreach ($client as $klien) {
+            $title = \Faker\Factory::create()->jobTitle;
             \App\Model\Project::create([
                 'user_id' => $klien->id,
-                'judul' => \Faker\Factory::create()->jobTitle,
+                'judul' => $title,
+                'permalink' => preg_replace("![^a-z0-9]+!i", "-", strtolower($title)),
                 'deskripsi' => '<p>' . $faker->paragraph . '</p>',
                 'waktu_pengerjaan' => rand(1, 10),
                 'harga' => $faker->numerify('########'),
@@ -27,9 +29,11 @@ class ProyekLayananSeeder extends Seeder
                 'subkategori_id' => rand(\App\Model\SubKategori::min('id'), \App\Model\SubKategori::max('id'))
             ]);
 
+            $title2 = \Faker\Factory::create()->jobTitle;
             \App\Model\Project::create([
                 'user_id' => $klien->id,
-                'judul' => \Faker\Factory::create()->jobTitle,
+                'judul' => $title2,
+                'permalink' => preg_replace("![^a-z0-9]+!i", "-", strtolower($title2)),
                 'deskripsi' => '<p>' . $faker->paragraph . '</p>',
                 'waktu_pengerjaan' => rand(1, 10),
                 'harga' => $faker->numerify('########'),
@@ -88,24 +92,27 @@ class ProyekLayananSeeder extends Seeder
         }
 
         foreach ($pekerja as $row) {
+            $title3 = \Faker\Factory::create()->jobTitle;
             $service = \App\Model\Services::create([
                 'user_id' => $row->id,
                 'subkategori_id' => rand(\App\Model\SubKategori::min('id'), \App\Model\SubKategori::max('id')),
                 'harga' => $faker->numerify('########'),
                 'deskripsi' => '<p>' . $faker->paragraph . '</p>',
                 'hari_pengerjaan' => rand(1, 30),
-                'judul' => \Faker\Factory::create()->jobTitle,
+                'judul' => $title3,
+                'permalink' => preg_replace("![^a-z0-9]+!i", "-", strtolower($title3)),
             ]);
 
+            $user_id = $klien_ids[array_rand($klien_ids)];
             $pengeraanLayanan = \App\Model\PengerjaanLayanan::create([
                 'service_id' => $service->id,
-                'user_id' => rand(1, 10),
+                'user_id' => $user_id,
                 'selesai' => true,
                 'tautan' => $faker->imageUrl()
             ]);
 
             \App\Model\PembayaranLayanan::create([
-                'service_id' => $service->id,
+                'pengerjaan_layanan_id' => $pengeraanLayanan->id,
                 'jumlah_pembayaran' => $service->harga
             ]);
 

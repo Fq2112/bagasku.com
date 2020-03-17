@@ -19,6 +19,11 @@ Route::group(['prefix' => '/', 'namespace' => 'Pages'], function () {
             'as' => 'get.cari.data'
         ]);
 
+        Route::get('judul/data', [
+            'uses' => 'CariController@getCariJudulData',
+            'as' => 'get.cari-judul.data'
+        ]);
+
     });
 
     Route::group(['namespace' => 'Users', 'prefix' => 'profil/{username}'], function () {
@@ -47,9 +52,20 @@ Route::group(['prefix' => '/', 'namespace' => 'Pages'], function () {
         'as' => 'detail.proyek'
     ]);
 
+    Route::get('proyek/{username}/{judul}/bid', [
+        'uses' => 'MainController@bidProyek',
+        'as' => 'bid.proyek'
+    ]);
+
     Route::get('layanan/{username}/{judul}', [
         'uses' => 'MainController@detailLayanan',
         'as' => 'detail.layanan'
+    ]);
+
+    Route::get('layanan/{username}/{judul}/pesan', [
+        'middleware' => ['auth', 'user', 'user.bio'],
+        'uses' => 'MainController@pesanLayanan',
+        'as' => 'pesan.layanan'
     ]);
 
     Route::get('tentang', [
@@ -135,6 +151,80 @@ Route::group(['prefix' => 'akun'], function () {
                     'as' => 'dashboard.klien.proyek'
                 ]);
 
+                Route::post('tambah', [
+                    'uses' => 'ProyekController@tambahProyek',
+                    'as' => 'klien.tambah.proyek'
+                ]);
+
+                Route::get('sunting/{id}', [
+                    'uses' => 'ProyekController@suntingProyek',
+                    'as' => 'klien.sunting.proyek'
+                ]);
+
+                Route::put('update', [
+                    'uses' => 'ProyekController@updateProyek',
+                    'as' => 'klien.update.proyek'
+                ]);
+
+                Route::get('hapus/{id}', [
+                    'uses' => 'ProyekController@hapusProyek',
+                    'as' => 'klien.hapus.proyek'
+                ]);
+
+                Route::group(['prefix' => 'lampiran/{judul}'], function () {
+
+                    Route::get('/', [
+                        'uses' => 'ProyekController@lampiranProyek',
+                        'as' => 'klien.lampiran.proyek'
+                    ]);
+
+                    Route::post('tambah', [
+                        'uses' => 'ProyekController@tambahLampiran',
+                        'as' => 'klien.tambah.lampiran'
+                    ]);
+
+                    Route::get('hapus/{file}', [
+                        'uses' => 'ProyekController@hapusLampiran',
+                        'as' => 'klien.hapus.lampiran'
+                    ]);
+
+                    Route::post('hapus-massal', [
+                        'uses' => 'ProyekController@hapusMassalLampiran',
+                        'as' => 'klien.hapus-massal.lampiran'
+                    ]);
+
+                });
+
+                Route::get('bid/{judul}', [
+                    'uses' => 'ProyekController@bidProyek',
+                    'as' => 'klien.bid.proyek'
+                ]);
+
+                Route::get('bid/{judul}/terima/{id}', [
+                    'uses' => 'ProyekController@terimaBid',
+                    'as' => 'klien.terima.bid'
+                ]);
+
+                Route::put('pembayaran/{id}/update', [
+                    'uses' => 'ProyekController@updatePembayaran',
+                    'as' => 'klien.update-pembayaran.proyek'
+                ]);
+
+                Route::get('pembayaran/{id}/data', [
+                    'uses' => 'ProyekController@dataPembayaran',
+                    'as' => 'klien.data-pembayaran.proyek'
+                ]);
+
+                Route::post('pengerjaan/{id}/ulas', [
+                    'uses' => 'ProyekController@ulasPengerjaanProyek',
+                    'as' => 'klien.ulas-pengerjaan.proyek'
+                ]);
+
+                Route::get('pengerjaan/{id}/ulas/data', [
+                    'uses' => 'ProyekController@dataUlasanProyek',
+                    'as' => 'klien.data-ulasan.proyek'
+                ]);
+
             });
 
             Route::group(['prefix' => 'layanan'], function () {
@@ -142,6 +232,31 @@ Route::group(['prefix' => 'akun'], function () {
                 Route::get('/', [
                     'uses' => 'LayananController@dashboard',
                     'as' => 'dashboard.klien.layanan'
+                ]);
+
+                Route::get('pesanan/{id}/batalkan', [
+                    'uses' => 'LayananController@batalkanPesanan',
+                    'as' => 'klien.batalkan.pesanan'
+                ]);
+
+                Route::put('pembayaran/{id}/update', [
+                    'uses' => 'LayananController@updatePembayaran',
+                    'as' => 'klien.update-pembayaran.pesanan'
+                ]);
+
+                Route::get('pembayaran/{id}/data', [
+                    'uses' => 'LayananController@dataPembayaran',
+                    'as' => 'klien.data-pembayaran.pesanan'
+                ]);
+
+                Route::post('pengerjaan/{id}/ulas', [
+                    'uses' => 'LayananController@ulasPengerjaanLayanan',
+                    'as' => 'klien.ulas-pengerjaan.layanan'
+                ]);
+
+                Route::get('pengerjaan/{id}/ulas/data', [
+                    'uses' => 'LayananController@dataUlasanLayanan',
+                    'as' => 'klien.data-ulasan.layanan'
                 ]);
 
             });
@@ -172,6 +287,11 @@ Route::group(['prefix' => 'akun'], function () {
                     'as' => 'pekerja.tolak.undangan'
                 ]);
 
+                Route::get('lampiran/{id}', [
+                    'uses' => 'ProyekController@lampiranProyek',
+                    'as' => 'pekerja.lampiran.proyek'
+                ]);
+
                 Route::put('pengerjaan/{id}/update', [
                     'uses' => 'ProyekController@updatePengerjaanProyek',
                     'as' => 'pekerja.update-pengerjaan.proyek'
@@ -194,6 +314,31 @@ Route::group(['prefix' => 'akun'], function () {
                 Route::get('/', [
                     'uses' => 'LayananController@dashboard',
                     'as' => 'dashboard.pekerja.layanan'
+                ]);
+
+                Route::post('tambah', [
+                    'uses' => 'LayananController@tambahLayanan',
+                    'as' => 'pekerja.tambah.layanan'
+                ]);
+
+                Route::get('sunting/{id}', [
+                    'uses' => 'LayananController@suntingLayanan',
+                    'as' => 'pekerja.sunting.layanan'
+                ]);
+
+                Route::put('update', [
+                    'uses' => 'LayananController@updateLayanan',
+                    'as' => 'pekerja.update.layanan'
+                ]);
+
+                Route::get('hapus/{id}', [
+                    'uses' => 'LayananController@hapusLayanan',
+                    'as' => 'pekerja.hapus.layanan'
+                ]);
+
+                Route::put('pengerjaan/{id}/update', [
+                    'uses' => 'LayananController@updatePengerjaanLayanan',
+                    'as' => 'pekerja.update-pengerjaan.layanan'
                 ]);
 
             });

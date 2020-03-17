@@ -74,6 +74,12 @@
         .lg-sub-html p {
             color: #bbb;
         }
+
+        .note-editor.note-airframe .note-editing-area .note-editable, .note-editor.note-frame .note-editing-area .note-editable,
+        .note-editor.note-airframe .note-placeholder, .note-editor.note-frame .note-placeholder {
+            padding: 20px 30px;
+            text-transform: none;
+        }
     </style>
 @endpush
 @section('content')
@@ -102,7 +108,7 @@
 
                                 <div class="card-content">
                                     <div class="card-title text-center">
-                                        <a href="{{route('user.profil')}}">
+                                        <a href="{{$user->id == Auth::id() ? route('user.profil') : url()->current()}}">
                                             <h4 class="aj_name" style="color: #122752">{{$user->name}}</h4></a>
                                         <small style="text-transform: none">{{$user->get_bio->status
                                         != "" ? $user->get_bio->status : 'Status (-)'}}</small>
@@ -328,7 +334,7 @@
                                     <div class="card-title">
                                         <small>Summary</small>
                                         <hr class="mt-0">
-                                        <blockquote data-scrollbar>
+                                        <blockquote data-scrollbar style="text-transform: none">
                                             {!!$user->get_bio->summary != "" ? $user->get_bio->summary :
                                             '<p>'.$user->name.' belum menuliskan <em>summary</em> atau ringkasan resumenya.</p>'!!}
                                         </blockquote>
@@ -586,7 +592,7 @@
                                                 @foreach($proyek as $row)
                                                     <div class="list-item">
                                                         <a href="{{route('detail.proyek', ['username' =>
-                                                            $user->username, 'judul' => $row->get_judul_uri()])}}">
+                                                            $user->username, 'judul' => $row->permalink])}}">
                                                             <div class="icon">
                                                                 <img alt="Thumbnail" src="{{$row->thumbnail != "" ?
                                                                 asset('storage/proyek/thumbnail/'.$row->thumbnail) :
@@ -626,7 +632,7 @@
                                                 @foreach($layanan as $row)
                                                     <div class="list-item">
                                                         <a href="{{route('detail.layanan', ['username' =>
-                                                            $user->username, 'judul' => $row->get_judul_uri()])}}">
+                                                            $user->username, 'judul' => $row->permalink])}}">
                                                             <div class="icon">
                                                                 <img alt="Thumbnail" src="{{$row->thumbnail != "" ?
                                                                     asset('storage/layanan/thumbnail/'.$row->thumbnail) :
@@ -881,7 +887,7 @@
                                                                class="browse_thumbnail form-control" readonly
                                                                placeholder="Pilih File" data-toggle="tooltip"
                                                                data-placement="top"
-                                                               title="Ekstensi yang diizinkan: jpg, jpeg, gif, png. Ukuran yang diizinkan: < 5 MB">
+                                                               title="Ekstensi yang diizinkan: jpg, jpeg, gif, png. Ukuran yang diizinkan: < 2 MB">
                                                         <span class="input-group-btn">
                                                                 <button
                                                                     class="browse_thumbnail btn btn-link btn-sm btn-block"
@@ -950,13 +956,25 @@
                                                                 required>
                                                             <option></option>
                                                             @foreach($auth_proyek as $row)
+                                                                @php
+                                                                    $cek = \App\Model\Undangan::where('user_id', $user->id)
+                                                                    ->where('proyek_id', $row->id)->count();
+                                                                @endphp
                                                                 <option value="{{$row->id}}" data-image="{{$row->thumbnail != "" ?
                                                                 asset('storage/proyek/thumbnail/'.$row->thumbnail) :
-                                                                asset('images/slider/beranda-proyek.jpg')}}">{{$row->judul.
-                                                                ' [Rp'.number_format($row->harga,2,',','.').']'}}</option>
+                                                                asset('images/slider/beranda-proyek.jpg')}}"
+                                                                    {{$cek > 0 ? 'disabled' : ''}}>
+                                                                    {{$row->judul.' [Rp'.number_format($row->harga,2,',','.').']'}}
+                                                                </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
+                                                    <span class="help-block">
+                                                        <strong class="strong-error" style="text-transform: none">
+                                                            NB: Anda tidak boleh mengundang pekerja ke dalam bid
+                                                            tugas/proyek yang sama!
+                                                        </strong>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>

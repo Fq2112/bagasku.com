@@ -3,10 +3,6 @@
 @push('styles')
     <link rel="stylesheet" href="{{asset('vendor/bootstrap-toc/bootstrap-toc.min.css')}}">
     <style>
-        .breadcrumbs {
-            background-image: url({{asset('images/slider/tentang.jpg')}});
-        }
-
         nav[data-toggle=toc] {
             margin-top: 30px;
         }

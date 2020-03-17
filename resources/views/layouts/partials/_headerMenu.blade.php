@@ -12,7 +12,11 @@
                     <ul class="dropdown-menu dropdown-arrow">
                         @foreach($kat->get_sub as $row)
                             <li>
-                                <a href="{{route('cari.data', ['filter' => 'proyek', 'sub_kat' => $row->id])}}">{{$row->nama}}</a>
+                                <a class="sub_kat" data-id="{{$row->id}}" data-filter="proyek"
+                                   href="{{route('cari.data', ['filter' => 'proyek', 'sub_kat' => $row->id])}}">
+                                    <span class="badge badge-secondary">
+                                        {{count($row->get_project) > 999 ? '999+' : count($row->get_project)}}</span>
+                                    {{$row->nama}}</a>
                             </li>
                         @endforeach
                     </ul>
@@ -30,7 +34,11 @@
                     <ul class="dropdown-menu dropdown-arrow">
                         @foreach($kat->get_sub as $row)
                             <li>
-                                <a href="{{route('cari.data', ['filter' => 'layanan', 'sub_kat' => $row->id])}}">{{$row->nama}}</a>
+                                <a class="sub_kat" data-id="{{$row->id}}" data-filter="layanan"
+                                   href="{{route('cari.data', ['filter' => 'layanan', 'sub_kat' => $row->id])}}">
+                                    <span class="badge badge-secondary">
+                                        {{count($row->get_service) > 999 ? '999+' : count($row->get_service)}}</span>
+                                    {{$row->nama}}</a>
                             </li>
                         @endforeach
                     </ul>

@@ -69,6 +69,10 @@
             margin-top: 0 !important
         }
 
+        .mb-0 {
+            margin-bottom: 0 !important
+        }
+
         .mb-1, .my-1 {
             margin-bottom: 0.5rem !important
         }
@@ -106,7 +110,7 @@
             position: relative;
             display: block;
             min-height: 1.5rem;
-            padding-left: 1.5rem;
+            /*padding-left: 1.5rem;*/
         }
 
         .custom-control-inline {
@@ -151,10 +155,10 @@
         .custom-control-label::before {
             position: absolute;
             top: 0.25rem;
-            left: -1.5rem;
+            left: -2rem;
             display: block;
-            width: 1rem;
-            height: 1rem;
+            width: 1.5rem;
+            height: 1.5rem;
             pointer-events: none;
             content: "";
             -webkit-user-select: none;
@@ -167,10 +171,10 @@
         .custom-control-label::after {
             position: absolute;
             top: 0.25rem;
-            left: -1.5rem;
+            left: -2rem;
             display: block;
-            width: 1rem;
-            height: 1rem;
+            width: 1.5rem;
+            height: 1.5rem;
             content: "";
             background-repeat: no-repeat;
             background-position: center center;
@@ -202,6 +206,22 @@
         }
 
         .custom-checkbox .custom-control-input:disabled:indeterminate ~ .custom-control-label::before {
+            background-color: rgba(18, 39, 82, 0.5);
+        }
+
+        .custom-radio .custom-control-label::before {
+            border-radius: 50%;
+        }
+
+        .custom-radio .custom-control-input:checked ~ .custom-control-label::before {
+            background-color: #122752;
+        }
+
+        .custom-radio .custom-control-input:checked ~ .custom-control-label::after {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23fff'/%3E%3C/svg%3E");
+        }
+
+        .custom-radio .custom-control-input:disabled:checked ~ .custom-control-label::before {
             background-color: rgba(18, 39, 82, 0.5);
         }
 

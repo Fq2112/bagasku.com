@@ -27,6 +27,6 @@ class BiodataMiddleware
             return $next($request);
         }
 
-        return redirect()->route('user.biodata');
+        return redirect()->route('user.profil');
     }
 }

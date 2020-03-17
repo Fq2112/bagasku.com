@@ -135,6 +135,12 @@
         .rating > input:checked ~ label:hover ~ label {
             color: #e1a500;
         }
+
+        .note-editor.note-airframe .note-editing-area .note-editable, .note-editor.note-frame .note-editing-area .note-editable,
+        .note-editor.note-airframe .note-placeholder, .note-editor.note-frame .note-placeholder {
+            padding: 20px 30px;
+            text-transform: none;
+        }
     </style>
 @endpush
 @section('content')
@@ -149,9 +155,7 @@
         <ul class="crumb">
             <li><a href="{{route('beranda')}}"><i class="fa fa-home"></i></a></li>
             <li><i class="fa fa-angle-double-right"></i> <a href="#">Dashboard Pekerja</a></li>
-            <li><i class="fa fa-angle-double-right"></i> <a
-                    href="{{route('dashboard.pekerja.proyek')}}">Tugas/Proyek</a>
-            </li>
+            <li><i class="fa fa-angle-double-right"></i> <a href="{{url()->current()}}">Tugas/Proyek</a></li>
             <li><a href="#" onclick="goToAnchor()"><i class="fa fa-angle-double-right"></i> Daftar Bid, Undangan, &
                     Pengerjaan</a>
             </li>
@@ -256,7 +260,7 @@
                                             <tr>
                                                 <td style="vertical-align: middle" align="center">{{$no++}}</td>
                                                 <td style="vertical-align: middle"><a href="{{route('detail.proyek', ['username' =>
-                                                $row->get_project->get_user->username, 'judul' => $row->get_project->get_judul_uri()])}}">
+                                                $row->get_project->get_user->username, 'judul' => $row->get_project->permalink])}}">
                                                         {{$row->get_project->judul}}</a></td>
                                                 <td style="vertical-align: middle" align="center">
                                                     {{$row->get_project->waktu_pengerjaan}} hari
@@ -269,13 +273,11 @@
                                                 <td style="vertical-align: middle" align="center">
                                                     <div class="input-group">
                                                         <span class="input-group-btn">
-                                                            <a class="btn btn-link btn-sm" style="margin-right: 0"
-                                                               href="{{route('detail.proyek',
+                                                            <a class="btn btn-link btn-sm" href="{{route('detail.proyek',
                                                                ['username' => $row->get_project->get_user->username,
-                                                               'judul' => $row->get_project->get_judul_uri()])}}"
+                                                               'judul' => $row->get_project->permalink])}}"
                                                                data-toggle="tooltip" title="Lihat Proyek">
-                                                                <i class="fa fa-info-circle"
-                                                                   style="margin-right: 0"></i>
+                                                                <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>
                                                             <button class="btn btn-link btn-sm" type="button"
                                                                     data-toggle="tooltip" title="Batalkan Bid" {{$attr}}
@@ -330,7 +332,7 @@
                                             <tr>
                                                 <td style="vertical-align: middle" align="center">{{$no++}}</td>
                                                 <td style="vertical-align: middle"><a href="{{route('detail.proyek', ['username' =>
-                                                $row->get_project->get_user->username, 'judul' => $row->get_project->get_judul_uri()])}}">
+                                                $row->get_project->get_user->username, 'judul' => $row->get_project->permalink])}}">
                                                         {{$row->get_project->judul}}</a></td>
                                                 <td style="vertical-align: middle" align="center">
                                                     <span class="label label-{{$row->get_project->pribadi == false ?
@@ -348,13 +350,11 @@
                                                 <td style="vertical-align: middle" align="center">
                                                     <div class="input-group">
                                                         <span class="input-group-btn">
-                                                            <a class="btn btn-link btn-sm" style="margin-right: 0"
-                                                               href="{{route('detail.proyek',
+                                                            <a class="btn btn-link btn-sm" href="{{route('detail.proyek',
                                                                ['username' => $row->get_project->get_user->username,
-                                                               'judul' => $row->get_project->get_judul_uri()])}}"
+                                                               'judul' => $row->get_project->permalink])}}"
                                                                data-toggle="tooltip" title="Lihat Proyek">
-                                                                <i class="fa fa-info-circle"
-                                                                   style="margin-right: 0"></i>
+                                                                <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>
                                                             <button class="btn btn-link btn-sm" type="button" {{$attr}}
                                                             data-toggle="tooltip" title="Konfirmasi Undangan"
@@ -381,13 +381,20 @@
                                         <thead>
                                         <tr>
                                             <th class="text-center">#</th>
-                                            <th>Detail Tugas/Proyek</th>
+                                            <th>Detail</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         @php $no = 1; @endphp
                                         @foreach($pengerjaan as $row)
+                                            @php
+                                                $klien = $row->get_project->get_user;
+                                                $ulasan_klien = \App\Model\Review::whereHas('get_project', function ($q) use ($klien) {
+                                                    $q->where('user_id', $klien->id);
+                                                })->get();
+                                                $rating_klien = count($ulasan_klien) > 0 ? $klien->get_bio->total_bintang_klien / count($ulasan_klien) : 0;
+                                            @endphp
                                             <tr>
                                                 <td style="vertical-align: middle" align="center">{{$no++}}</td>
                                                 <td style="vertical-align: middle">
@@ -395,33 +402,70 @@
                                                         <div class="col-lg-12">
                                                             <a href="{{route('detail.proyek', ['username' =>
                                                             $row->get_project->get_user->username, 'judul' =>
-                                                            $row->get_project->get_judul_uri()])}}">
+                                                            $row->get_project->permalink])}}">
                                                                 <img class="img-responsive float-left mr-2"
                                                                      alt="Thumbnail" width="80"
                                                                      src="{{$row->get_project->thumbnail != "" ?
                                                                      asset('storage/proyek/thumbnail/'.$row->get_project->thumbnail)
                                                                      : asset('images/slider/beranda-proyek.jpg')}}">
                                                                 @if(!is_null($row->get_project->get_pembayaran))
-                                                                    @if($row->get_project->get_pembayaran->dp == true)
-                                                                        <span class="label label-default">DP {{round($row
-                                                                        ->get_project->get_pembayaran->jumlah_pembayaran / $row
-                                                                        ->get_project->harga * 100,1)}}%</span>
+                                                                    @if(!is_null($row->get_project->get_pembayaran->bukti_pembayaran))
+                                                                        @if($row->get_project->get_pembayaran->jumlah_pembayaran == $row->get_project->harga)
+                                                                            <span
+                                                                                class="label label-success">LUNAS</span>
+                                                                        @else
+                                                                            <span class="label label-default">DP {{round($row
+                                                                            ->get_project->get_pembayaran->jumlah_pembayaran / $row
+                                                                            ->get_project->harga * 100,1)}}%</span>
+                                                                        @endif |
+                                                                        <span class="label label-{{$row->selesai == false ?
+                                                                        'warning' : 'success'}}">{{$row->selesai == false ?
+                                                                        'PROSES PENGERJAAN' : 'SELESAI'}}</span>
                                                                     @else
-                                                                        <span class="label label-success">LUNAS</span>
-                                                                    @endif |
-                                                                    <span class="label label-{{$row->selesai == false ?
-                                                                    'warning' : 'success'}}">{{$row->selesai == false ?
-                                                                    'PROSES PENGERJAAN' : 'SELESAI'}}</span>
-                                                                    <br><b>{{$row->get_project->judul}}</b>
+                                                                        <span class="label label-default">MENUNGGU KONFIRMASI</span>
+                                                                    @endif
                                                                 @else
                                                                     <span
                                                                         class="label label-danger">MENUNGGU PEMBAYARAN</span>
                                                                 @endif
+                                                                <br><b>{{$row->get_project->judul}}</b>
                                                             </a>
                                                             <p>
                                                                 Tugas/Proyek {{$row->get_project->pribadi == false ? 'PUBLIK' : 'PRIVAT'}}
                                                                 :
                                                                 Rp{{number_format($row->get_project->harga,2,',','.')}}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-1" style="border-bottom: 1px solid #eee">
+                                                        <div class="col-lg-12">
+                                                            <b>KLIEN</b><br>
+                                                            <div class="media">
+                                                                <div class="media-left media-middle">
+                                                                    <a href="{{route('profil.user', ['username' => $klien->username])}}">
+                                                                        <img width="48" alt=""
+                                                                             class="media-object img-thumbnail"
+                                                                             src="{{$klien->get_bio->foto == "" ?
+                                                                 asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg') :
+                                                                 asset('storage/users/foto/'.$klien->get_bio->foto)}}"
+                                                                             style="border-radius: 100%">
+                                                                    </a>
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <p class="media-heading">
+                                                                        <i class="fa fa-hard-hat mr-2"
+                                                                           style="color: #4d4d4d"></i>
+                                                                        <a href="{{route('profil.user', ['username' => $klien->username])}}">
+                                                                            {{$klien->name}}</a>
+                                                                        <i class="fa fa-star"
+                                                                           style="color: #ffc100;margin: 0 0 0 .5rem"></i>
+                                                                        <b>{{round($rating_klien * 2) / 2}}</b>
+                                                                    </p>
+                                                                    <blockquote>
+                                                                        {!! !is_null($klien->get_bio->summary) ? $klien->get_bio->summary :
+                                                                        $klien->name.' belum menuliskan apapun di profilnya.' !!}
+                                                                    </blockquote>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="row mb-1" style="border-bottom: 1px solid #eee">
@@ -432,8 +476,7 @@
                                                                     @if($row->file_hasil != "")
                                                                         <div class="row use-lightgallery">
                                                                             @foreach($row->file_hasil as $file)
-                                                                                <div data-aos="fade-down"
-                                                                                     class="col-md-3 item"
+                                                                                <div class="col-md-3 item"
                                                                                      data-src="{{asset('storage/proyek/hasil/'.$file)}}"
                                                                                      data-sub-html="<h4>{{$row->get_project->judul}}</h4><p>{{$file}}</p>">
                                                                                     <div class="content-area">
@@ -468,25 +511,25 @@
                                                     <div class="row mb-1" style="border-bottom: 1px solid #eee">
                                                         <div class="col-lg-12">
                                                             <b>ULASAN KLIEN</b><br>
-                                                            @if(!is_null($row->get_ulasan_pekerja))
-                                                                <div class="media">
-                                                                    <div class="media-left media-middle">
-                                                                        <a href="{{route('profil.user', ['username' => $row->get_project->get_user->username])}}">
-                                                                            <img width="48" alt="avatar" src="{{$row
+                                                            <div class="media">
+                                                                <div class="media-left media-middle">
+                                                                    <a href="{{route('profil.user', ['username' => $row->get_project->get_user->username])}}">
+                                                                        <img width="48" alt="avatar" src="{{$row
                                                                         ->get_project->get_user->get_bio->foto == "" ?
                                                                         asset('images/faces/thumbs50x50/'.rand(1,6).'.jpg') :
                                                                         asset('storage/users/foto/'.$row->get_project
                                                                         ->get_user->get_bio->foto)}}"
-                                                                                 class="media-object img-thumbnail"
-                                                                                 style="border-radius: 100%">
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="media-body">
-                                                                        <p class="media-heading">
-                                                                            <i class="fa fa-user-tie mr-2"
-                                                                               style="color: #4d4d4d"></i>
-                                                                            <a href="{{route('profil.user', ['username' => $row->get_project->get_user->username])}}">
-                                                                                {{$row->get_project->get_user->name}}</a>
+                                                                             class="media-object img-thumbnail"
+                                                                             style="border-radius: 100%">
+                                                                    </a>
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <p class="media-heading">
+                                                                        <i class="fa fa-user-tie mr-2"
+                                                                           style="color: #4d4d4d"></i>
+                                                                        <a href="{{route('profil.user', ['username' => $row->get_project->get_user->username])}}">
+                                                                            {{$row->get_project->get_user->name}}</a>
+                                                                        @if(!is_null($row->get_ulasan_pekerja))
                                                                             <i class="fa fa-star"
                                                                                style="color: #ffc100;margin: 0 0 0 .5rem"></i>
                                                                             <b>{{round($row->get_ulasan_pekerja->bintang * 2) / 2}}</b>
@@ -496,15 +539,13 @@
                                                                                    style="color: #aaa;margin: 0"></i>
                                                                                 {{$row->get_ulasan_pekerja->created_at->diffForHumans()}}
                                                                             </span>
-                                                                        </p>
-                                                                        <blockquote>
-                                                                            {!! $row->get_ulasan_pekerja->deskripsi !!}
-                                                                        </blockquote>
-                                                                    </div>
+                                                                        @endif
+                                                                    </p>
+                                                                    <blockquote>
+                                                                        {!! !is_null($row->get_ulasan_pekerja) ? $row->get_ulasan_pekerja->deskripsi : '(kosong)' !!}
+                                                                    </blockquote>
                                                                 </div>
-                                                            @else
-                                                                (kosong)
-                                                            @endif
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -551,31 +592,43 @@
                                                 <td style="vertical-align: middle" align="center">
                                                     <div class="input-group">
                                                         <span class="input-group-btn">
-                                                            <a class="btn btn-link btn-sm" style="margin-right: 0"
-                                                               href="{{route('detail.proyek',
+                                                            <a class="btn btn-link btn-sm" href="{{route('detail.proyek',
                                                                ['username' => $row->get_project->get_user->username,
-                                                               'judul' => $row->get_project->get_judul_uri()])}}"
+                                                               'judul' => $row->get_project->permalink])}}"
                                                                data-toggle="tooltip" title="Lihat Proyek">
-                                                                <i class="fa fa-info-circle"
-                                                                   style="margin-right: 0"></i>
+                                                                <i class="fa fa-info-circle" style="margin-right:0"></i>
                                                             </a>
-                                                            <button class="btn btn-link btn-sm" style="margin-right: 0"
-                                                                    data-toggle="tooltip" title="Update Hasil"
-                                                                    onclick="updateHasil('{{$row->id}}','{{$row->tautan}}',
-                                                                        '{{route('pekerja.update-pengerjaan.proyek', ['id' => $row->id])}}',
+                                                            <button class="btn btn-link btn-sm"
+                                                                    data-toggle="tooltip" title="Lihat Lampiran"
+                                                                    onclick="lihatLampiran('{{$row->id}}','{{$row->get_project->judul}}',
+                                                                        '{{route('pekerja.lampiran.proyek', ['id' => $row->id])}}')"
+                                                                {{is_null($row->get_project->lampiran) ?'disabled':''}}>
+                                                                <i class="fa fa-archive" style="margin-right: 0"></i>
+                                                            </button>
+                                                        </span>
+                                                    </div>
+                                                    <hr style="margin: .5em 0">
+                                                    <div class="input-group">
+                                                        <span class="input-group-btn">
+                                                            <button class="btn btn-link btn-sm" data-toggle="tooltip"
+                                                                    title="Update Hasil"
+                                                                    onclick="updateHasil('{{$row->id}}',
+                                                                        '{{$row->tautan}}','{{route('pekerja.update-pengerjaan.proyek', ['id' => $row->id])}}',
                                                                         '{{$row->get_project->judul}}')"
                                                                 {{is_null($row->get_project->get_pembayaran) ||
+                                                                (!is_null($row->get_project->get_pembayaran) &&
+                                                                is_null($row->get_project->get_pembayaran->bukti_pembayaran)) ||
                                                                 $row->selesai == true ? 'disabled' : ''}}>
                                                                 <i class="fa fa-upload" style="margin-right: 0"></i>
                                                             </button>
-                                                            <button class="btn btn-link btn-sm" style="margin-right: 0"
-                                                                    data-toggle="tooltip" title="Ulas Hasil"
+                                                            <button class="btn btn-link btn-sm" data-toggle="tooltip"
+                                                                    title="Ulas Hasil"
                                                                     onclick="ulasHasil('{{$row->id}}',
                                                                         '{{route('pekerja.ulas-pengerjaan.proyek', ['id' => $row->id])}}',
                                                                         '{{route('pekerja.data-ulasan.proyek', ['id' => $row->proyek_id])}}',
                                                                         '{{$row->get_project->judul}}')"
                                                                 {{is_null($row->get_ulasan_pekerja) ||
-                                                                $row->selesai == true ? 'disabled' : ''}}>
+                                                                !is_null($row->get_project->get_ulasan)?'disabled':''}}>
                                                                 <i class="fa fa-edit" style="margin-right: 0"></i>
                                                             </button>
                                                         </span>
@@ -585,6 +638,23 @@
                                         @endforeach
                                         </tbody>
                                     </table>
+                                </div>
+
+                                <div id="daftar-lampiran" style="display: none">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <div class="card-title">
+                                                <small></small>
+                                                <hr class="mt-0">
+                                                <div id="lampiran"></div>
+                                            </div>
+                                        </div>
+                                        <div class="card-read-more">
+                                            <button class="btn btn-link btn-block">
+                                                <i class="fa fa-undo"></i>&nbsp;KEMBALI
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div id="update-hasil" style="display: none">
@@ -755,6 +825,27 @@
                 dom: "<'row'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-5'B><'col-sm-12 col-md-4'f>>" +
                     "<'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                 columnDefs: [{"sortable": false, "targets": 5}],
+                language: {
+                    "emptyTable": "Anda belum mengirimkan bid untuk tugas/proyek apapun",
+                    "info": "Menampilkan _START_ to _END_ of _TOTAL_ entri",
+                    "infoEmpty": "Menampilkan 0 entri",
+                    "infoFiltered": "(difilter dari _MAX_ total entri)",
+                    "lengthMenu": "Tampilkan _MENU_ entri",
+                    "loadingRecords": "Memuat...",
+                    "processing": "Mengolah...",
+                    "search": "Cari:",
+                    "zeroRecords": "Data yang Anda cari tidak ditemukan.",
+                    "paginate": {
+                        "first": "Pertama",
+                        "last": "Terakhir",
+                        "next": "Selanjutnya",
+                        "previous": "Sebelumnya"
+                    },
+                    "aria": {
+                        "sortAscending": ": aktifkan untuk mengurutkan kolom dari kecil ke besar (asc)",
+                        "sortDescending": ": aktifkan untuk mengurutkan kolom dari besar ke kecil (desc)"
+                    }
+                },
                 buttons: [
                     {
                         text: '<b class="text-uppercase"><i class="far fa-file-excel mr-2"></i>Excel</b>',
@@ -793,6 +884,27 @@
                 dom: "<'row'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-5'B><'col-sm-12 col-md-4'f>>" +
                     "<'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                 columnDefs: [{"sortable": false, "targets": 6}],
+                language: {
+                    "emptyTable": "Anda belum menerima undangan untuk tugas/proyek apapun",
+                    "info": "Menampilkan _START_ to _END_ of _TOTAL_ entri",
+                    "infoEmpty": "Menampilkan 0 entri",
+                    "infoFiltered": "(difilter dari _MAX_ total entri)",
+                    "lengthMenu": "Tampilkan _MENU_ entri",
+                    "loadingRecords": "Memuat...",
+                    "processing": "Mengolah...",
+                    "search": "Cari:",
+                    "zeroRecords": "Data yang Anda cari tidak ditemukan.",
+                    "paginate": {
+                        "first": "Pertama",
+                        "last": "Terakhir",
+                        "next": "Selanjutnya",
+                        "previous": "Sebelumnya"
+                    },
+                    "aria": {
+                        "sortAscending": ": aktifkan untuk mengurutkan kolom dari kecil ke besar (asc)",
+                        "sortDescending": ": aktifkan untuk mengurutkan kolom dari besar ke kecil (desc)"
+                    }
+                },
                 buttons: [
                     {
                         text: '<b class="text-uppercase"><i class="far fa-file-excel mr-2"></i>Excel</b>',
@@ -831,6 +943,27 @@
                 dom: "<'row'<'col-sm-12 col-md-3'l><'col-sm-12 col-md-5'B><'col-sm-12 col-md-4'f>>" +
                     "<'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
                 columnDefs: [{"sortable": false, "targets": 2}],
+                language: {
+                    "emptyTable": "Anda belum memiliki tanggungan pengerjaan tugas/proyek apapun",
+                    "info": "Menampilkan _START_ to _END_ of _TOTAL_ entri",
+                    "infoEmpty": "Menampilkan 0 entri",
+                    "infoFiltered": "(difilter dari _MAX_ total entri)",
+                    "lengthMenu": "Tampilkan _MENU_ entri",
+                    "loadingRecords": "Memuat...",
+                    "processing": "Mengolah...",
+                    "search": "Cari:",
+                    "zeroRecords": "Data yang Anda cari tidak ditemukan.",
+                    "paginate": {
+                        "first": "Pertama",
+                        "last": "Terakhir",
+                        "next": "Selanjutnya",
+                        "previous": "Sebelumnya"
+                    },
+                    "aria": {
+                        "sortAscending": ": aktifkan untuk mengurutkan kolom dari kecil ke besar (asc)",
+                        "sortDescending": ": aktifkan untuk mengurutkan kolom dari besar ke kecil (desc)"
+                    }
+                },
                 buttons: [
                     {
                         text: '<b class="text-uppercase"><i class="far fa-file-excel mr-2"></i>Excel</b>',
@@ -900,6 +1033,41 @@
             swal('Sukses!', '{{ session('pengerjaan') }}', 'success');
             $("#pengerjaan-tab").click();
             @endif
+        });
+
+        function lihatLampiran(id, judul, url) {
+            $.get(url, function (data) {
+                var content = '';
+
+                $.each(data, function (i, val) {
+                    var src = '', src2 = '{{asset('storage/proyek/lampiran')}}/' + val.file;
+                    if (val.ext == "jpg" || val.ext == "jpeg" || val.ext == "png" || val.ext == "gif") {
+                        src = '{{asset('storage/proyek/lampiran')}}/' + val.file;
+                    } else {
+                        src = '{{asset('images/files.png')}}';
+                    }
+                    content +=
+                        '<div class="media">' +
+                        '<div class="media-left media-middle">' +
+                        '<a href="' + src2 + '" target="_blank">' +
+                        '<img width="100" alt="lampiran" src="' + src + '" class="media-object img-thumbnail"></a></div>' +
+                        '<div class="media-body">' +
+                        '<blockquote style="text-transform: none">' +
+                        '<a href="' + src2 + '" target="_blank">' + val.file + '</a></blockquote></div></div>';
+                });
+
+                $("#lampiran").html(content);
+                $("#daftar-lampiran .card-title small").text('Daftar Lampiran: ' + judul);
+                $("#dt-pengerjaan").toggle(300);
+                $("#daftar-lampiran").toggle(300);
+            });
+        }
+
+        $("#daftar-lampiran button").on('click', function () {
+            $("#lampiran").html(null);
+            $("#daftar-lampiran .card-title small").text(null);
+            $("#dt-pengerjaan").toggle(300);
+            $("#daftar-lampiran").toggle(300);
         });
 
         function batalkanBid(url, judul) {
