@@ -21,18 +21,25 @@
         <a href="javascript:void(0)" class="nav-link has-dropdown" data-toggle="dropdown">
             <i class="fas fa-users"></i><span>Akun</span></a>
         <ul class="dropdown-menu">
-            <li class=""><a href="#" class="nav-link">Admin</a></li>
-            <li class=""><a href="#" class="nav-link">User</a></li>
+            <li class=""><a href="{{route('admin.show.admin')}}" class="nav-link">Admin</a></li>
+            <li class=""><a href="{{route('admin.show.user')}}" class="nav-link">User</a></li>
+            <li class=""><a href="{{route('admin.settings')}}" class="nav-link">Pengaturan</a></li>
         </ul>
     </li>
 
     <li class="dropdown">
         <a href="javascript:void(0)" class="nav-link has-dropdown" data-toggle="dropdown">
-            <i class="fas fa-map"></i><span>Lokasi</span></a>
+            <i class="fas fa-database"></i><span>Lokasi</span></a>
         <ul class="dropdown-menu">
-            <li class=""><a href="{{route('admin.show.negara')}}" class="nav-link">Negara</a></li>
-            <li class=""><a href="{{route('admin.show.provinsi')}}" class="nav-link">Provinsi</a></li>
-{{--            <li class=""><a href="#" class="nav-link">Kota</a></li>--}}
+            <li class=""><a href="{{route('admin.show.negara')}}" class="nav-link">Negara & Provinsi</a></li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="javascript:void(0)" class="nav-link has-dropdown" data-toggle="dropdown">
+            <i class="fas fa-database"></i><span>Master Kategori</span></a>
+        <ul class="dropdown-menu">
+            <li class=""><a href="{{route('admin.show.kategori')}}" class="nav-link">Kategori & Sub-kategori</a></li>
         </ul>
     </li>
 </ul>

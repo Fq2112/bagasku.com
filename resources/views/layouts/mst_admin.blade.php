@@ -149,6 +149,93 @@
         <!-- Main Content -->
         <div class="main-content">
             @yield('content')
+            <div class="modal fade" tabindex="-1" role="dialog" id="exampleModal" style="z-index: 99999">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Sunting Data Negara</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="modal-edit" action="{{route('admin.show.negara.update')}}" method="post">
+                                @CSRF
+                                <div class="form-group">
+                                    <label>ID</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fa fa-key"></i>
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control disabled" placeholder="indonesia " name="id" id="key" required readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nama Negara</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fa fa-flag"></i>
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="indonesia " name="name" id="name" required>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer bg-whitesmoke br">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="update_negara()">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" tabindex="-1" role="dialog" id="updateProvinsiModal" style="z-index: 99999">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Sunting Data Provinsi</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="modal-edit-prov" action="{{route('admin.show.provinsi.update')}}" method="post">
+                                @CSRF
+                                <div class="form-group">
+                                    <label>ID</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fa fa-key"></i>
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control disabled" placeholder="indonesia " name="id" id="keyprov" required readonly>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nama Negara</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fa fa-flag"></i>
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Suabaya " name="name" id="nameprov" required>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer bg-whitesmoke br">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="update_provinsi()">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <footer class="main-footer">
             <div class="footer-left">
@@ -179,6 +266,7 @@
 <script src="{{asset('vendor/sweetalert/sweetalert.min.js')}}"></script>
 <script src="{{asset('admins/modules/izitoast/js/iziToast.min.js')}}"></script>
 <script src="{{asset('vendor/checkMobileDevice.js')}}"></script>
+<script src="{{asset('admins/modules/jquery.form.min.js')}}"></script>
 @stack('scripts')
 
 <!-- Template JS File -->

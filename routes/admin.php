@@ -9,6 +9,21 @@ Route::group(['namespace' => 'Pages\Admins', 'prefix' => 'sys-admin', 'middlewar
 
     Route::group(['prefix' => 'account'], function () {
 
+        Route::get('admin/show', [
+            'uses' => 'AdminController@admin',
+            'as' => 'admin.show.admin'
+        ]);
+
+        Route::get('user/show', [
+            'uses' => 'AdminController@other',
+            'as' => 'admin.show.user'
+        ]);
+
+        Route::get('user/show/{username}', [
+            'uses' => 'AdminController@other_detail',
+            'as' => 'admin.show.user.detail'
+        ]);
+
         Route::get('profile', [
             'uses' => 'AdminController@editProfile',
             'as' => 'admin.edit.profile'
@@ -38,6 +53,13 @@ Route::group(['namespace' => 'Pages\Admins', 'prefix' => 'sys-admin', 'middlewar
         ]);
     });
 
+    Route::group(['prefix' => 'kategori'], function () {
+        Route::get('show', [
+            'uses' => 'KategoriSubController@index',
+            'as' => 'admin.show.kategori'
+        ]);
+    });
+
     Route::group(['prefix' => 'loc'], function () {
 
         Route::group(['prefix' => 'negara'], function () {
@@ -51,9 +73,14 @@ Route::group(['namespace' => 'Pages\Admins', 'prefix' => 'sys-admin', 'middlewar
                 'as' => 'admin.show.negara.store'
             ]);
 
-            Route::put('update',[
+            Route::post('update',[
                 'uses' => 'LokasiController@update_negara',
                 'as' => 'admin.show.negara.update'
+            ]);
+
+            Route::post('{id}/delete', [
+                'uses' => 'LokasiController@negaradelete',
+                'as' => 'admin.show.negara.delete'
             ]);
 
         });
@@ -69,11 +96,15 @@ Route::group(['namespace' => 'Pages\Admins', 'prefix' => 'sys-admin', 'middlewar
                 'as' => 'admin.show.provinsi.store'
             ]);
 
-            Route::put('update',[
+            Route::post('update',[
                 'uses' => 'LokasiController@update_provinsi',
                 'as' => 'admin.show.provinsi.update'
             ]);
 
+            Route::post('{id}/delete', [
+                'uses' => 'LokasiController@provinsidelete',
+                'as' => 'admin.show.provinsi.delete'
+            ]);
         });
     });
 
