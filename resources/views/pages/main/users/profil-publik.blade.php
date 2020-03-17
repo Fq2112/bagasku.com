@@ -956,13 +956,25 @@
                                                                 required>
                                                             <option></option>
                                                             @foreach($auth_proyek as $row)
+                                                                @php
+                                                                    $cek = \App\Model\Undangan::where('user_id', $user->id)
+                                                                    ->where('proyek_id', $row->id)->count();
+                                                                @endphp
                                                                 <option value="{{$row->id}}" data-image="{{$row->thumbnail != "" ?
                                                                 asset('storage/proyek/thumbnail/'.$row->thumbnail) :
-                                                                asset('images/slider/beranda-proyek.jpg')}}">{{$row->judul.
-                                                                ' [Rp'.number_format($row->harga,2,',','.').']'}}</option>
+                                                                asset('images/slider/beranda-proyek.jpg')}}"
+                                                                    {{$cek > 0 ? 'disabled' : ''}}>
+                                                                    {{$row->judul.' [Rp'.number_format($row->harga,2,',','.').']'}}
+                                                                </option>
                                                             @endforeach
                                                         </select>
                                                     </div>
+                                                    <span class="help-block">
+                                                        <strong class="strong-error" style="text-transform: none">
+                                                            NB: Anda tidak boleh mengundang pekerja ke dalam bid
+                                                            tugas/proyek yang sama!
+                                                        </strong>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>

@@ -852,6 +852,11 @@
             @if(!is_null($req_id) && !is_null($req_invoice) && !is_null($req_url) && !is_null($req_data_url) && !is_null($req_harga))
             buktiPembayaran('{{$req_id}}', '{{$req_invoice}}', '{{$req_url}}', '{{$req_data_url}}', '{{$req_harga}}');
             @endif
+
+            @if(!is_null($find))
+            bayarSekarang('{{$find->id}}', '{{$find->get_service->judul}}',
+                '{{route('klien.update-pembayaran.pesanan',['id' => $find->id])}}', '{{$find->get_service->harga}}');
+            @endif
         });
 
         <!-- batalkan pesanan -->

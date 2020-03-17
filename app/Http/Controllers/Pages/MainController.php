@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Pages;
 
 use App\Model\Bio;
+use App\Model\PengerjaanLayanan;
 use App\Model\Project;
+use App\Model\ReviewWorker;
 use App\Model\Services;
 use App\Model\Testimoni;
+use App\Model\UlasanService;
 use App\Support\Role;
 use App\User;
 use Illuminate\Http\Request;
@@ -44,9 +47,44 @@ class MainController extends Controller
     public function detailLayanan(Request $request)
     {
         $user = User::where('username', $request->username)->first();
-        $layanan = Services::where('user_id', $user->id)->where('permalink', $request->judul)->first();
+        $total_user = User::where('role', Role::OTHER)->count();
+        $ulasan_pekerja = ReviewWorker::whereHas('get_pengerjaan', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        })->get();
+        $ulasan_layanan = UlasanService::whereHas('get_pengerjaan', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        })->count();
+        $rating_pekerja = count($ulasan_pekerja) + $ulasan_layanan > 0 ?
+            $user->get_bio->total_bintang_pekerja / (count($ulasan_pekerja) + $ulasan_layanan) : 0;
 
-        return view('pages.main.detail-layanan', compact('user', 'layanan'));
+        $layanan = Services::where('user_id', $user->id)->where('permalink', $request->judul)->first();
+        $hasil = PengerjaanLayanan::where('service_id', $layanan->id)->wherenotnull('file_hasil')->first();
+        $ulasan = UlasanService::whereHas('get_pengerjaan', function ($q) use ($layanan) {
+            $q->where('service_id', $layanan->id);
+        })->get();
+
+        $cek = PengerjaanLayanan::where('user_id', Auth::id())->where('service_id', $layanan->id)->where('selesai', false)->count();
+
+        return view('pages.main.detail-layanan', compact('user', 'total_user',
+            'ulasan_pekerja', 'ulasan_layanan', 'rating_pekerja', 'layanan', 'hasil', 'ulasan', 'cek'));
+    }
+
+    public function pesanLayanan(Request $request)
+    {
+        $layanan = Services::where('permalink', $request->judul)->whereHas('get_user', function ($q) use ($request) {
+            $q->where('username', $request->username);
+        })->first();
+
+        $pengerjaan = PengerjaanLayanan::create([
+            'user_id' => Auth::id(),
+            'service_id' => $layanan->id,
+            'selesai' => false
+        ]);
+
+        return back()->with('pesanan', [
+            'message' => 'Pesanan layanan [' . $layanan->judul . '] berhasil dibuat!',
+            'data' => $pengerjaan->id
+        ]);
     }
 
     public function tentang()

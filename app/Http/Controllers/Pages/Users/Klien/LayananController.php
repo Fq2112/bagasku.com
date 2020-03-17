@@ -28,9 +28,14 @@ class LayananController extends Controller
         $req_url = $request->url;
         $req_data_url = $request->data_url;
         $req_harga = $request->harga;
+        if ($request->has('pesanan_id')) {
+            $find = PengerjaanLayanan::find($request->pesanan_id);
+        } else {
+            $find = null;
+        }
 
         return view('pages.main.users.klien.layanan', compact('user', 'pesanan',
-            'req_id', 'req_invoice', 'req_url', 'req_data_url', 'req_harga'));
+            'req_id', 'req_invoice', 'req_url', 'req_data_url', 'req_harga', 'find'));
     }
 
     public function batalkanPesanan($id)

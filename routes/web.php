@@ -57,6 +57,12 @@ Route::group(['prefix' => '/', 'namespace' => 'Pages'], function () {
         'as' => 'detail.layanan'
     ]);
 
+    Route::get('layanan/{username}/{judul}/pesan', [
+        'middleware' => ['auth', 'user', 'user.bio'],
+        'uses' => 'MainController@pesanLayanan',
+        'as' => 'pesan.layanan'
+    ]);
+
     Route::get('tentang', [
         'uses' => 'MainController@tentang',
         'as' => 'tentang'
