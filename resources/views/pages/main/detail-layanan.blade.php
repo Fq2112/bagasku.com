@@ -3,7 +3,6 @@
 @push('styles')
     <link rel="stylesheet" href="{{asset('css/card.css')}}">
     <link rel="stylesheet" href="{{asset('css/bootstrap-tabs-responsive.css')}}">
-    <link rel="stylesheet" href="{{asset('css/list-accordion.css')}}">
     <link rel="stylesheet" href="{{asset('vendor/lightgallery/dist/css/lightgallery.min.css')}}">
     <style>
         blockquote {
@@ -98,7 +97,7 @@
 
         .sub-menu a:hover .sub-menu-name,
         .sub-menu a:focus .sub-menu-name,
-        .sub-menu a:active .sub-menu-nam {
+        .sub-menu a:active .sub-menu-name {
             color: #122752 !important;
         }
 
@@ -133,7 +132,7 @@
             <li><a href="{{route('beranda')}}"><i class="fa fa-home"></i></a></li>
             <li style="text-transform: none"><i class="fa fa-angle-double-right"></i>
                 <a href="{{route('profil.user',['username' => $user->username])}}">{{$user->username}}</a></li>
-            <li><a href="#" onclick="goToAnchor()"><i class="fa fa-angle-double-right"></i> Layanan</a></li>
+            <li><a href="#" onclick="goToAnchor()"><i class="fa fa-angle-double-right"></i> Detail Layanan</a></li>
         </ul>
     </div>
 
@@ -474,7 +473,7 @@
             swal({
                 title: 'Sukses!',
                 text: '{{session('pesanan')['message']}} Apakah Anda ingin melakukan pembayaran sekarang? ' +
-                    'Klik tombol "Ya" maka Anda akan langsung dialihkan ke halaman Dashboard Klien: Layanan.',
+                    'Klik tombol "Ya" maka Anda akan langsung dialihkan ke halaman "Dashboard Klien: Layanan".',
                 icon: 'warning',
                 dangerMode: true,
                 buttons: ["Tidak", "Ya"],
@@ -538,6 +537,15 @@
                 loadYoutubeThumbnail: true,
                 youtubeThumbSize: 'default',
             });
+        });
+
+        $(".sub-menu li a").on({
+            mouseenter: function () {
+                $(this).parent().css('border-color', '#122752');
+            },
+            mouseleave: function () {
+                $(this).parent().css('border-color', '#eee');
+            }
         });
 
         $(document).on('show.bs.tab', '.nav-tabs-responsive [data-toggle="tab"]', function (e) {

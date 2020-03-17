@@ -107,7 +107,7 @@ ul.static-menu, .static-menu ul {
 
 .static-menu .sub-menu a:hover .sub-menu-name,
 .static-menu .sub-menu a:focus .sub-menu-name,
-.static-menu .sub-menu a:active .sub-menu-nam {
+.static-menu .sub-menu a:active .sub-menu-name {
     color: #122752 !important;
 }
 

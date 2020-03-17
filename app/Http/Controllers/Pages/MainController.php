@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Pages;
 
+use App\Model\Bid;
 use App\Model\Bio;
 use App\Model\PengerjaanLayanan;
 use App\Model\Project;
+use App\Model\Review;
 use App\Model\ReviewWorker;
 use App\Model\Services;
 use App\Model\Testimoni;
@@ -39,9 +41,31 @@ class MainController extends Controller
     public function detailProyek(Request $request)
     {
         $user = User::where('username', $request->username)->first();
-        $proyek = Project::where('user_id', $user->id)->where('permalink', $request->judul)->first();
+        $total_user = User::where('role', Role::OTHER)->count();
+        $ulasan_klien = Review::whereHas('get_project', function ($q) use ($user) {
+            $q->where('user_id', $user->id);
+        })->get();
+        $rating_klien = count($ulasan_klien) > 0 ? $user->get_bio->total_bintang_klien / count($ulasan_klien) : 0;
 
-        return view('pages.main.detail-proyek', compact('user', 'proyek'));
+        $proyek = Project::where('user_id', $user->id)->where('permalink', $request->judul)->first();
+        $cek = Bid::where('user_id', Auth::id())->where('proyek_id', $proyek->id)->count();
+
+        return view('pages.main.detail-proyek', compact('user', 'total_user',
+            'ulasan_klien', 'rating_klien', 'proyek', 'cek'));
+    }
+
+    public function bidProyek(Request $request)
+    {
+        $proyek = Project::where('permalink', $request->judul)->whereHas('get_user', function ($q) use ($request) {
+            $q->where('username', $request->username);
+        })->first();
+
+        Bid::create([
+            'user_id' => Auth::id(),
+            'proyek_id' => $proyek->id,
+        ]);
+
+        return back()->with('bid', 'Bid tugas/proyek [' . $proyek->judul . '] berhasil diajukan!');
     }
 
     public function detailLayanan(Request $request)
