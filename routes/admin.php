@@ -58,6 +58,21 @@ Route::group(['namespace' => 'Pages\Admins', 'prefix' => 'sys-admin', 'middlewar
             'uses' => 'KategoriSubController@index',
             'as' => 'admin.show.kategori'
         ]);
+
+        Route::post('store',[
+            'uses' => 'KategoriSubController@store_kategori',
+            'as' => 'admin.show.kategori.store'
+        ]);
+
+        Route::post('update',[
+            'uses' => 'KategoriSubController@update_kategori',
+            'as' => 'admin.show.kategori.update'
+        ]);
+
+        Route::post('{id}/delete', [
+            'uses' => 'KategoriSubController@delete_kategori',
+            'as' => 'admin.show.kategori.delete'
+        ]);
     });
 
     Route::group(['prefix' => 'loc'], function () {
