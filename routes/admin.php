@@ -29,7 +29,7 @@ Route::group(['namespace' => 'Pages\Admins', 'prefix' => 'sys-admin', 'middlewar
             'as' => 'admin.edit.profile'
         ]);
 
-        Route::put('profile/update', [
+        Route::post('profile/update', [
             'uses' => 'AdminController@updateProfile',
             'as' => 'admin.update.profile'
         ]);
@@ -39,7 +39,7 @@ Route::group(['namespace' => 'Pages\Admins', 'prefix' => 'sys-admin', 'middlewar
             'as' => 'admin.settings'
         ]);
 
-        Route::put('settings/update', [
+        Route::post('settings/update', [
             'uses' => 'AdminController@updateAccount',
             'as' => 'admin.update.account'
         ]);
