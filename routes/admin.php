@@ -44,6 +44,11 @@ Route::group(['namespace' => 'Pages\Admins', 'prefix' => 'sys-admin', 'middlewar
             'as' => 'admin.update.account'
         ]);
 
+        Route::post('add/admin', [
+            'uses' => 'AdminController@add_admin',
+            'as' => 'admin.add'
+        ]);
+
     });
 
     Route::group(['prefix' => 'payment'], function () {
