@@ -52,7 +52,7 @@ class AdminController extends Controller
     {
         $admin = Auth::user();
 
-        return view('pages.admins.accountSettings', compact('admin'));
+        return view('pages.admins.akun.setting', compact('admin'));
     }
 
     public function updateAccount(Request $request)
@@ -75,5 +75,30 @@ class AdminController extends Controller
                 return back()->with('success', 'Akun Anda berhasil diperbarui!');
             }
         }
+    }
+
+    public function admin()
+    {
+        $data = User::where('role',Role::ADMIN)->get();
+        return view('pages.admins.akun.show',[
+            'admin' => $data
+        ]);
+    }
+
+    public function other()
+    {
+        $data = User::where('role',Role::OTHER)->get();
+        return view('pages.admins.akun.other',[
+            'user' => $data
+        ]);
+    }
+
+    public function other_detail($username)
+    {
+        $data = User::where('username',$username)->first();
+
+        return view('pages.admins.akun.detail_other',[
+            'user' => $data
+        ]);
     }
 }
