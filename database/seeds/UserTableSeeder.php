@@ -46,9 +46,13 @@ class UserTableSeeder extends Seeder
                         'role' => $role
                     ]);
 
+                    $bank = array("BCA", "BRI", "BNI", "BTN",'Mandiri');
                     \App\Model\Bio::create([
                         'user_id' => $user->id,
-                        'status' => $faker->sentence
+                        'status' => $faker->sentence,
+                        'rekening' => $faker->creditCardNumber,
+                        'an' => $user->name,
+                        'bank' => $bank[array_rand($bank)]
                     ]);
 
                     $arr = array("3.5", "4", "4.5", "5");
