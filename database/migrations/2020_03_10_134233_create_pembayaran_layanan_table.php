@@ -21,6 +21,7 @@ class CreatePembayaranLayananTable extends Migration
             $table->boolean('dp')->default(false);
             $table->string('jumlah_pembayaran')->nullable();
             $table->text('bukti_pembayaran')->nullable();
+            $table->boolean('selesai')->nullable()->default(false);
             $table->timestamps();
         });
     }
