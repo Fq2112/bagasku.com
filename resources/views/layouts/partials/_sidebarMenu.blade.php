@@ -11,8 +11,8 @@
         <a href="javascript:void(0)" class="nav-link has-dropdown" data-toggle="dropdown">
             <i class="fas fa-money-bill"></i><span>Jenis Pembayaran</span></a>
         <ul class="dropdown-menu">
-            <li class=""><a href="#" class="nav-link">Proyek</a></li>
-            <li class=""><a href="#" class="nav-link">Layanan</a></li>
+            <li class=""><a href="{{route('admin.project.show')}}" class="nav-link">Proyek</a></li>
+            <li class=""><a href="{{route('admin.service.show')}}" class="nav-link">Layanan</a></li>
         </ul>
     </li>
 

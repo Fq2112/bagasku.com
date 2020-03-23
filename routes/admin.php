@@ -52,9 +52,14 @@ Route::group(['namespace' => 'Pages\Admins', 'prefix' => 'sys-admin', 'middlewar
     });
 
     Route::group(['prefix' => 'payment'], function () {
-        Route::get('profile', [
-            'uses' => 'AdminController@editProfile',
-            'as' => 'admin.edit.profile'
+        Route::get('project', [
+            'uses' => 'PembayaranController@project',
+            'as' => 'admin.project.show'
+        ]);
+
+        Route::get('service', [
+            'uses' => 'PembayaranController@service',
+            'as' => 'admin.service.show'
         ]);
     });
 

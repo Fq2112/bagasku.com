@@ -45,7 +45,7 @@
                                                    <label class="custom-file-label" for="customFile">Choose file</label>
                                                </div>
                                                <div class="input-group-append">
-                                                   <button class="btn btn-primary" type="submit">Button</button>
+                                                   <button class="btn btn-primary" type="submit">Upload</button>
                                                </div>
                                            </div>
                                        </div>
