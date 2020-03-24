@@ -57,6 +57,12 @@ Route::group(['namespace' => 'Pages\Admins', 'prefix' => 'sys-admin', 'middlewar
             'as' => 'admin.project.show'
         ]);
 
+        Route::post('project/done', [
+            'uses' => 'PembayaranController@project_done',
+            'as' => 'admin.project.done'
+        ]);
+
+
         Route::get('service', [
             'uses' => 'PembayaranController@service',
             'as' => 'admin.service.show'

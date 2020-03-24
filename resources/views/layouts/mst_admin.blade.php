@@ -349,11 +349,11 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form id="modal-edit-subkategori" action=""
+                            <form id="modal-payment" action="{{route('admin.project.done')}}"
                                   method="post">
                                 @CSRF
                                 <div class="row">
-                                    <div class="form-group col-md-6 col-12">
+                                    <div class="form-group col-md-8 col-12">
                                         <label>Nomor Rekening</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -362,31 +362,44 @@
                                                 </div>
                                             </div>
                                             <input type="text" class="form-control disabled" placeholder="indonesia "
-                                                   name="id" id="key_subkategori" required readonly>
+                                                   name="rekening" id="rekening" required readonly>
+                                            <input type="hidden" name="id" id="id_payment">
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-6 col-12">
-                                        <label>Atas Nama</label>
+                                    <div class="form-group col-md-4 col-12">
+                                        <label>Bank</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <i class="fa fa-building"></i>
+                                                </div>
+                                            </div>
+                                            <input type="text" class="form-control disabled" placeholder="indonesia "
+                                                   name="an" id="bank" required readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12 col-12">
+                                        <label>Atas Nama (A.n)</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
                                                     <i class="fa fa-user"></i>
                                                 </div>
                                             </div>
-                                            <input type="text" class="form-control disabled" placeholder="indonesia "
-                                                   name="id" id="key_subkategori" required readonly>
+                                            <input type="text" class="form-control disabled" placeholder="indonesia " name="name"
+                                                   id="an" required readonly>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-12 col-12">
-                                        <label>Nama Sub Kategori</label>
+                                        <label>Biaya  Project</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
-                                                    <i class="fa fa-flag"></i>
+                                                    Rp.
                                                 </div>
                                             </div>
-                                            <input type="text" class="form-control" placeholder="indonesia " name="name"
-                                                   id="name_subkategori" required>
+                                            <input type="text" class="form-control disabled" placeholder="indonesia "
+                                                   name="rekening" id="harga" required readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -394,7 +407,7 @@
                         </div>
                         <div class="modal-footer bg-whitesmoke br">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="">Proses Pembayaran
+                            <button type="button" class="btn btn-primary" onclick="payment()">Proses Pembayaran
                             </button>
                         </div>
                     </div>

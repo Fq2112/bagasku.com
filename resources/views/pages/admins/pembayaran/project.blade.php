@@ -57,7 +57,7 @@
                                             @else
                                                 <div class="badge badge-info">Lunas</div>
                                             @endif
-                                            @if($item->bukti_pembayaran == null)
+                                            @if($item->selesai == 0)
                                                 <div class="badge badge-warning">Belum Dibayarkan</div>
                                             @else
                                                 <div class="badge badge-primary">Telah Dibayarkan</div>
@@ -65,17 +65,28 @@
                                         </td>
                                         <td>{{$item->created_at->diffForHumans()}}</td>
                                         <th>
-                                            @if($item->bukti_pembayaran == null)
-                                                <button class="btn btn-primary btn-icon" data-toggle="tooltip"
-                                                        title="Konfimasi Pengelesaian Proyek"
-                                                        onclick="action_modal('{{$item->id}}','{{$item->jumlah_pembayaran}}','{{$item->dp}}')"><i
-                                                        class="fa fa-cog"></i></button>
-
-                                            @else
-                                                <button class="btn btn-success btn-icon" data-toggle="tooltip"
-                                                        title="Pekerja Telah Dibayar"
+                                            @if($item->jumlah_pembayaran < $item->get_project->harga)
+                                                {{--                                                belum lunas--}}
+                                                <button class="btn btn-warning btn-icon" data-toggle="tooltip"
+                                                        title="Pembayaran Belum Selesai"
                                                         onclick=""><i
-                                                        class="fa fa-check-circle"></i></button>
+                                                        class="fa fa-info-circle"></i></button>
+                                            @else
+                                                @if($item->selesai == 0)
+                                                    <button class="btn btn-primary btn-icon" data-toggle="tooltip"
+                                                              title="Konfimasi Pengelesaian Proyek"
+                                                            onclick="action_modal('{{$item->get_project->get_pengerjaan->get_user->get_bio->rekening}}',
+                                                                '{{$item->get_project->get_pengerjaan->get_user->get_bio->bank}}',
+                                                                '{{$item->get_project->get_pengerjaan->get_user->get_bio->an}}',
+                                                                '{{number_format($item->get_project->harga)}}','{{$item->id}}')"><i
+                                                            class="fa fa-cog"></i></button>
+
+                                                @else
+                                                    <button class="btn btn-success btn-icon" data-toggle="tooltip"
+                                                            title="Pekerja Telah Dibayar"
+                                                            onclick=""><i
+                                                            class="fa fa-check-circle"></i></button>
+                                                @endif
                                             @endif
                                         </th>
                                     </tr>
@@ -86,43 +97,6 @@
                     </div>
                 </div>
             </div>
-
-            <form class="modal-part" id="modal-add-admin">
-                @CSRF
-                <div class="form-group">
-                    <label>Nama</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <i class="fa fa-user"></i>
-                            </div>
-                        </div>
-                        <input type="text" class="form-control" placeholder="Admin.... " name="name" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Username</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <i class="fa fa-user"></i>
-                            </div>
-                        </div>
-                        <input type="text" class="form-control" placeholder="adm.... " name="username" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <i class="fa fa-envelope"></i>
-                            </div>
-                        </div>
-                        <input type="email" class="form-control" placeholder="admin@email.com" name="email" required>
-                    </div>
-                </div>
-            </form>
         </div>
     </section>
 @endsection
@@ -137,22 +111,35 @@
             fnDrawCallback: function (oSettings) {
                 $('.use-nicescroll').getNiceScroll().resize();
                 $('[data-toggle="tooltip"]').tooltip();
-
-                var file_hasil = $(".use-lightgallery");
-                file_hasil.masonry({
-                    itemSelector: '.item'
-                });
-                file_hasil.lightGallery({
-                    selector: '.item',
-                    loadYoutubeThumbnail: true,
-                    youtubeThumbSize: 'default',
-                });
             },
         });
 
-        function action_modal(id,name,dates) {
-            console.log(id,name,dates);
+        function action_modal(rekening,bank,an,harga,id) {
+            $('#rekening').val(rekening.toString());
+            $('#bank').val(bank.toString());
+            $('#an').val(an.toString());
+            $('#harga').val(harga.toString());
+            $('#id_payment').val(id.toString());
             $("#modalProsesProject").modal('show');
+        }
+
+        function payment() {
+            $('#modal-payment').ajaxSubmit({
+                success: function (data) {
+                    $("#modalProsesProject").modal('hide');
+                    console.log(data);
+                    swal("Data Pembayaran Berhasil Diproses", {
+                        icon: "success",
+                    });
+                    setTimeout(function () {// wait for 5 secs(2)
+                        location.reload(); // then reload the page.(3)
+                    }, 1500);
+                },
+                error: function (xhr, modal) {
+                    $('#result-code').text(xhr.status);
+                    modal.find('.modal-body').prepend('<div class="alert alert-danger">Tejadi Kesalahan Silahkan Coba Lagi</div>')
+                }
+            });
         }
     </script>
 @endpush

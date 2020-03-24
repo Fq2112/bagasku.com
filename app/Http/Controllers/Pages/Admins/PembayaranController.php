@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Pages\Admins;
 
 use App\Http\Controllers\Controller;
+use App\Model\Negara;
 use App\Model\Pembayaran;
 use App\Model\Project;
 use App\Model\Services;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Whoops\Exception\ErrorException;
 
 class PembayaranController extends Controller
 {
@@ -17,6 +20,31 @@ class PembayaranController extends Controller
             'project' => $data
         ]);
     }
+
+    public function project_done(Request $request)
+    {
+        try {
+            $data = Pembayaran::find($request->id);
+            $data->update([
+                'selesai' => true
+            ]);
+            return response()->json([
+                'status' => 200,
+                'message' => "Pembayaran Telah Diproses"
+            ]);
+        } catch (ModelNotFoundException $exception) {
+            return response()->json([
+                'status' => 401,
+                'message' => $exception
+            ]);
+        } catch (ErrorException $error) {
+            return response()->json([
+                'status' => 401,
+                'message' => $error
+            ]);
+        }
+    }
+
 
     public function service()
     {
