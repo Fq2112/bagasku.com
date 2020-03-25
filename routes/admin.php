@@ -67,6 +67,11 @@ Route::group(['namespace' => 'Pages\Admins', 'prefix' => 'sys-admin', 'middlewar
             'uses' => 'PembayaranController@service',
             'as' => 'admin.service.show'
         ]);
+
+        Route::post('service/done', [
+            'uses' => 'PembayaranController@service_done',
+            'as' => 'admin.service.done'
+        ]);
     });
 
     Route::group(['prefix' => 'kategori'], function () {
