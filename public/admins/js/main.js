@@ -105,6 +105,12 @@ $(function () {
         }).niceScroll();
     }
 
+    if ($("#top-service-scroll").length) {
+        $("#top-service-scroll").css({
+            height: 315
+        }).niceScroll();
+    }
+
     $(".main-content").css({
         minHeight: $(window).outerHeight() - 95
     })
