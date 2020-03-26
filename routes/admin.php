@@ -74,6 +74,19 @@ Route::group(['namespace' => 'Pages\Admins', 'prefix' => 'sys-admin', 'middlewar
         ]);
     });
 
+    Route::group(['prefix' => 'master'], function () {
+        Route::get('project', [
+            'uses' => 'MasterProjectServiceController@project',
+            'as' => 'admin.show.project'
+        ]);
+
+        Route::get('service', [
+            'uses' => 'MasterProjectServiceController@service',
+            'as' => 'admin.show.service'
+        ]);
+
+    });
+
     Route::group(['prefix' => 'kategori'], function () {
         Route::get('show', [
             'uses' => 'KategoriSubController@index',
